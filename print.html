@@ -1,0 +1,371 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>iris</title>
+        <meta name="robots" content="noindex" />
+        <!-- Custom HTML head -->
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded "><a href="chapter_1.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="chapter_2.html"><strong aria-hidden="true">2.</strong> Technical Overview</a></li><li class="chapter-item expanded "><a href="chapter_3.html"><strong aria-hidden="true">3.</strong> Adding Data</a></li><li class="chapter-item expanded "><a href="chapter_4.html"><strong aria-hidden="true">4.</strong> Testing</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">iris</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="introduction"><a class="header" href="#introduction">Introduction</a></h1>
+<p>Iris is a substrate-based decentralized storage network. Iris intends to be extensible and used by parachains and smart contracts to take advantage of truly decentralized storage. </p>
+<p>Iris treats everything as an asset. When data is added to the network a brand new asset class is created to identify that data. Assets derived (minted) from this asset class act as proof of access to the underlying content associated with the asset class.</p>
+<p>On top of decentralized storage, Iris delivers four key features:</p>
+<ol>
+<li>Indexability</li>
+<li>Security</li>
+<li>Availability</li>
+<li>Governance</li>
+</ol>
+<h2 id="ipfs"><a class="header" href="#ipfs">IPFS</a></h2>
+<p>Our integration with rust-ipfs (embedded within the substrate runtime) is based on prior work done here: https://rs-ipfs.github.io/offchain-ipfs-manual/introduction.html, with the iridium-labs/substrate offchain_ipfs_v3 branch being maintaining in sync with the latest substrate master. </p>
+<h1 id="usage"><a class="header" href="#usage">Usage</a></h1>
+<h2 id="installation"><a class="header" href="#installation">Installation</a></h2>
+<h3 id="sources"><a class="header" href="#sources">Sources</a></h3>
+<p>Clone the repo:
+<code>git clone https://github.com/iridium-labs/substrate.git</code></p>
+<p>From the master branch:
+Build the node:
+<code>cargo +nightly build --release</code></p>
+<p>And then run:
+<code>cargo +nightly run -- --dev --tmp</code></p>
+<h3 id="docker"><a class="header" href="#docker">Docker</a></h3>
+<p>(The easiest way to install) DNE... future state.
+<code>docker install iridium/substrate</code></p>
+<p>Build the docker image:
+<code>docker build -t iridium/substrate -f ./.maintain/Dockerfile .</code></p>
+<pre><code>docker run -p 9944:9944 \
+  -p 9933:9933 \
+  -p 30333:30333 \
+  -p 9615:9615 \
+  -it \
+  --rm \
+  --name node-template \
+  iridium/substrate \
+  --dev --ws-external --rpc-external
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="technical-overview"><a class="header" href="#technical-overview">Technical Overview</a></h1>
+<h2 id="nodes"><a class="header" href="#nodes">Nodes</a></h2>
+<ul>
+<li>Storage Provider: The storage provider node's responsibility includes processing commands added to the queue by other nodes and submitting the results of the command on chain. </li>
+<li>Content Owner: A content owner is responsible for making data available in some external IPFS node and interacting with Iris to ingest and maintain access to it.</li>
+<li>Content Consumer: A content consumer is responsible for using owned tickets to access owned content.</li>
+</ul>
+<h2 id="runtime-storage"><a class="header" href="#runtime-storage">Runtime Storage</a></h2>
+<ul>
+<li>DataQueue</li>
+<li>Stores a vector of DataCommand enums, which are processed by iris nodes to interact with IPFS.</li>
+</ul>
+<pre><code>StorageValue&lt;
+      _,
+      Vec&lt;DataCommand&lt;&lt;T::Lookup as StaticLookup&gt;::Source, T::AssetId, T::Balance, T::AccountId&gt;&gt;,
+      ValueQuery
+  &gt;
+</code></pre>
+<ul>
+<li>AssetClassOwnership</li>
+<li>Maps owner to cid to asset id</li>
+</ul>
+<pre><code>  StorageDoubleMap&lt;
+      _,
+      Blake2_128Concat,
+      T::AccountId,
+      Blake2_128Concat,
+      Vec&lt;u8&gt;,
+      T::AssetId,
+      ValueQuery,
+  &gt;
+</code></pre>
+<ul>
+<li>AssetAccess</li>
+<li>Maps an accountId to a Cid they have access to, to the account id of the owner of the underlying asset class
+<pre><code> StorageDoubleMap&lt;
+      _,
+      Blake2_128Concat,
+      T::AccountId,
+      Blake2_128Concat,
+      Vec&lt;u8&gt;,
+      T::AccountId,
+      ValueQuery,
+  &gt;```
+
+</code></pre>
+</li>
+</ul>
+<h2 id="extrinsics"><a class="header" href="#extrinsics">Extrinsics</a></h2>
+<h3 id="iris-pallet"><a class="header" href="#iris-pallet">Iris Pallet</a></h3>
+<hr />
+<ul>
+<li><code>create_storage_asset</code></li>
+<li>description: submits an on-chain request to fetch data and add it to iris </li>
+<li>weight: <code>0</code></li>
+<li>parameters:
+<ul>
+<li><code>admin</code>: The address of the node who the asset administration is assigned</li>
+<li><code>addr</code>: the multiaddress where the data exists
+example: <code>/ip4/192.168.1.170/tcp/4001/p2p/12D3KooWMvyvKxYcy9mjbFbXcogFSCvENzQ62ogRxHKZaksFCkAp</code></li>
+<li><code>cid</code>: the cid to fetch from the multiaddress
+example: <code>QmPZv7P8nQUSh2CpqTvUeYemFyjvMjgWEs8H1Tm8b3zAm9</code></li>
+<li><code>id</code>: the unique id of the asset class -&gt; should be generated instead</li>
+<li><code>balance</code>: the balance to back the asset class which will be created</li>
+</ul>
+</li>
+</ul>
+<hr />
+<ul>
+<li><code>request_data</code></li>
+<li>description: Queue a request to retrieve data behind some owned CID from the IPFS network</li>
+<li>weight: <code>0</code></li>
+<li>parameters
+<ul>
+<li><code>owner</code>: The owner node</li>
+<li><code>cid</code>: the cid to which you are requesting access</li>
+</ul>
+</li>
+</ul>
+<hr />
+<ul>
+<li><code>submit_ipfs_results</code>
+<ul>
+<li>Description: submits IPFS results on chain and creates new ticket config in runtime storage</li>
+<li>Parameters:
+<ul>
+<li><code>admin</code>: The admin account</li>
+<li><code>cid</code>: The cid generated by the OCW</li>
+<li><code>id</code>: The AssetId (passed through from the create_storage_asset call)</li>
+<li><code>balance</code>: The balance (passed through from the create_storage_asset call)</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<hr />
+<ul>
+<li><code>mint_tickets</code></li>
+<li>Description: Only callable by the owner of the asset class. Mint a static number of assets (tickets) for some asset class (cid).</li>
+<li>weight: <code>0</code></li>
+<li>Parameters:
+<ul>
+<li>origin: should be the owner of the asset class</li>
+<li>beneficiary: the address to which the newly minted assets are assigned</li>
+<li>cid: a cid owned by the origin, for which an asset class exists</li>
+<li>amount: the number of tickets to mint</li>
+</ul>
+</li>
+</ul>
+<hr />
+<ul>
+<li><code>purchase_ticket</code>
+<ul>
+<li>Description: Not yet implemented</li>
+</ul>
+</li>
+</ul>
+<hr />
+<div style="break-before: page; page-break-before: always;"></div><h1 id="assets"><a class="header" href="#assets">Assets</a></h1>
+<p>The main pallet we provide is built as a wrapper around the assets pallet.</p>
+<h2 id="the-ticket-asset-class"><a class="header" href="#the-ticket-asset-class">The Ticket Asset Class</a></h2>
+<p>When a node adds data to Iris it also constructs a new asset class backed by some initial amount of native tokens  (OBOL). </p>
+<p>The creator of this asset class is then authorized to mint new assets, which we refer to as <code>tickets</code>. Our initial use case makes a few assumptions that we will break in the future.</p>
+<ul>
+<li>Each owner and CID combination has at most one associated asset class</li>
+<li>Asset classes can correspond to at most one owner/CID combination</li>
+<li>Owning a non-zero quantity of assets in an asset class grants the owner access to the underlying data</li>
+</ul>
+<h3 id="asset-class-creation"><a class="header" href="#asset-class-creation">Asset Class Creation</a></h3>
+<p>The Asset class is created when an owner adds some data to the network via the <code>ipfs_add_bytes</code> extrinsic. The calling node submits all needed parameters, which are passed through to an OCW who then becomes responsible for creating the asset class on behalf of the original caller after it has process an IPFS request. To be explicit, apart from the file data's existence to be confirmed, to create the asset class we require:</p>
+<ul>
+<li>balance: The initial balance to back the asset (in the native token OBOL)</li>
+<li>assetId: A unique id to identify the asset</li>
+</ul>
+<h4 id="asset-id-generation"><a class="header" href="#asset-id-generation">Asset Id generation</a></h4>
+<h3 id="creating-tickets"><a class="header" href="#creating-tickets">Creating Tickets</a></h3>
+<p>To be cute, I would like to call this &quot;printing tickets&quot; but we'll save that for later...
+After an asset class has been created for some associated owner/cid combination, the owner of the asset class can then mint tickets (i.e. assets) within that asset class. This is done through another extrinsic: <code>mint_tickets</code>.</p>
+<h3 id="the-asset-graveyard"><a class="header" href="#the-asset-graveyard">The Asset Graveyard</a></h3>
+<p>In order to ensure that dead assets don't build up in runtime storage in the future, we implement a mechanism that destroys asset classes if the underlying data is unavailable for some amount of time. Or maybe even better, the asset class is deflationary: The owner must continue to resupply the underlying, supporting balance, otherwise the asset class collapses and is destroyed, and the underlying data is no longer protected from removal from the network. </p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="testing"><a class="header" href="#testing">Testing</a></h1>
+<h2 id="manual-testing"><a class="header" href="#manual-testing">Manual Testing</a></h2>
+<p>Our manual testing approach largely consists of invoking extrinsics and checking runtime storage. We do this using the polkadot UI:
+https://polkadot.js.org/apps/</p>
+<h2 id="querying-substrate-storage"><a class="header" href="#querying-substrate-storage">Querying Substrate Storage</a></h2>
+<p>https://www.shawntabrizi.com/substrate-js-utilities/</p>
+<p>TemplateModule
+0x177e6857fb1d0e409376122fee3ad4f8</p>
+<p>CidMap
+0xad0a4836d260fcb0bc3aa92c942f2bfe</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+            </nav>
+
+        </div>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        <script type="text/javascript">
+            var socket = new WebSocket("ws://localhost:3000/__livereload");
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+        <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+        <script src="elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="searcher.js" type="text/javascript" charset="utf-8"></script>
+        <script src="clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+        <script type="text/javascript">
+        window.addEventListener('load', function() {
+            window.setTimeout(window.print, 100);
+        });
+        </script>
+    </body>
+</html>
