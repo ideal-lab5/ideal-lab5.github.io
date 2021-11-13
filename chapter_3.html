@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Adding Data - iris</title>
+        <title>Technical Overview - iris</title>
         <!-- Custom HTML head -->
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
         <meta name="description" content="">
@@ -75,7 +75,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="chapter_1.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="chapter_2.html"><strong aria-hidden="true">2.</strong> Technical Overview</a></li><li class="chapter-item expanded "><a href="chapter_3.html" class="active"><strong aria-hidden="true">3.</strong> Adding Data</a></li><li class="chapter-item expanded "><a href="chapter_4.html"><strong aria-hidden="true">4.</strong> Testing</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="chapter_1.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="chapter_2.html"><strong aria-hidden="true">2.</strong> Getting Started</a></li><li class="chapter-item expanded "><a href="chapter_3.html" class="active"><strong aria-hidden="true">3.</strong> Technical Overview</a></li><li class="chapter-item expanded "><a href="chapter_4.html"><strong aria-hidden="true">4.</strong> Iris Pallet</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -134,28 +134,145 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="assets"><a class="header" href="#assets">Assets</a></h1>
-<p>The main pallet we provide is built as a wrapper around the assets pallet.</p>
-<h2 id="the-ticket-asset-class"><a class="header" href="#the-ticket-asset-class">The Ticket Asset Class</a></h2>
-<p>When a node adds data to Iris it also constructs a new asset class backed by some initial amount of native tokens  (OBOL). </p>
-<p>The creator of this asset class is then authorized to mint new assets, which we refer to as <code>tickets</code>. Our initial use case makes a few assumptions that we will break in the future.</p>
+                        <h1 id="technical-overview"><a class="header" href="#technical-overview">Technical Overview</a></h1>
+<h2 id="tech-stack"><a class="header" href="#tech-stack">Tech Stack</a></h2>
+<h3 id="ipfs"><a class="header" href="#ipfs">IPFS</a></h3>
+<p>Our integration with rust-ipfs (embedded within the substrate runtime) is based on prior work done here: https://rs-ipfs.github.io/offchain-ipfs-manual/introduction.html, with the iridium-labs/substrate offchain_ipfs_v3 branch maintained in sync with the latest substrate master. To run the example ui and add data, you must first run an instance of IPFS locally (you don't need to run an IPFS if you want read only access).</p>
+<h3 id="substrate"><a class="header" href="#substrate">Substrate</a></h3>
+<p>Substrate is a blockchain framework built by parity. It provides the building blocks for creating a blockchain, including the database, consesnsus layer, rpc, and much more. </p>
+<p>Iris is a Proof of Authority blockchain. Since the OCW currently must send signed transactions, only validator nodes can publish results on chain (for the moment).</p>
+<p>Pallets</p>
 <ul>
-<li>Each owner and CID combination has at most one associated asset class</li>
-<li>Asset classes can correspond to at most one owner/CID combination</li>
-<li>Owning a non-zero quantity of assets in an asset class grants the owner access to the underlying data</li>
+<li>assets </li>
+<li>balances</li>
+<li>iris</li>
+<li>contracts</li>
 </ul>
-<h3 id="asset-class-creation"><a class="header" href="#asset-class-creation">Asset Class Creation</a></h3>
-<p>The Asset class is created when an owner adds some data to the network via the <code>ipfs_add_bytes</code> extrinsic. The calling node submits all needed parameters, which are passed through to an OCW who then becomes responsible for creating the asset class on behalf of the original caller after it has process an IPFS request. To be explicit, apart from the file data's existence to be confirmed, to create the asset class we require:</p>
+<h3 id="react"><a class="header" href="#react">React</a></h3>
+<p>We use react to build the user interface to interact with our node. We specifically rely on the <code>polkadotjs</code> and <code>ipfs-http-core</code> libraries.</p>
+<h2 id="node-roles"><a class="header" href="#node-roles">Node Roles</a></h2>
 <ul>
-<li>balance: The initial balance to back the asset (in the native token OBOL)</li>
-<li>assetId: A unique id to identify the asset</li>
+<li><strong>Storage Provider</strong>: The storage provider node's responsibility includes processing commands added to the queue by other nodes and submitting the results of the command on chain. </li>
+<li><strong>Content Owner</strong>: A content owner is responsible for making data available in some external IPFS node and interacting with Iris to ingest and maintain access to it.</li>
+<li><strong>Content Consumer</strong>: A content consumer is responsible for using owned tickets to access owned content.</li>
 </ul>
-<h4 id="asset-id-generation"><a class="header" href="#asset-id-generation">Asset Id generation</a></h4>
-<h3 id="creating-tickets"><a class="header" href="#creating-tickets">Creating Tickets</a></h3>
-<p>To be cute, I would like to call this &quot;printing tickets&quot; but we'll save that for later...
-After an asset class has been created for some associated owner/cid combination, the owner of the asset class can then mint tickets (i.e. assets) within that asset class. This is done through another extrinsic: <code>mint_tickets</code>.</p>
-<h3 id="the-asset-graveyard"><a class="header" href="#the-asset-graveyard">The Asset Graveyard</a></h3>
-<p>In order to ensure that dead assets don't build up in runtime storage in the future, we implement a mechanism that destroys asset classes if the underlying data is unavailable for some amount of time. Or maybe even better, the asset class is deflationary: The owner must continue to resupply the underlying, supporting balance, otherwise the asset class collapses and is destroyed, and the underlying data is no longer protected from removal from the network. </p>
+<h2 id="runtime-storage"><a class="header" href="#runtime-storage">Runtime Storage</a></h2>
+<hr />
+<ul>
+<li>DataQueue</li>
+<li>Stores a vector of DataCommand enums, which are processed by iris nodes to interact with IPFS.</li>
+</ul>
+<pre><code>StorageValue&lt;
+      _,
+      Vec&lt;DataCommand&lt;&lt;T::Lookup as StaticLookup&gt;::Source, T::AssetId, T::Balance, T::AccountId&gt;&gt;,
+      ValueQuery
+  &gt;
+</code></pre>
+<hr />
+<ul>
+<li>AssetClassOwnership</li>
+<li>Maps owner to cid to asset id</li>
+</ul>
+<pre><code>  StorageDoubleMap&lt;
+      _,
+      Blake2_128Concat,
+      T::AccountId,
+      Blake2_128Concat,
+      Vec&lt;u8&gt;,
+      T::AssetId,
+      ValueQuery,
+  &gt;
+</code></pre>
+<hr />
+<ul>
+<li>AssetAccess</li>
+<li>Maps an accountId to a Cid they have access to, to the account id of the owner of the underlying asset class
+<pre><code> StorageDoubleMap&lt;
+      _,
+      Blake2_128Concat,
+      T::AccountId,
+      Blake2_128Concat,
+      Vec&lt;u8&gt;,
+      T::AccountId,
+      ValueQuery,
+  &gt;```
+
+</code></pre>
+</li>
+</ul>
+<h2 id="extrinsics"><a class="header" href="#extrinsics">Extrinsics</a></h2>
+<h3 id="iris-pallet"><a class="header" href="#iris-pallet">Iris Pallet</a></h3>
+<hr />
+<ul>
+<li><code>create_storage_asset</code></li>
+<li>description: submits an on-chain request to fetch data and add it to iris </li>
+<li>weight: <code>0</code></li>
+<li>parameters:
+<ul>
+<li><code>admin</code>: The address of the node who the asset administration is assigned</li>
+<li><code>addr</code>: the multiaddress where the data exists
+example: <code>/ip4/192.168.1.170/tcp/4001/p2p/12D3KooWMvyvKxYcy9mjbFbXcogFSCvENzQ62ogRxHKZaksFCkAp</code></li>
+<li><code>cid</code>: the cid to fetch from the multiaddress
+example: <code>QmPZv7P8nQUSh2CpqTvUeYemFyjvMjgWEs8H1Tm8b3zAm9</code></li>
+<li><code>id</code>: the unique id of the asset class -&gt; should be generated instead</li>
+<li><code>balance</code>: the balance to back the asset class which will be created</li>
+</ul>
+</li>
+</ul>
+<hr />
+<ul>
+<li><code>request_data</code></li>
+<li>description: Queue a request to retrieve data behind some owned CID from the IPFS network</li>
+<li>weight: <code>0</code></li>
+<li>parameters
+<ul>
+<li><code>owner</code>: The owner node</li>
+<li><code>cid</code>: the cid to which you are requesting access</li>
+</ul>
+</li>
+</ul>
+<hr />
+<ul>
+<li><code>submit_ipfs_results</code>
+<ul>
+<li>Description: submits IPFS results on chain and creates new ticket config in runtime storage</li>
+<li>Parameters:
+<ul>
+<li><code>admin</code>: The admin account</li>
+<li><code>cid</code>: The cid generated by the OCW</li>
+<li><code>id</code>: The AssetId (passed through from the create_storage_asset call)</li>
+<li><code>balance</code>: The balance (passed through from the create_storage_asset call)</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<hr />
+<ul>
+<li><code>mint_tickets</code></li>
+<li>Description: Only callable by the owner of the asset class. Mint a static number of assets (tickets) for some asset class (cid).</li>
+<li>weight: <code>0</code></li>
+<li>Parameters:
+<ul>
+<li>origin: should be the owner of the asset class</li>
+<li>beneficiary: the address to which the newly minted assets are assigned</li>
+<li>cid: a cid owned by the origin, for which an asset class exists</li>
+<li>amount: the number of tickets to mint</li>
+</ul>
+</li>
+</ul>
+<hr />
+<ul>
+<li><code>purchase_ticket</code>
+<ul>
+<li>Description: Not yet implemented</li>
+</ul>
+</li>
+</ul>
+<hr />
+<h2 id="rpc"><a class="header" href="#rpc">RPC</a></h2>
+<h3 id="data-ejection"><a class="header" href="#data-ejection">Data Ejection</a></h3>
+<p>TODO: define the RPC endpoint for extracting data from the network</p>
 
                     </main>
 
@@ -183,20 +300,6 @@ After an asset class has been created for some associated owner/cid combination,
 
         </div>
 
-        <!-- Livereload script (if served using the cli tool) -->
-        <script type="text/javascript">
-            var socket = new WebSocket("ws://localhost:3000/__livereload");
-            socket.onmessage = function (event) {
-                if (event.data === "reload") {
-                    socket.close();
-                    location.reload();
-                }
-            };
-
-            window.onbeforeunload = function() {
-                socket.close();
-            }
-        </script>
         <script type="text/javascript">
             window.playground_copyable = true;
         </script>

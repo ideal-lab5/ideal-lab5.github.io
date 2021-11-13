@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Testing - iris</title>
+        <title>Iris Pallet - iris</title>
         <!-- Custom HTML head -->
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
         <meta name="description" content="">
@@ -75,7 +75,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="chapter_1.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="chapter_2.html"><strong aria-hidden="true">2.</strong> Technical Overview</a></li><li class="chapter-item expanded "><a href="chapter_3.html"><strong aria-hidden="true">3.</strong> Adding Data</a></li><li class="chapter-item expanded "><a href="chapter_4.html" class="active"><strong aria-hidden="true">4.</strong> Testing</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="chapter_1.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="chapter_2.html"><strong aria-hidden="true">2.</strong> Getting Started</a></li><li class="chapter-item expanded "><a href="chapter_3.html"><strong aria-hidden="true">3.</strong> Technical Overview</a></li><li class="chapter-item expanded "><a href="chapter_4.html" class="active"><strong aria-hidden="true">4.</strong> Iris Pallet</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -134,16 +134,31 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="testing"><a class="header" href="#testing">Testing</a></h1>
-<h2 id="manual-testing"><a class="header" href="#manual-testing">Manual Testing</a></h2>
-<p>Our manual testing approach largely consists of invoking extrinsics and checking runtime storage. We do this using the polkadot UI:
-https://polkadot.js.org/apps/</p>
-<h2 id="querying-substrate-storage"><a class="header" href="#querying-substrate-storage">Querying Substrate Storage</a></h2>
-<p>https://www.shawntabrizi.com/substrate-js-utilities/</p>
-<p>TemplateModule
-0x177e6857fb1d0e409376122fee3ad4f8</p>
-<p>CidMap
-0xad0a4836d260fcb0bc3aa92c942f2bfe</p>
+                        <h1 id="assets"><a class="header" href="#assets">Assets</a></h1>
+<p>The main pallet we provide is built as a wrapper around the assets pallet.</p>
+<h2 id="the-ticket-asset-class"><a class="header" href="#the-ticket-asset-class">The Ticket Asset Class</a></h2>
+<p>When a node adds data to Iris, the OCW that processes the request constructs a new asset class backed by some initial amount of native currency, with the calling node as the admin. </p>
+<p>The admin of this asset class is then authorized to mint new assets, which we refer to as <code>tickets</code>. Our initial use case makes a few assumptions that we will break in the future.</p>
+<ul>
+<li>Each owner and CID combination has at most one associated asset class</li>
+<li>Asset classes can correspond to at most one owner/CID combination</li>
+<li>Owning a non-zero quantity of assets in an asset class grants the owner access to the underlying data</li>
+</ul>
+<h3 id="asset-class-creation"><a class="header" href="#asset-class-creation">Asset Class Creation</a></h3>
+<p>The Asset class is created as a result of a node interacting with the <code>ipfs_add_bytes</code> extrinsic. The admin of the asset class is deemed equivalent to the owner of the underlying data (cid). Creation of the asset class requires two inputs:</p>
+<ul>
+<li>balance: The initial balance to back the asset</li>
+<li>assetId: A unique id to identify the asset</li>
+</ul>
+<h3 id="creating-tickets"><a class="header" href="#creating-tickets">Creating Tickets</a></h3>
+<p>This is equivalent to granting access to some of your owned data to another node in the network.
+Only the admin node is capable of minting new assets for an asset class. The admin specifies the <code>beneficiary</code> and <code>amount</code> of assets to mint,  with the amount being the number of assets to mint and the beneficiary being the address to give them to.</p>
+<h3 id="accessing-data"><a class="header" href="#accessing-data">Accessing Data</a></h3>
+<h2 id="ticket-dex"><a class="header" href="#ticket-dex">Ticket DEX</a></h2>
+<p>TODO: FUTURE WORK
+The ticket DEX will be a substrate based dex that lets nodes buy and sell tickets. It will be a dex for assets created from asset classes created in Iris, backed by the native iris currency.</p>
+<h3 id="the-asset-graveyard"><a class="header" href="#the-asset-graveyard">The Asset Graveyard</a></h3>
+<p>In order to ensure that dead assets don't build up in runtime storage in the future, we implement a mechanism that destroys asset classes if the underlying data is unavailable for some amount of time. Or maybe even better, the asset class is deflationary: The owner must continue to resupply the underlying, supporting balance, otherwise the asset class collapses and is destroyed, and the underlying data is no longer protected from removal from the network. </p>
 
                     </main>
 
@@ -165,20 +180,6 @@ https://polkadot.js.org/apps/</p>
 
         </div>
 
-        <!-- Livereload script (if served using the cli tool) -->
-        <script type="text/javascript">
-            var socket = new WebSocket("ws://localhost:3000/__livereload");
-            socket.onmessage = function (event) {
-                if (event.data === "reload") {
-                    socket.close();
-                    location.reload();
-                }
-            };
-
-            window.onbeforeunload = function() {
-                socket.close();
-            }
-        </script>
         <script type="text/javascript">
             window.playground_copyable = true;
         </script>
