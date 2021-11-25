@@ -135,11 +135,19 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="technical-overview"><a class="header" href="#technical-overview">Technical Overview</a></h1>
+<ol>
+<li><a href="#tech-stack">Tech Stack</a></li>
+<li><a href="#node-roles">Node Roles</a></li>
+<li><a href="#runtime-storage">Runtime Storage</a></li>
+<li><a href="#extrinsics">Extrinsics</a></li>
+<li><a href="#rpc">RPC</a></li>
+</ol>
 <h2 id="tech-stack"><a class="header" href="#tech-stack">Tech Stack</a></h2>
 <h3 id="ipfs"><a class="header" href="#ipfs">IPFS</a></h3>
-<p>Our integration with rust-ipfs (embedded within the substrate runtime) is based on prior work done here: https://rs-ipfs.github.io/offchain-ipfs-manual/introduction.html, with the iridium-labs/substrate offchain_ipfs_v3 branch maintained in sync with the latest substrate master. To run the example ui and add data, you must first run an instance of IPFS locally (you don't need to run an IPFS if you want read only access).</p>
+<p>Our integration with rust-ipfs (embedded within the substrate runtime) is based on <a href="https://rs-ipfs.github.io/offchain-ipfs-manual/introduction.html">prior work</a>. The iridium-labs/substrate <a href="https://github.com/iridium-labs/substrate/tree/offchain_ipfs_v3">offchain_ipfs_v3</a> branch maintained in sync with the latest substrate master. </p>
+<p>The ui we provide relies on a local IPFS instance to add data (iris does not). To add data through the UI you must first run an instance of IPFS locally (you don't need to run an IPFS if you want read only access).</p>
 <h3 id="substrate"><a class="header" href="#substrate">Substrate</a></h3>
-<p>Substrate is a blockchain framework built by parity. It provides the building blocks for creating a blockchain, including the database, consesnsus layer, rpc, and much more. </p>
+<p>Substrate is a blockchain framework built by parity. It provides the building blocks for creating a blockchain, including the database, consensus, rpc, and much more. </p>
 <p>Iris is a Proof of Authority blockchain. Since the OCW currently must send signed transactions, only validator nodes can publish results on chain (for the moment).</p>
 <p>Pallets</p>
 <ul>
@@ -160,7 +168,7 @@
 <hr />
 <ul>
 <li>DataQueue</li>
-<li>Stores a vector of DataCommand enums, which are processed by iris nodes to interact with IPFS.</li>
+<li>Stores a vector of <code>DataCommand</code> enums, which are processed by iris nodes to interact with IPFS.</li>
 </ul>
 <pre><code>StorageValue&lt;
       _,
@@ -195,8 +203,7 @@
       Vec&lt;u8&gt;,
       T::AccountId,
       ValueQuery,
-  &gt;```
-
+  &gt;
 </code></pre>
 </li>
 </ul>
@@ -270,9 +277,24 @@ example: <code>QmPZv7P8nQUSh2CpqTvUeYemFyjvMjgWEs8H1Tm8b3zAm9</code></li>
 </li>
 </ul>
 <hr />
+<h2 id="structs"><a class="header" href="#structs">Structs</a></h2>
+<ul>
+<li>rpc request/response structs here</li>
+</ul>
+<hr />
 <h2 id="rpc"><a class="header" href="#rpc">RPC</a></h2>
 <h3 id="data-ejection"><a class="header" href="#data-ejection">Data Ejection</a></h3>
-<p>TODO: define the RPC endpoint for extracting data from the network</p>
+<ul>
+<li><code>iris_retrieveBytes</code></li>
+<li>Description: This RPC endpoint allows external origins to access data that exists in Iris, to which they have been granted access. The account id should be the account id of the caller node.</li>
+<li>Parameters:
+<ul>
+<li>signature: A signature</li>
+<li>account: An account id </li>
+<li>signed_message: A message signed by the account using the signature</li>
+</ul>
+</li>
+</ul>
 
                     </main>
 

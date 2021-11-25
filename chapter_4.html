@@ -134,31 +134,27 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="assets"><a class="header" href="#assets">Assets</a></h1>
-<p>The main pallet we provide is built as a wrapper around the assets pallet.</p>
+                        <h1 id="assets-and-storage"><a class="header" href="#assets-and-storage">Assets and Storage</a></h1>
+<p>The main pallet we provide is built as a wrapper around the assets pallet. 
+In Iris, data added to the network is associated with a unique asset class. Access to the data is controlled by the asset minted from the asset class. </p>
 <h2 id="the-ticket-asset-class"><a class="header" href="#the-ticket-asset-class">The Ticket Asset Class</a></h2>
-<p>When a node adds data to Iris, the OCW that processes the request constructs a new asset class backed by some initial amount of native currency, with the calling node as the admin. </p>
-<p>The admin of this asset class is then authorized to mint new assets, which we refer to as <code>tickets</code>. Our initial use case makes a few assumptions that we will break in the future.</p>
-<ul>
+<p>When a node adds data to Iris, the OCW that processes the request constructs a new asset class backed by some initial amount of native currency. (See the <code>create_storage_asset</code> <a href="./chapter_3.html">extrinsic</a> for more info). The results in a new <code>DataCommand</code> being added to processing queue. When an OCW proceses the command and publishes results on chain, the new asset class is created. </p>
+<p><img src="./resources/data_ingestion.drawio.png" alt="data-ingestion" />
+(read this from left to right)</p>
+<p>The admin of this asset class is then authorized to mint new assets, which we refer to as <code>tickets</code>. Our initial use case makes a few assumptions that we will break in the future:</p>
+<ol>
 <li>Each owner and CID combination has at most one associated asset class</li>
 <li>Asset classes can correspond to at most one owner/CID combination</li>
 <li>Owning a non-zero quantity of assets in an asset class grants the owner access to the underlying data</li>
-</ul>
-<h3 id="asset-class-creation"><a class="header" href="#asset-class-creation">Asset Class Creation</a></h3>
-<p>The Asset class is created as a result of a node interacting with the <code>ipfs_add_bytes</code> extrinsic. The admin of the asset class is deemed equivalent to the owner of the underlying data (cid). Creation of the asset class requires two inputs:</p>
-<ul>
-<li>balance: The initial balance to back the asset</li>
-<li>assetId: A unique id to identify the asset</li>
-</ul>
+</ol>
 <h3 id="creating-tickets"><a class="header" href="#creating-tickets">Creating Tickets</a></h3>
-<p>This is equivalent to granting access to some of your owned data to another node in the network.
-Only the admin node is capable of minting new assets for an asset class. The admin specifies the <code>beneficiary</code> and <code>amount</code> of assets to mint,  with the amount being the number of assets to mint and the beneficiary being the address to give them to.</p>
+<p>This is equivalent to granting access to some of your owned data to another node in the network.</p>
+<p>Only the admin node is capable of minting new assets for an asset class. The admin specifies a <code>beneficiary</code> and the <code>amount</code> of assets to mint. (see: <code>mint_tokens</code> extrinsic)</p>
 <h3 id="accessing-data"><a class="header" href="#accessing-data">Accessing Data</a></h3>
-<h2 id="ticket-dex"><a class="header" href="#ticket-dex">Ticket DEX</a></h2>
-<p>TODO: FUTURE WORK
-The ticket DEX will be a substrate based dex that lets nodes buy and sell tickets. It will be a dex for assets created from asset classes created in Iris, backed by the native iris currency.</p>
-<h3 id="the-asset-graveyard"><a class="header" href="#the-asset-graveyard">The Asset Graveyard</a></h3>
-<p>In order to ensure that dead assets don't build up in runtime storage in the future, we implement a mechanism that destroys asset classes if the underlying data is unavailable for some amount of time. Or maybe even better, the asset class is deflationary: The owner must continue to resupply the underlying, supporting balance, otherwise the asset class collapses and is destroyed, and the underlying data is no longer protected from removal from the network. </p>
+<p>Based on assumption three, owning a single asset of an asset class grants the owner access to the underlying data stored in IPFS. To retrieve data, a node makes a request to Iris, adding a request to retrieve bytes to the queue. An OCW processes the command and adds the fetched content to local offchain storage. The original calling node can then invoke the <code>iris_retrieveBytes</code> RPC endpoint exposed on the node who fetched the content in order to retrieve it. </p>
+<p>First, a node that owns some positive balance of an asset requests access to it:
+<img src="./resources/data_ejection_p1.drawio.png" alt="data-ejection part 1" /></p>
+<p>Then the node calls the RPC endpoint emitted:</p>
 
                     </main>
 
