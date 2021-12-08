@@ -75,7 +75,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="chapter_1.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="chapter_2.html" class="active"><strong aria-hidden="true">2.</strong> Getting Started</a></li><li class="chapter-item expanded "><a href="chapter_3.html"><strong aria-hidden="true">3.</strong> Technical Overview</a></li><li class="chapter-item expanded "><a href="chapter_4.html"><strong aria-hidden="true">4.</strong> Iris Pallet</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="chapter_1.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="chapter_2.html" class="active"><strong aria-hidden="true">2.</strong> Getting Started</a></li><li class="chapter-item expanded "><a href="chapter_3.html"><strong aria-hidden="true">3.</strong> Technical Overview</a></li><li class="chapter-item expanded "><a href="chapter_4.html"><strong aria-hidden="true">4.</strong> Asset Classes and Access Management</a></li><li class="chapter-item expanded "><a href="chapter_5.html"><strong aria-hidden="true">5.</strong> RPC Endpoint Implementation</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -142,7 +142,7 @@
 <li><a href="#testing">Testing</a></li>
 </ol>
 <h2 id="installation"><a class="header" href="#installation">Installation</a></h2>
-<p>There are two ways to install iris, either building the source code, building a docker image, or simply installing from docker.</p>
+<p>There are three ways to install iris, either building the source code, building a docker image, or simply installing from docker.</p>
 <h3 id="sources"><a class="header" href="#sources">Sources</a></h3>
 <pre><code>git clone https://github.com/iridium-labs/substrate.git
 cd substrate
@@ -156,7 +156,7 @@ cargo +nightly build --release
 <p>From the latest sources, build the docker image:
 <code>docker build -t iridium/substrate -f ./.maintain/Dockerfile .</code></p>
 <h2 id="running"><a class="header" href="#running">Running</a></h2>
-<h3 id="from-source"><a class="header" href="#from-source">From Source</a></h3>
+<h3 id="from-sources"><a class="header" href="#from-sources">From Sources</a></h3>
 <pre><code># purge the local chain data
 ./target/release/node-template purge-chain --base-path /tmp/alice --dev -y
 # run the build
@@ -201,7 +201,7 @@ npm i
 npm start
 </code></pre>
 <h1 id="testing"><a class="header" href="#testing">Testing</a></h1>
-<p>Run the test with <code>cargo test</code>.</p>
+<p>Run the tests with <code>cargo test</code>.</p>
 <h2 id="guidelines"><a class="header" href="#guidelines">Guidelines</a></h2>
 <p>We aim for a minimum of 80% coverage on new code. </p>
 <h2 id="manual-testing"><a class="header" href="#manual-testing">Manual Testing</a></h2>

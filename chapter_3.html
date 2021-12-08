@@ -75,7 +75,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="chapter_1.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="chapter_2.html"><strong aria-hidden="true">2.</strong> Getting Started</a></li><li class="chapter-item expanded "><a href="chapter_3.html" class="active"><strong aria-hidden="true">3.</strong> Technical Overview</a></li><li class="chapter-item expanded "><a href="chapter_4.html"><strong aria-hidden="true">4.</strong> Iris Pallet</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="chapter_1.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="chapter_2.html"><strong aria-hidden="true">2.</strong> Getting Started</a></li><li class="chapter-item expanded "><a href="chapter_3.html" class="active"><strong aria-hidden="true">3.</strong> Technical Overview</a></li><li class="chapter-item expanded "><a href="chapter_4.html"><strong aria-hidden="true">4.</strong> Asset Classes and Access Management</a></li><li class="chapter-item expanded "><a href="chapter_5.html"><strong aria-hidden="true">5.</strong> RPC Endpoint Implementation</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -144,17 +144,16 @@
 </ol>
 <h2 id="tech-stack"><a class="header" href="#tech-stack">Tech Stack</a></h2>
 <h3 id="ipfs"><a class="header" href="#ipfs">IPFS</a></h3>
-<p>Our integration with rust-ipfs (embedded within the substrate runtime) is based on <a href="https://rs-ipfs.github.io/offchain-ipfs-manual/introduction.html">prior work</a>. The iridium-labs/substrate <a href="https://github.com/iridium-labs/substrate/tree/offchain_ipfs_v3">offchain_ipfs_v3</a> branch maintained in sync with the latest substrate master. </p>
+<p>Our integration with rust-ipfs is based on <a href="https://rs-ipfs.github.io/offchain-ipfs-manual/introduction.html">prior work</a>. The iridium-labs/substrate <a href="https://github.com/iridium-labs/substrate/tree/offchain_ipfs_v3">offchain_ipfs_v3</a> branch maintained in sync with the latest substrate master. </p>
 <p>The ui we provide relies on a local IPFS instance to add data (iris does not). To add data through the UI you must first run an instance of IPFS locally (you don't need to run an IPFS if you want read only access).</p>
 <h3 id="substrate"><a class="header" href="#substrate">Substrate</a></h3>
 <p>Substrate is a blockchain framework built by parity. It provides the building blocks for creating a blockchain, including the database, consensus, rpc, and much more. </p>
-<p>Iris is a Proof of Authority blockchain. Since the OCW currently must send signed transactions, only validator nodes can publish results on chain (for the moment).</p>
+<p>Iris is a Proof of Authority blockchain. Since the OCW currently must send signed transactions, only validator nodes can publish results on chain.</p>
 <p>Pallets</p>
 <ul>
 <li>assets </li>
 <li>balances</li>
 <li>iris</li>
-<li>contracts</li>
 </ul>
 <h3 id="react"><a class="header" href="#react">React</a></h3>
 <p>We use react to build the user interface to interact with our node. We specifically rely on the <code>polkadotjs</code> and <code>ipfs-http-core</code> libraries.</p>
@@ -174,7 +173,7 @@
       _,
       Vec&lt;DataCommand&lt;&lt;T::Lookup as StaticLookup&gt;::Source, T::AssetId, T::Balance, T::AccountId&gt;&gt;,
       ValueQuery
-  &gt;
+  &gt;;
 </code></pre>
 <hr />
 <ul>
@@ -189,7 +188,7 @@
       Vec&lt;u8&gt;,
       T::AssetId,
       ValueQuery,
-  &gt;
+  &gt;;
 </code></pre>
 <hr />
 <ul>
@@ -203,10 +202,23 @@
       Vec&lt;u8&gt;,
       T::AccountId,
       ValueQuery,
-  &gt;
+  &gt;;
 </code></pre>
 </li>
 </ul>
+<hr />
+<ul>
+<li>BootstrapNodes</li>
+<li>Keeps track of which IPFS nodes are available for use as bootstrap nodes</li>
+</ul>
+<pre><code>    pub(super) type BootstrapNodes&lt;T: Config&gt; = StorageMap&lt;
+       _,
+       Blake2_128Concat,
+       Vec&lt;u8&gt;,
+       Vec&lt;OpaqueMultiaddr&gt;,
+       ValueQuery,
+   &gt;;
+</code></pre>
 <h2 id="extrinsics"><a class="header" href="#extrinsics">Extrinsics</a></h2>
 <h3 id="iris-pallet"><a class="header" href="#iris-pallet">Iris Pallet</a></h3>
 <hr />
@@ -221,6 +233,7 @@
 example: <code>/ip4/192.168.1.170/tcp/4001/p2p/12D3KooWMvyvKxYcy9mjbFbXcogFSCvENzQ62ogRxHKZaksFCkAp</code></li>
 <li><code>cid</code>: the cid to fetch from the multiaddress
 example: <code>QmPZv7P8nQUSh2CpqTvUeYemFyjvMjgWEs8H1Tm8b3zAm9</code></li>
+<li><code>name</code>: A name to associate with the owned content</li>
 <li><code>id</code>: the unique id of the asset class -&gt; should be generated instead</li>
 <li><code>balance</code>: the balance to back the asset class which will be created</li>
 </ul>
@@ -240,9 +253,8 @@ example: <code>QmPZv7P8nQUSh2CpqTvUeYemFyjvMjgWEs8H1Tm8b3zAm9</code></li>
 </ul>
 <hr />
 <ul>
-<li><code>submit_ipfs_results</code>
-<ul>
-<li>Description: submits IPFS results on chain and creates new ticket config in runtime storage</li>
+<li><code>submit_ipfs_add_results</code></li>
+<li>Description: submits IPFS results on chain and creates new ticket config in runtime storage. Should only be callable by offchain workers.</li>
 <li>Parameters:
 <ul>
 <li><code>admin</code>: The admin account</li>
@@ -251,6 +263,25 @@ example: <code>QmPZv7P8nQUSh2CpqTvUeYemFyjvMjgWEs8H1Tm8b3zAm9</code></li>
 <li><code>balance</code>: The balance (passed through from the create_storage_asset call)</li>
 </ul>
 </li>
+</ul>
+<hr />
+<ul>
+<li><code>submit_ipfs_identity</code></li>
+<li>submit the results of <code>ipfs identity</code> on chain to be encoded in runtime storage as a bootstrap node for the embedded IPFS instances. Should only be callable by offchain workers.</li>
+<li>Parameters:
+<ul>
+<li><code>public_key</code>: The public key of the IPFS node</li>
+<li><code>multiaddresses</code>: The collection of multiaddresses that the node is listening on</li>
+</ul>
+</li>
+</ul>
+<hr />
+<ul>
+<li><code>submit_rpc_ready</code></li>
+<li>Emits an event to notify a node that their data is available at some specific host</li>
+<li>Parameters:
+<ul>
+<li><code>beneficiary</code>: The node who is capable of fetching the available data.</li>
 </ul>
 </li>
 </ul>
@@ -261,10 +292,9 @@ example: <code>QmPZv7P8nQUSh2CpqTvUeYemFyjvMjgWEs8H1Tm8b3zAm9</code></li>
 <li>weight: <code>0</code></li>
 <li>Parameters:
 <ul>
-<li>origin: should be the owner of the asset class</li>
-<li>beneficiary: the address to which the newly minted assets are assigned</li>
-<li>cid: a cid owned by the origin, for which an asset class exists</li>
-<li>amount: the number of tickets to mint</li>
+<li><code>beneficiary</code>: the address to which the newly minted assets are assigned</li>
+<li><code>cid</code>: a cid owned by the origin, for which an asset class exists</li>
+<li><code>amount</code>: the number of tickets to mint</li>
 </ul>
 </li>
 </ul>
@@ -278,9 +308,6 @@ example: <code>QmPZv7P8nQUSh2CpqTvUeYemFyjvMjgWEs8H1Tm8b3zAm9</code></li>
 </ul>
 <hr />
 <h2 id="structs"><a class="header" href="#structs">Structs</a></h2>
-<ul>
-<li>rpc request/response structs here</li>
-</ul>
 <hr />
 <h2 id="rpc"><a class="header" href="#rpc">RPC</a></h2>
 <h3 id="data-ejection"><a class="header" href="#data-ejection">Data Ejection</a></h3>
