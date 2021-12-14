@@ -148,11 +148,12 @@
 </li>
 </ul>
 <h2 id="implementation"><a class="header" href="#implementation">Implementation</a></h2>
-<ol>
-<li>verify signature</li>
-<li>fetch data from offchain storage</li>
-<li>return bytes</li>
-</ol>
+<p>The current RPC endpoint implementation is very sparse. In the first iteration, this endpoint simply returns data that has been requested, without verifying who the caller is. In the future, we will implement additional security and validations. The current iteration allows any node to retrieve data that was requested from Iris. Additionally, we intend to implement a &quot;cleanup&quot; procedure to periodically purge data from offchain storage.</p>
+<h2 id="example"><a class="header" href="#example">Example</a></h2>
+<p>Assume that you have requested access to some CID: <code>QmVsbXUbr5JwUDibTBmmh224GhWy1FWguTbHb3DTU3ahTE</code>.
+First, convert the CID to hex: <code>0x516d56736258556272354a775544696254426d6d6832323447685779314657677554624862334454553361685445</code></p>
+<p>and use it as the <code>message</code> field value, passing empty bytes to the other fields.</p>
+<p><code>curl http://localhost:9933 -H &quot;Content-Type:application/json;charset=utf-8&quot; -d '{&quot;jsonrpc&quot;: &quot;2.0&quot;, &quot;id&quot;: &quot;1&quot;, &quot;method&quot;: &quot;iris_retrieveBytes&quot;, &quot;params&quot;: [&quot;0x&quot;, &quot;0x&quot;, &quot;0x516d56736258556272354a775544696254426d6d6832323447685779314657677554624862334454553361685445&quot;]}'</code></p>
 
                     </main>
 

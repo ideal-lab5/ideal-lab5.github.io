@@ -135,7 +135,7 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="assets-and-storage"><a class="header" href="#assets-and-storage">Assets and Storage</a></h1>
-<p>In Iris, owned content is treated as a unique asset class and access to the content is controlled by ownership of assets minted from the asset class. Future plans include building a bridge to allow these assets to be transfered offchain, or to be used in smart contracts. </p>
+<p>In Iris, owned content is treated as a unique asset class and access to the content is controlled by ownership of assets minted from the asset class. Future plans include building a bridge to allow these assets to be transfered cross-chain, or to be used in smart contracts. </p>
 <h2 id="the-ticket-asset-class"><a class="header" href="#the-ticket-asset-class">The Ticket Asset Class</a></h2>
 <p>When a node adds data to Iris, the OCW that processes the request constructs a new asset class backed by some initial (user defined) amount of native currency (see the <code>create_storage_asset</code> <a href="./chapter_3.html">extrinsic</a>). This results in a new <code>DataCommand</code> being added to the processing queue. When an OCW proceses the command and publishes results on chain, a new asset class is created. </p>
 <p><img src="./resources/data_ingestion.drawio.png" alt="data-ingestion" /></p>

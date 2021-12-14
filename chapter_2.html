@@ -150,11 +150,11 @@ git checkout iris
 cargo +nightly build --release
 </code></pre>
 <h3 id="docker"><a class="header" href="#docker">Docker</a></h3>
-<p>(The easiest way to install) DNE... future state.
-<code>docker install iridium/substrate</code></p>
+<p>Install from the docker hub
+<code>docker pull iridiumlabs/iris</code></p>
 <p><strong>OR</strong></p>
 <p>From the latest sources, build the docker image:
-<code>docker build -t iridium/substrate -f ./.maintain/Dockerfile .</code></p>
+<code>docker build -t iridiumlabs/iris -f ./.maintain/Dockerfile .</code></p>
 <h2 id="running"><a class="header" href="#running">Running</a></h2>
 <h3 id="from-sources"><a class="header" href="#from-sources">From Sources</a></h3>
 <pre><code># purge the local chain data
@@ -181,7 +181,7 @@ cargo +nightly build --release
   -it \
   --rm \
   --name iris-alice \
-  iridium/substrate \
+  iridiumlabs/iris \
   --dev --ws-external --rpc-external \
   --node-key 0000000000000000000000000000000000000000000000000000000000000001
 </code></pre>
@@ -189,19 +189,23 @@ cargo +nightly build --release
 <h1 id="interacting-with-your-node"><a class="header" href="#interacting-with-your-node">Interacting with your node</a></h1>
 <p><em>See the <a href="../src/chapter_3.html">tech overview</a> for information on extrinsics, rpc, etc.</em></p>
 <h2 id="polkadotjs"><a class="header" href="#polkadotjs">PolkadotJs</a></h2>
-<p>As the UI undergoes development, the most reliable way to interact with your node is to use the default polkadotjs ui: polkadot.js.org/ .</p>
+<p>As the UI undergoes development, the most <em>stable</em> way to interact with your node is to use the default <a href="https://polkadot.js.org/">polkadotjs ui</a>.</p>
 <h2 id="the-iris-ui"><a class="header" href="#the-iris-ui">The Iris UI</a></h2>
-<p>FUTURE URL: https://app.iridium.industries</p>
-<p>The Iris UI is an example of how to integrate with an Iris node. It provides a mechanism to add and retrieve data to/from Iris, to create an asset class, mint assets, and manage both asset classes and assets.</p>
-<p>If you intend to add data to Iris, you must also run an IPFS node locally:
-<code>ipfs daemon</code></p>
+<p>The Iris UI provides a mechanism to add and retrieve data from Iris, to create an asset class, mint assets, privision data access, and manage both asset classes and assets.</p>
+<p>If you intend to add data to Iris, you must also run an IPFS node locally. This holds for running from sources as well as the docker image. Run IPFS with <code>ipfs daemon</code>.</p>
+<h3 id="running-from-sources"><a class="header" href="#running-from-sources">Running from Sources</a></h3>
 <pre><code>git clone https://github.com/iridium-labs/ui.git
 cd ui
 npm i
-npm start
+REACT_APP_IPV4=&lt;your ipv4&gt; npm start
+</code></pre>
+<h3 id="running-from-docker"><a class="header" href="#running-from-docker">Running from Docker</a></h3>
+<pre><code>docker pull iridiumlabs/iris-ui
+# replace w.x.y.z with your ip
+docker run -it --rm -p 3000:80 -e REACT_APP_IPV4=&quot;w.x.y.z&quot; iridiumlabs/iris-ui
 </code></pre>
 <h1 id="testing"><a class="header" href="#testing">Testing</a></h1>
-<p>Run the tests with <code>cargo test</code>.</p>
+<p>Run the unit tests with <code>cargo test</code>.</p>
 <h2 id="guidelines"><a class="header" href="#guidelines">Guidelines</a></h2>
 <p>We aim for a minimum of 80% coverage on new code. </p>
 <h2 id="manual-testing"><a class="header" href="#manual-testing">Manual Testing</a></h2>
@@ -211,7 +215,6 @@ https://polkadot.js.org/apps/</p>
 <h4 id="calling-substrate-rpc-endpoints"><a class="header" href="#calling-substrate-rpc-endpoints">Calling substrate RPC endpoints</a></h4>
 <p>To convert strings to hex, I like this tool:
 https://onlinestringtools.com/convert-string-to-hexadecimal</p>
-<p><code>curl http://localhost:9933 -H &quot;Content-Type:application/json;charset=utf-8&quot; -d '{&quot;jsonrpc&quot;: &quot;2.0&quot;, &quot;id&quot;: &quot;1&quot;, &quot;method&quot;: &quot;iris_retrieveBytes&quot;, &quot;params&quot;: [&quot;&quot;, &quot;&quot;, &quot;&quot;]}'</code></p>
 <h4 id="querying-substrate-storage"><a class="header" href="#querying-substrate-storage">Querying Substrate Storage</a></h4>
 <p>https://www.shawntabrizi.com/substrate-js-utilities/</p>
 
