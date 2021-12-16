@@ -250,7 +250,7 @@ REACT_APP_IPV4=&lt;your ipv4&gt; npm start
 <h3 id="running-from-docker"><a class="header" href="#running-from-docker">Running from Docker</a></h3>
 <pre><code>docker pull iridiumlabs/iris-ui
 # replace w.x.y.z with your ip
-docker run -it --rm -p 3000:80 -e REACT_APP_IPV4=&quot;w.x.y.z&quot; iridiumlabs/iris-ui
+docker run -it --rm -p 3000:3000 -e &quot;REACT_APP_IPV4=w.x.y.z&quot; iridiumlabs/iris-ui
 </code></pre>
 <h1 id="testing"><a class="header" href="#testing">Testing</a></h1>
 <p>Run the unit tests with <code>cargo test</code>.</p>
