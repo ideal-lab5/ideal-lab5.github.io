@@ -4,7 +4,10 @@
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
         <title>Technical Overview - iris</title>
+
+
         <!-- Custom HTML head -->
+        
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -16,15 +19,18 @@
         <link rel="stylesheet" href="css/general.css">
         <link rel="stylesheet" href="css/chrome.css">
         <link rel="stylesheet" href="css/print.css" media="print">
+
         <!-- Fonts -->
         <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
         <link rel="stylesheet" href="fonts/fonts.css">
+
         <!-- Highlight.js Stylesheets -->
         <link rel="stylesheet" href="highlight.css">
         <link rel="stylesheet" href="tomorrow-night.css">
         <link rel="stylesheet" href="ayu-highlight.css">
 
         <!-- Custom theme stylesheets -->
+
     </head>
     <body>
         <!-- Provide site root to javascript -->
@@ -75,7 +81,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="chapter_1.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="chapter_2.html"><strong aria-hidden="true">2.</strong> Getting Started</a></li><li class="chapter-item expanded "><a href="chapter_3.html" class="active"><strong aria-hidden="true">3.</strong> Technical Overview</a></li><li class="chapter-item expanded "><a href="chapter_4.html"><strong aria-hidden="true">4.</strong> Asset Classes and Access Management</a></li><li class="chapter-item expanded "><a href="chapter_5.html"><strong aria-hidden="true">5.</strong> RPC Endpoint Implementation</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="chapter_1.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="chapter_2.html"><strong aria-hidden="true">2.</strong> Getting Started</a></li><li class="chapter-item expanded "><a href="chapter_3.html" class="active"><strong aria-hidden="true">3.</strong> Technical Overview</a></li><li class="chapter-item expanded "><a href="chapter_4.html"><strong aria-hidden="true">4.</strong> Asset Classes and Access Management</a></li><li class="chapter-item expanded "><a href="pallets.html"><strong aria-hidden="true">5.</strong> Pallets</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="pallets_iris_assets.html"><strong aria-hidden="true">5.1.</strong> Iris-Assets</a></li><li class="chapter-item expanded "><a href="pallets_iris_session.html"><strong aria-hidden="true">5.2.</strong> Iris-Session</a></li></ol></li><li class="chapter-item expanded "><a href="chapter_5.html"><strong aria-hidden="true">6.</strong> RPC Endpoint Implementation</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -83,7 +89,7 @@
         <div id="page-wrapper" class="page-wrapper">
 
             <div class="page">
-                <div id="menu-bar-hover-placeholder"></div>
+                                <div id="menu-bar-hover-placeholder"></div>
                 <div id="menu-bar" class="menu-bar sticky bordered">
                     <div class="left-buttons">
                         <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
@@ -110,6 +116,7 @@
                         <a href="print.html" title="Print this book" aria-label="Print this book">
                             <i id="print-button" class="fa fa-print"></i>
                         </a>
+
                     </div>
                 </div>
 
@@ -123,6 +130,7 @@
                         </ul>
                     </div>
                 </div>
+
                 <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
                 <script type="text/javascript">
                     document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
@@ -138,189 +146,27 @@
 <ol>
 <li><a href="#tech-stack">Tech Stack</a></li>
 <li><a href="#node-roles">Node Roles</a></li>
-<li><a href="#runtime-storage">Runtime Storage</a></li>
-<li><a href="#extrinsics">Extrinsics</a></li>
-<li><a href="#rpc">RPC</a></li>
+<li><a href="#runtime">Runtime</a></li>
 </ol>
 <h2 id="tech-stack"><a class="header" href="#tech-stack">Tech Stack</a></h2>
 <h3 id="ipfs"><a class="header" href="#ipfs">IPFS</a></h3>
-<p>Our integration with rust-ipfs is based on <a href="https://rs-ipfs.github.io/offchain-ipfs-manual/introduction.html">prior work</a>. The iridium-labs/substrate <a href="https://github.com/iridium-labs/substrate/tree/offchain_ipfs_v3">offchain_ipfs_v3</a> branch maintained in sync with the latest substrate master. </p>
+<p>Our integration with <a href="https://github.com/rs-ipfs/rust-ipfs">rust-ipfs</a> is based on <a href="https://rs-ipfs.github.io/offchain-ipfs-manual/introduction.html">prior work</a>. The iridium-labs/substrate <a href="https://github.com/iridium-labs/substrate/tree/offchain_ipfs_v3">offchain_ipfs_v3</a> branch maintained in sync with the latest substrate master.</p>
 <p>The ui we provide relies on a local IPFS instance to add data (iris does not). To add data through the UI you must first run an instance of IPFS locally (you don't need to run an IPFS if you want read only access).</p>
 <h3 id="substrate"><a class="header" href="#substrate">Substrate</a></h3>
-<p>Substrate is a blockchain framework built by parity. It provides the building blocks for creating a blockchain, including the database, consensus, rpc, and much more. </p>
-<p>Iris is a Proof of Authority blockchain. Since the OCW currently must send signed transactions, only validator nodes can publish results on chain.</p>
-<p>Pallets</p>
-<ul>
-<li>assets </li>
-<li>balances</li>
-<li>iris</li>
-</ul>
+<p>Substrate is a blockchain framework built by parity. It provides the building blocks for creating a blockchain, including the database, consensus, rpc, and much more.</p>
 <h3 id="react"><a class="header" href="#react">React</a></h3>
 <p>We use react to build the user interface to interact with our node. We specifically rely on the <code>polkadotjs</code> and <code>ipfs-http-core</code> libraries.</p>
 <h2 id="node-roles"><a class="header" href="#node-roles">Node Roles</a></h2>
 <ul>
-<li><strong>Storage Provider</strong>: The storage provider node's responsibility includes processing commands added to the queue by other nodes and submitting the results of the command on chain. </li>
+<li><strong>Storage Provider</strong>: The storage provider node's responsibility includes processing commands added to the queue by other nodes and submitting the results of the command on chain.</li>
 <li><strong>Content Owner</strong>: A content owner is responsible for making data available in some external IPFS node and interacting with Iris to ingest and maintain access to it.</li>
 <li><strong>Content Consumer</strong>: A content consumer is responsible for using owned tickets to access owned content.</li>
 </ul>
-<h2 id="runtime-storage"><a class="header" href="#runtime-storage">Runtime Storage</a></h2>
-<hr />
-<ul>
-<li>DataQueue</li>
-<li>Stores a vector of <code>DataCommand</code> enums, which are processed by iris nodes to interact with IPFS.</li>
-</ul>
-<pre><code>StorageValue&lt;
-      _,
-      Vec&lt;DataCommand&lt;&lt;T::Lookup as StaticLookup&gt;::Source, T::AssetId, T::Balance, T::AccountId&gt;&gt;,
-      ValueQuery
-  &gt;;
-</code></pre>
-<hr />
-<ul>
-<li>AssetClassOwnership</li>
-<li>Maps owner to cid to asset id</li>
-</ul>
-<pre><code>  StorageDoubleMap&lt;
-      _,
-      Blake2_128Concat,
-      T::AccountId,
-      Blake2_128Concat,
-      Vec&lt;u8&gt;,
-      T::AssetId,
-      ValueQuery,
-  &gt;;
-</code></pre>
-<hr />
-<ul>
-<li>AssetAccess</li>
-<li>Maps an accountId to a Cid they have access to, to the account id of the owner of the underlying asset class
-<pre><code> StorageDoubleMap&lt;
-      _,
-      Blake2_128Concat,
-      T::AccountId,
-      Blake2_128Concat,
-      Vec&lt;u8&gt;,
-      T::AccountId,
-      ValueQuery,
-  &gt;;
-</code></pre>
-</li>
-</ul>
-<hr />
-<ul>
-<li>BootstrapNodes</li>
-<li>Keeps track of which IPFS nodes are available for use as bootstrap nodes</li>
-</ul>
-<pre><code>    pub(super) type BootstrapNodes&lt;T: Config&gt; = StorageMap&lt;
-       _,
-       Blake2_128Concat,
-       Vec&lt;u8&gt;,
-       Vec&lt;OpaqueMultiaddr&gt;,
-       ValueQuery,
-   &gt;;
-</code></pre>
-<h2 id="extrinsics"><a class="header" href="#extrinsics">Extrinsics</a></h2>
-<h3 id="iris-pallet"><a class="header" href="#iris-pallet">Iris Pallet</a></h3>
-<hr />
-<ul>
-<li><code>create_storage_asset</code></li>
-<li>description: submits an on-chain request to fetch data and add it to iris </li>
-<li>weight: <code>0</code></li>
-<li>parameters:
-<ul>
-<li><code>admin</code>: The address of the node who the asset administration is assigned</li>
-<li><code>addr</code>: the multiaddress where the data exists
-example: <code>/ip4/192.168.1.170/tcp/4001/p2p/12D3KooWMvyvKxYcy9mjbFbXcogFSCvENzQ62ogRxHKZaksFCkAp</code></li>
-<li><code>cid</code>: the cid to fetch from the multiaddress
-example: <code>QmPZv7P8nQUSh2CpqTvUeYemFyjvMjgWEs8H1Tm8b3zAm9</code></li>
-<li><code>name</code>: A name to associate with the owned content</li>
-<li><code>id</code>: the unique id of the asset class -&gt; should be generated instead</li>
-<li><code>balance</code>: the balance to back the asset class which will be created</li>
-</ul>
-</li>
-</ul>
-<hr />
-<ul>
-<li><code>request_data</code></li>
-<li>description: Queue a request to retrieve data behind some owned CID from the IPFS network</li>
-<li>weight: <code>0</code></li>
-<li>parameters
-<ul>
-<li><code>owner</code>: The owner node</li>
-<li><code>cid</code>: the cid to which you are requesting access</li>
-</ul>
-</li>
-</ul>
-<hr />
-<ul>
-<li><code>submit_ipfs_add_results</code></li>
-<li>Description: submits IPFS results on chain and creates new ticket config in runtime storage. Should only be callable by offchain workers.</li>
-<li>Parameters:
-<ul>
-<li><code>admin</code>: The admin account</li>
-<li><code>cid</code>: The cid generated by the OCW</li>
-<li><code>id</code>: The AssetId (passed through from the create_storage_asset call)</li>
-<li><code>balance</code>: The balance (passed through from the create_storage_asset call)</li>
-</ul>
-</li>
-</ul>
-<hr />
-<ul>
-<li><code>submit_ipfs_identity</code></li>
-<li>submit the results of <code>ipfs identity</code> on chain to be encoded in runtime storage as a bootstrap node for the embedded IPFS instances. Should only be callable by offchain workers.</li>
-<li>Parameters:
-<ul>
-<li><code>public_key</code>: The public key of the IPFS node</li>
-<li><code>multiaddresses</code>: The collection of multiaddresses that the node is listening on</li>
-</ul>
-</li>
-</ul>
-<hr />
-<ul>
-<li><code>submit_rpc_ready</code></li>
-<li>Emits an event to notify a node that their data is available at some specific host</li>
-<li>Parameters:
-<ul>
-<li><code>beneficiary</code>: The node who is capable of fetching the available data.</li>
-</ul>
-</li>
-</ul>
-<hr />
-<ul>
-<li><code>mint_tickets</code></li>
-<li>Description: Only callable by the owner of the asset class. Mint a static number of assets (tickets) for some asset class (cid).</li>
-<li>weight: <code>0</code></li>
-<li>Parameters:
-<ul>
-<li><code>beneficiary</code>: the address to which the newly minted assets are assigned</li>
-<li><code>cid</code>: a cid owned by the origin, for which an asset class exists</li>
-<li><code>amount</code>: the number of tickets to mint</li>
-</ul>
-</li>
-</ul>
-<hr />
-<ul>
-<li><code>purchase_ticket</code>
-<ul>
-<li>Description: Not yet implemented</li>
-</ul>
-</li>
-</ul>
-<hr />
-<h2 id="rpc"><a class="header" href="#rpc">RPC</a></h2>
-<p><a href="./chapter_5.html">See here for more details</a></p>
-<h3 id="data-ejection"><a class="header" href="#data-ejection">Data Ejection</a></h3>
-<ul>
-<li><code>iris_retrieveBytes</code></li>
-<li>Description: This RPC endpoint allows external origins to access data that exists in Iris, to which they have been granted access. The account id should be the account id of the caller node.</li>
-<li>Parameters:
-<ul>
-<li>signature: A signature</li>
-<li>account: An account id </li>
-<li>signed_message: A message signed by the account using the signature</li>
-</ul>
-</li>
-</ul>
+<h2 id="runtime"><a class="header" href="#runtime">Runtime</a></h2>
+<p>Iris is a proof of authority network. In the future we intend to migrate to a PoS network, but due to the current limitations of rust-ipfs we will use PoA.</p>
+<p>The Iris runtime builds from exsiting modules within the Substrate runtime, specifically the session and assets modules. In general, the Iris-Assets module, which depends on the assets modules, provides data ingestion, and asset class management. The Iris-Session module enables session based storage for content owner, where storage is provided by network validators. Read more on the Iris-assets and Iris-Session modules <a href="./pallets.html">here</a>.</p>
+<p><img src="./resources/runtime_modules.png" alt="runtime modules" /></p>
+<p><em>The Iris runtime modules and dependencies</em></p>
 
                     </main>
 
@@ -329,9 +175,11 @@ example: <code>QmPZv7P8nQUSh2CpqTvUeYemFyjvMjgWEs8H1Tm8b3zAm9</code></li>
                             <a rel="prev" href="chapter_2.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
+
                             <a rel="next" href="chapter_4.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
+
                         <div style="clear: both"></div>
                     </nav>
                 </div>
@@ -341,6 +189,7 @@ example: <code>QmPZv7P8nQUSh2CpqTvUeYemFyjvMjgWEs8H1Tm8b3zAm9</code></li>
                     <a rel="prev" href="chapter_2.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
+
                     <a rel="next" href="chapter_4.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
@@ -348,16 +197,24 @@ example: <code>QmPZv7P8nQUSh2CpqTvUeYemFyjvMjgWEs8H1Tm8b3zAm9</code></li>
 
         </div>
 
+
+
+
         <script type="text/javascript">
             window.playground_copyable = true;
         </script>
+
+
         <script src="elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
         <script src="mark.min.js" type="text/javascript" charset="utf-8"></script>
         <script src="searcher.js" type="text/javascript" charset="utf-8"></script>
+
         <script src="clipboard.min.js" type="text/javascript" charset="utf-8"></script>
         <script src="highlight.js" type="text/javascript" charset="utf-8"></script>
         <script src="book.js" type="text/javascript" charset="utf-8"></script>
 
         <!-- Custom JS scripts -->
+
+
     </body>
 </html>
