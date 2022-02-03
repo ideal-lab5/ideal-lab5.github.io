@@ -81,7 +81,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="chapter_1.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="chapter_2.html"><strong aria-hidden="true">2.</strong> Getting Started</a></li><li class="chapter-item expanded "><a href="chapter_3.html"><strong aria-hidden="true">3.</strong> Technical Overview</a></li><li class="chapter-item expanded "><a href="chapter_4.html"><strong aria-hidden="true">4.</strong> Asset Classes and Access Management</a></li><li class="chapter-item expanded "><a href="pallets.html"><strong aria-hidden="true">5.</strong> Pallets</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="pallets_iris_assets.html" class="active"><strong aria-hidden="true">5.1.</strong> Iris-Assets</a></li><li class="chapter-item expanded "><a href="pallets_iris_session.html"><strong aria-hidden="true">5.2.</strong> Iris-Session</a></li></ol></li><li class="chapter-item expanded "><a href="chapter_5.html"><strong aria-hidden="true">6.</strong> RPC Endpoint Implementation</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="chapter_1.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="chapter_2.html"><strong aria-hidden="true">2.</strong> Getting Started</a></li><li class="chapter-item expanded "><a href="chapter_3.html"><strong aria-hidden="true">3.</strong> Technical Overview</a></li><li class="chapter-item expanded "><a href="pallets.html"><strong aria-hidden="true">4.</strong> Pallets</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="pallets_iris_assets.html" class="active"><strong aria-hidden="true">4.1.</strong> Iris-Assets</a></li><li class="chapter-item expanded "><a href="pallets_iris_session.html"><strong aria-hidden="true">4.2.</strong> Iris-Session</a></li></ol></li><li class="chapter-item expanded "><a href="rpc.html"><strong aria-hidden="true">5.</strong> RPC Endpoint Implementation</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -147,9 +147,14 @@
 <ul>
 <li>inject data into the network</li>
 <li>create and manage storage asset classes</li>
-<li>mint and burn assets</li>
+<li>mint assets</li>
 </ul>
+<p>The iris-assets module delivers asset class and derived asset management. This module appends commands to a DataQueue which are processed by validator nodes (see the <a href="./pallets_iris_session.html">iris-session</a> module for more info) in a module which implements logic for offchain workers to process commands in the DataQueue (in our case, the iris-session pallet).</p>
 <h2 id="runtime-details"><a class="header" href="#runtime-details">Runtime Details</a></h2>
+<h3 id="content-as-an-asset-class"><a class="header" href="#content-as-an-asset-class">Content as an asset class</a></h3>
+<p>Asset class creation is accomplished through the <code>create</code> extrinsic. The extrinsic writes to the DataQueue, adding an Addbytes command. This command is processed by validator nodes in the iris-session pallet</p>
+<h3 id="access-via-assets"><a class="header" href="#access-via-assets">Access via Assets</a></h3>
+<p>After a node has successfully created an asset class, they can mint assets from the asset class. Each asset is synonymous with access to the underlying content.</p>
 
                     </main>
 
@@ -180,6 +185,20 @@
 
         </div>
 
+        <!-- Livereload script (if served using the cli tool) -->
+        <script type="text/javascript">
+            var socket = new WebSocket("ws://localhost:3000/__livereload");
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
 
 
 

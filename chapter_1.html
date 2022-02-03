@@ -81,7 +81,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="chapter_1.html" class="active"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="chapter_2.html"><strong aria-hidden="true">2.</strong> Getting Started</a></li><li class="chapter-item expanded "><a href="chapter_3.html"><strong aria-hidden="true">3.</strong> Technical Overview</a></li><li class="chapter-item expanded "><a href="chapter_4.html"><strong aria-hidden="true">4.</strong> Asset Classes and Access Management</a></li><li class="chapter-item expanded "><a href="pallets.html"><strong aria-hidden="true">5.</strong> Pallets</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="pallets_iris_assets.html"><strong aria-hidden="true">5.1.</strong> Iris-Assets</a></li><li class="chapter-item expanded "><a href="pallets_iris_session.html"><strong aria-hidden="true">5.2.</strong> Iris-Session</a></li></ol></li><li class="chapter-item expanded "><a href="chapter_5.html"><strong aria-hidden="true">6.</strong> RPC Endpoint Implementation</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="chapter_1.html" class="active"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="chapter_2.html"><strong aria-hidden="true">2.</strong> Getting Started</a></li><li class="chapter-item expanded "><a href="chapter_3.html"><strong aria-hidden="true">3.</strong> Technical Overview</a></li><li class="chapter-item expanded "><a href="pallets.html"><strong aria-hidden="true">4.</strong> Pallets</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="pallets_iris_assets.html"><strong aria-hidden="true">4.1.</strong> Iris-Assets</a></li><li class="chapter-item expanded "><a href="pallets_iris_session.html"><strong aria-hidden="true">4.2.</strong> Iris-Session</a></li></ol></li><li class="chapter-item expanded "><a href="rpc.html"><strong aria-hidden="true">5.</strong> RPC Endpoint Implementation</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -148,10 +148,10 @@
 <p><img src="./resources/web3_foundation_grants_badge_black.png" alt="sponsored by web3 foundation" /></p>
 <p>Read our initial web3 grant proposal <a href="https://github.com/w3f/Grants-Program/blob/master/applications/iris.md">here</a></p>
 <h2 id="what-is-iris"><a class="header" href="#what-is-iris">What is Iris?</a></h2>
-<p>Iris is a decentralized storage network that acts as a secure storage layer for Web 3.0. It is <strong>infrastructure for the decentralized web</strong> by providing a decentralized storage layer that can be leveraged by parachains and smart contracts in the Polkadot/Kusama ecosystem, allowing access to content to be transferred across chains and monetized. It provides indexability, security, availability, and governance on top of IPFS, enabling data ownership, access management, and the commodification of latent storage capacity and content delivery. Built with IPFS and Substrate, Iris can be used by parachains and smart contracts to create dapps that leverage private decentralized storage (e.g. from a smart contract deployed to the shiden/astar network).</p>
+<p>Iris is a decentralized storage network that acts as a secure storage layer for Web 3.0. It is <strong>infrastructure for the decentralized web</strong> by providing a decentralized storage layer that can be leveraged by parachains and smart contracts in the Polkadot/Kusama ecosystem, allowing access to content to be transferred across chains and monetized. It provides indexability, security, availability, and governance on top of IPFS, enabling data ownership, access management, and the commodification of latent storage capacity and content delivery. Built with IPFS and Substrate, Iris can be used by parachains and smart contracts to create dapps that leverage private decentralized storage.</p>
 <h2 id="how-does-it-work"><a class="header" href="#how-does-it-work">How does it work?</a></h2>
-<p>Iris functions by embedding an IPFS node in the Substrate runtime, allowing us to encode the DHT status within transactions.</p>
-<p>Owned data is treated as a unique asset class within the blockchain, while access to the data is controlled by an asset minted from the asset class. Accounts that hold a positive balance of an asset are authorized to access the underlying content that the asset class is associated with.</p>
+<p>Iris functions by embedding an IPFS node in the Substrate runtime, allowing us to encode the DHT status on-chain.</p>
+<p>Owned data is treated as a unique asset class within the blockchain, while access to the data is controlled by an asset minted from the asset class. Accounts that hold a positive balance of an asset are authorized to access the underlying content that the asset class is associated with. Iris will also have the capability to transfer assets between parachains and smart contracts, enabling a novel way to access data across the web.</p>
 <h2 id="key-features"><a class="header" href="#key-features">Key Features</a></h2>
 <ul>
 <li><strong>Transparent Governance</strong>
@@ -206,6 +206,20 @@
 
         </div>
 
+        <!-- Livereload script (if served using the cli tool) -->
+        <script type="text/javascript">
+            var socket = new WebSocket("ws://localhost:3000/__livereload");
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
 
 
 

@@ -3,8 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title></title>
-        <base href="/">
+        <title>RPC Endpoint Implementation - iris</title>
 
 
         <!-- Custom HTML head -->
@@ -82,7 +81,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="chapter_1.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="chapter_2.html"><strong aria-hidden="true">2.</strong> Getting Started</a></li><li class="chapter-item expanded "><a href="chapter_3.html"><strong aria-hidden="true">3.</strong> Technical Overview</a></li><li class="chapter-item expanded "><a href="pallets.html"><strong aria-hidden="true">4.</strong> Pallets</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="pallets_iris_assets.html"><strong aria-hidden="true">4.1.</strong> Iris-Assets</a></li><li class="chapter-item expanded "><a href="pallets_iris_session.html"><strong aria-hidden="true">4.2.</strong> Iris-Session</a></li></ol></li><li class="chapter-item expanded "><a href="rpc.html"><strong aria-hidden="true">5.</strong> RPC Endpoint Implementation</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="chapter_1.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="chapter_2.html"><strong aria-hidden="true">2.</strong> Getting Started</a></li><li class="chapter-item expanded "><a href="chapter_3.html"><strong aria-hidden="true">3.</strong> Technical Overview</a></li><li class="chapter-item expanded "><a href="pallets.html"><strong aria-hidden="true">4.</strong> Pallets</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="pallets_iris_assets.html"><strong aria-hidden="true">4.1.</strong> Iris-Assets</a></li><li class="chapter-item expanded "><a href="pallets_iris_session.html"><strong aria-hidden="true">4.2.</strong> Iris-Session</a></li></ol></li><li class="chapter-item expanded "><a href="rpc.html" class="active"><strong aria-hidden="true">5.</strong> RPC Endpoint Implementation</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -143,13 +142,32 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="document-not-found-404"><a class="header" href="#document-not-found-404">Document not found (404)</a></h1>
-<p>This URL is invalid, sorry. Please use the navigation bar or search to continue.</p>
+                        <h1 id="rpc"><a class="header" href="#rpc">RPC</a></h1>
+<h2 id="spec"><a class="header" href="#spec">Spec</a></h2>
+<ul>
+<li><code>iris_retrieveBytes</code></li>
+<li>Description: This RPC endpoint allows external origins to access data to which they have been granted access. The account id should be the account id of the caller node.</li>
+<li>Parameters:
+<ul>
+<li>message: The CID to of the content to fetch encoded in hex</li>
+</ul>
+</li>
+</ul>
+<h2 id="implementation"><a class="header" href="#implementation">Implementation</a></h2>
+<p>The RPC endpoint leverages the embedded IPFS node to fetch data from storage providers.</p>
+<h2 id="example"><a class="header" href="#example">Example</a></h2>
+<p>Assume that you have requested access to some CID: <code>QmVsbXUbr5JwUDibTBmmh224GhWy1FWguTbHb3DTU3ahTE</code>.
+First, convert the CID to hex: <code>0x516d56736258556272354a775544696254426d6d6832323447685779314657677554624862334454553361685445</code></p>
+<p>and use it as the <code>message</code> field value, passing empty bytes to the other fields.</p>
+<p><code>curl http://localhost:9933 -H &quot;Content-Type:application/json;charset=utf-8&quot; -d '{&quot;jsonrpc&quot;: &quot;2.0&quot;, &quot;id&quot;: &quot;1&quot;, &quot;method&quot;: &quot;iris_retrieveBytes&quot;, &quot;params&quot;:  [&quot;0x516d56736258556272354a775544696254426d6d6832323447685779314657677554624862334454553361685445&quot;]}'</code></p>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="pallets_iris_session.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
 
 
                         <div style="clear: both"></div>
@@ -158,6 +176,9 @@
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="pallets_iris_session.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
 
             </nav>
 

@@ -81,7 +81,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="chapter_1.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="chapter_2.html"><strong aria-hidden="true">2.</strong> Getting Started</a></li><li class="chapter-item expanded "><a href="chapter_3.html"><strong aria-hidden="true">3.</strong> Technical Overview</a></li><li class="chapter-item expanded "><a href="chapter_4.html"><strong aria-hidden="true">4.</strong> Asset Classes and Access Management</a></li><li class="chapter-item expanded "><a href="pallets.html" class="active"><strong aria-hidden="true">5.</strong> Pallets</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="pallets_iris_assets.html"><strong aria-hidden="true">5.1.</strong> Iris-Assets</a></li><li class="chapter-item expanded "><a href="pallets_iris_session.html"><strong aria-hidden="true">5.2.</strong> Iris-Session</a></li></ol></li><li class="chapter-item expanded "><a href="chapter_5.html"><strong aria-hidden="true">6.</strong> RPC Endpoint Implementation</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="chapter_1.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="chapter_2.html"><strong aria-hidden="true">2.</strong> Getting Started</a></li><li class="chapter-item expanded "><a href="chapter_3.html"><strong aria-hidden="true">3.</strong> Technical Overview</a></li><li class="chapter-item expanded "><a href="pallets.html" class="active"><strong aria-hidden="true">4.</strong> Pallets</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="pallets_iris_assets.html"><strong aria-hidden="true">4.1.</strong> Iris-Assets</a></li><li class="chapter-item expanded "><a href="pallets_iris_session.html"><strong aria-hidden="true">4.2.</strong> Iris-Session</a></li></ol></li><li class="chapter-item expanded "><a href="rpc.html"><strong aria-hidden="true">5.</strong> RPC Endpoint Implementation</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -147,13 +147,26 @@
 <p><img src="./resources/runtime_modules.png" alt="runtime modules" />
 <em>Modules unique to iris are marked in purple. Dependencies are represented as arrows</em></p>
 <p>The <a href="./pallet_iris_assets.html">Iris-Assets</a> pallet provides functionality for nodes to inject data into Iris, create and manage storage asset classes and to mint and burn assets.</p>
-<p>The <a href="./pallet_iris_session.html">Iris-Session</a> pallet provides session-based storage capabilities for network validators as well as enables ejecting data from the network.</p>
+<p>The <a href="./pallet_iris_session.html">Iris-Session</a> pallet provides session-based storage capabilities for network validators as well as enables ejecting data from the network. The iris-session palelt contains all functionality to interact with the embedded IPFS node. While a strict content-owner only node does not require the iris-session pallet, for both consumers and storage providers it is a necessity.</p>
+<p>These two pallets work in tandem to provide full functionality to inject and eject data from Iris. Though we discuss both pallets in depth in their respective chapters, here we will lay out the way that the two pallets work together to inject data, create asset classes, and to eject data. In general, the iris-assets pallet is responsible for adding commands to the data queue and the iris-session pallet is responsible for executing commands in the data queue.</p>
+<h2 id="data-ownership-as-asset-class-ownership"><a class="header" href="#data-ownership-as-asset-class-ownership">Data Ownership as Asset Class Ownership</a></h2>
+<p>When a node adds data to Iris, the OCW that processes the request constructs a new asset class backed by some initial (user defined) amount of native currency (see the <code>create_storage_asset</code> <a href="./chapter_3.html">extrinsic</a>). This results in a new <code>DataCommand</code> being added to the processing queue. When an OCW proceses the command and publishes results on chain, a new asset class is created. Asset creation and access is initiated in the iris-assets pallet but processed in the iris-session pallet.</p>
+<p><img src="./resources/data_ingestion.drawio.png" alt="data-ingestion" /></p>
+<p>Our initial use case makes assumptions that we will break in the future:</p>
+<ol>
+<li>There is an injective and surjective map between owner/cid and asset class.</li>
+<li>Owning any non-zero quantity of assets in an asset class grants the owner access to the underlying data</li>
+</ol>
+<h3 id="accessing-data-via-minted-assets"><a class="header" href="#accessing-data-via-minted-assets">Accessing Data Via Minted Assets</a></h3>
+<p>To retrieve data, a node makes a request to Iris, adding a request to retrieve bytes to the queue. An OCW processes the command and adds the fetched content to local offchain storage. The node which requested the data can then invoke the <code>iris_retrieveBytes</code> RPC endpoint exposed on the node who fetched the content in order to retrieve it.</p>
+<p>First, a node that owns some positive balance of an asset requests access to it. When this request is processed by the calling node's OCW, the OCW stores the data in offchain storage. When the RPC endpoint is invoked, the data is returned to the authorized caller in the response.</p>
+<p><img src="./resources/data_ejection_p1.drawio.png" alt="data-ejection part 1" /></p>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="chapter_4.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="chapter_3.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
@@ -167,7 +180,7 @@
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="chapter_4.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="chapter_3.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
@@ -178,6 +191,20 @@
 
         </div>
 
+        <!-- Livereload script (if served using the cli tool) -->
+        <script type="text/javascript">
+            var socket = new WebSocket("ws://localhost:3000/__livereload");
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
 
 
 
