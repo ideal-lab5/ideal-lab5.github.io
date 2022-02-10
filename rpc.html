@@ -154,7 +154,12 @@
 </li>
 </ul>
 <h2 id="implementation"><a class="header" href="#implementation">Implementation</a></h2>
-<p>The RPC endpoint leverages the embedded IPFS node to fetch data from storage providers.</p>
+<p>The RPC endpoint reads from offchain storage to fetch the bytes. Data is added to a unqieu node's offchain storage when the following conditions are met:</p>
+<ol>
+<li>The node owns an asset minted from some asset class</li>
+<li>A node is storing the data</li>
+<li>The node invoked the <code>request_bytes</code> extrinsic</li>
+</ol>
 <h2 id="example"><a class="header" href="#example">Example</a></h2>
 <p>Assume that you have requested access to some CID: <code>QmVsbXUbr5JwUDibTBmmh224GhWy1FWguTbHb3DTU3ahTE</code>.
 First, convert the CID to hex: <code>0x516d56736258556272354a775544696254426d6d6832323447685779314657677554624862334454553361685445</code></p>
@@ -184,20 +189,6 @@ First, convert the CID to hex: <code>0x516d56736258556272354a775544696254426d6d6
 
         </div>
 
-        <!-- Livereload script (if served using the cli tool) -->
-        <script type="text/javascript">
-            var socket = new WebSocket("ws://localhost:3000/__livereload");
-            socket.onmessage = function (event) {
-                if (event.data === "reload") {
-                    socket.close();
-                    location.reload();
-                }
-            };
-
-            window.onbeforeunload = function() {
-                socket.close();
-            }
-        </script>
 
 
 

@@ -143,6 +143,7 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="iris-assets"><a class="header" href="#iris-assets">Iris-Assets</a></h1>
+<p>Please reference the documentation <a href="TODO">here</a> for further details on extrinsics exposed by the module.</p>
 <p>The iris-assets module relies on the <a href="https://github.com/paritytech/substrate/blob/master/frame/assets/README.md">assets module</a> available in Substrate. This pallet provides capabilities for content owners and content consumers. This module is entirely independent of IPFS. It provides capabilities to:</p>
 <ul>
 <li>inject data into the network</li>
@@ -155,6 +156,7 @@
 <p>Asset class creation is accomplished through the <code>create</code> extrinsic. The extrinsic writes to the DataQueue, adding an Addbytes command. This command is processed by validator nodes in the iris-session pallet</p>
 <h3 id="access-via-assets"><a class="header" href="#access-via-assets">Access via Assets</a></h3>
 <p>After a node has successfully created an asset class, they can mint assets from the asset class. Each asset is synonymous with access to the underlying content.</p>
+<p>This module also exposes an extrinsic to request data from the network.</p>
 
                     </main>
 
@@ -185,20 +187,6 @@
 
         </div>
 
-        <!-- Livereload script (if served using the cli tool) -->
-        <script type="text/javascript">
-            var socket = new WebSocket("ws://localhost:3000/__livereload");
-            socket.onmessage = function (event) {
-                if (event.data === "reload") {
-                    socket.close();
-                    location.reload();
-                }
-            };
-
-            window.onbeforeunload = function() {
-                socket.close();
-            }
-        </script>
 
 
 

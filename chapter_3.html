@@ -145,8 +145,7 @@
                         <h1 id="technical-overview"><a class="header" href="#technical-overview">Technical Overview</a></h1>
 <ol>
 <li><a href="#tech-stack">Tech Stack</a></li>
-<li><a href="#node-roles">Node Roles</a></li>
-<li><a href="#runtime">Runtime</a></li>
+<li><a href="#the-iris-runtime">Runtime</a></li>
 </ol>
 <h2 id="tech-stack"><a class="header" href="#tech-stack">Tech Stack</a></h2>
 <h3 id="ipfs"><a class="header" href="#ipfs">IPFS</a></h3>
@@ -156,17 +155,23 @@
 <p>Substrate is a blockchain framework built by parity. It provides the building blocks for creating a blockchain, including the database, consensus, rpc, and much more.</p>
 <h3 id="react"><a class="header" href="#react">React</a></h3>
 <p>We use react to build the user interface to interact with our node. We specifically rely on the <code>polkadotjs</code> and <code>ipfs-http-core</code> libraries.</p>
-<h2 id="node-roles"><a class="header" href="#node-roles">Node Roles</a></h2>
-<ul>
-<li><strong>Storage Provider</strong>: The storage provider node's responsibility includes processing commands added to the queue by other nodes and submitting the results of the command on chain.</li>
-<li><strong>Content Owner</strong>: A content owner is responsible for making data available in some external IPFS node and interacting with Iris to ingest and maintain access to it.</li>
-<li><strong>Content Consumer</strong>: A content consumer is responsible for using owned tickets to access owned content.</li>
-</ul>
-<h2 id="runtime"><a class="header" href="#runtime">Runtime</a></h2>
-<p>Iris is a proof of authority network. In the future we intend to migrate to a PoS network, but due to the current limitations of rust-ipfs we will use PoA.</p>
+<h2 id="the-iris-runtime"><a class="header" href="#the-iris-runtime">The Iris Runtime</a></h2>
+<p>Iris functions by embedding an IPFS node within the substrate runtime and allowing substrate nodes to form a private IPFS swarm. By building a blockchain layer on top of the embedded storage, we are able to track calls and responses to IPFS on chain, allowing nodes to be rewarded for storing and retrieving data.</p>
 <p>The Iris runtime builds from exsiting modules within the Substrate runtime, specifically the session and assets modules. In general, the Iris-Assets module, which depends on the assets modules, provides data ingestion, and asset class management. The Iris-Session module enables session based storage for content owner, where storage is provided by network validators. Read more on the Iris-assets and Iris-Session modules <a href="./pallets.html">here</a>.</p>
 <p><img src="./resources/runtime_modules.png" alt="runtime modules" /></p>
-<p><em>The Iris runtime modules and dependencies</em></p>
+<p>There are four roles that nodes can take in Iris:</p>
+<ol>
+<li>data owner</li>
+<li>data consumer</li>
+<li>validator</li>
+<li>storage provider</li>
+</ol>
+<p>Data owners are responsible for adding data to the Iris and creating, managing and minting asset classes and assets.</p>
+<p>Data consumers are capable of retrieving data from Iris when they hold an asset minted from some owned asset class.</p>
+<p>Iris is a PoA network, so validators are responsible for finalizing blocks.</p>
+<p>Any validator is capable of being a storage provider. A storage provider is a validator that is actively storing some data associated with an owned asset class. Validators are incentivized to store data by earning reward points when they process IPFS requests or when data they are pinning is accessed.</p>
+<p>Below, we see a high-level overview of how these four roles interact with one another. In the near future we intend to create a smart contract to realize an Iris Assets Exchange, a marketplace for data owners and data consumers to buy, sell, and share assets.</p>
+<p><img src="./resources/iris_overview.png" alt="iris-overview" /></p>
 
                     </main>
 
@@ -197,20 +202,6 @@
 
         </div>
 
-        <!-- Livereload script (if served using the cli tool) -->
-        <script type="text/javascript">
-            var socket = new WebSocket("ws://localhost:3000/__livereload");
-            socket.onmessage = function (event) {
-                if (event.data === "reload") {
-                    socket.close();
-                    location.reload();
-                }
-            };
-
-            window.onbeforeunload = function() {
-                socket.close();
-            }
-        </script>
 
 
 

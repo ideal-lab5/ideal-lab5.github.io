@@ -165,6 +165,7 @@
 <p>Iris is a proof of authority network. Through the usage of the session pallet, we introduce a mechanism for an existing authority to add new validators to the network. Iris uses Aura for consensus and Grandpa for block finalization and there is no alteration to the default process through which nodes are rewarded.</p>
 <p>In the long term, we intend to create a new consensus, which we are calling <code>Nominated Proof of Storage Capacity</code>. Details of this to come.</p>
 <h3 id="session-based-approach-to-adding-and-rewarding-storage-providers"><a class="header" href="#session-based-approach-to-adding-and-rewarding-storage-providers">Session-based approach to adding and rewarding storage providers</a></h3>
+<p><em>Note</em>: We currently follow a fairly naive scheme for incentivizing validators to store content. We intend to replace the below scheme with something much more mature in the future.</p>
 <p>Validator nodes are a superset of the storage provider nodes. Validators, using the iris-session pallet, can request to store some owned content added to Iris. For example, if a node has added data and created a content asset class, then a validator node can request to store the content during the subsequent session.</p>
 <p>There are three phases to each session:</p>
 <ol>
@@ -181,13 +182,35 @@
 <p>Session Start: The active session is incremented by one.</p>
 </li>
 <li>
-<p>Session End: Rewards are distributed to the participants during the session. Currently, this is manifested as &quot;reward points&quot; but will be OBOL (as calculated by reward points) in the future.</p>
+<p>Session End: Validiators that have been storing data but have not accumulated any reward points for some preconfigured number of sessions (MaxDeadSessions) is removed from the validator pool.</p>
 </li>
 </ol>
 <h3 id="reward-point-calculation"><a class="header" href="#reward-point-calculation">Reward Point Calculation</a></h3>
-<p>Reward points are the interim rewards that storage providers receive processing requests in the DataQueue. These scenarios are when a content owner has requested to add data to Iris via the <code>create</code> extrinsic, when successfully pinning data, when a consumer has requested to fetch bytes from ipfs through the <code>retrieve_data</code> extrinsic.</p>
-<p>All nodes with sufficient storage process AddBytes requests.</p>
+<p>Reward points are the interim rewards that storage providers receive for processing requests in the DataQueue. DataCommands are added to the DataQueue when:</p>
+<ul>
+<li>a content owner has requested to add data to Iris via the <code>create</code> extrinsic</li>
+<li>successfully pinning data</li>
+<li>a consumer has requested to fetch bytes from ipfs through the <code>retrieve_data</code> extrinsic.</li>
+</ul>
 <p>When data is requested from Iris, the underlying IPFS network will fetch the bytes from one of the storage providers (though it's possible it could exist in another node since we don't have much in terms of garbage collection in rust-ipfs). Though it may be possible to determine exactly which IPFS node the data was fetched from, this is most likely computationally expensive. We track the number of times some data was successfully requested (i.e. the number of times a consumer requested to fetch the content of an asset class of which they own an asset). At the end of the session, the total sum is distributed evenly to storage providers for that asset during the session.</p>
+<p>Validators are rewarded for:</p>
+<ul>
+<li>Processing requests to inject data into IPFS (basically <code>ipfs add [cid]</code>)
+<ul>
+<li>Awarded 1 RP</li>
+</ul>
+</li>
+<li>Pinning data to their embedded IPFS node (<code>ipfs pin [cid]</code>)
+<ul>
+<li>Awarded 1 RP</li>
+</ul>
+</li>
+<li>Indirectly, when another node requests data they are providing storage for
+<ul>
+<li>The number of unallocated tokens for the session is incremented by 1</li>
+</ul>
+</li>
+</ul>
 
                     </main>
 
@@ -218,20 +241,6 @@
 
         </div>
 
-        <!-- Livereload script (if served using the cli tool) -->
-        <script type="text/javascript">
-            var socket = new WebSocket("ws://localhost:3000/__livereload");
-            socket.onmessage = function (event) {
-                if (event.data === "reload") {
-                    socket.close();
-                    location.reload();
-                }
-            };
-
-            window.onbeforeunload = function() {
-                socket.close();
-            }
-        </script>
 
 
 
