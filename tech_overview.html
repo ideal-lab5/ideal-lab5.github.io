@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Iris-Assets - iris</title>
+        <title>Technical Overview - iris</title>
 
 
         <!-- Custom HTML head -->
@@ -81,7 +81,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="getting_started.html"><strong aria-hidden="true">2.</strong> Getting Started</a></li><li class="chapter-item expanded "><a href="tech_overview.html"><strong aria-hidden="true">3.</strong> Technical Overview</a></li><li class="chapter-item expanded "><a href="pallets.html"><strong aria-hidden="true">4.</strong> Pallets</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="pallets_iris_assets.html" class="active"><strong aria-hidden="true">4.1.</strong> Iris-Assets</a></li><li class="chapter-item expanded "><a href="pallets_iris_session.html"><strong aria-hidden="true">4.2.</strong> Iris-Session</a></li><li class="chapter-item expanded "><a href="pallets_iris_ledger.html"><strong aria-hidden="true">4.3.</strong> Iris-Ledger</a></li></ol></li><li class="chapter-item expanded "><a href="rpc.html"><strong aria-hidden="true">5.</strong> RPC Endpoint Implementation</a></li><li class="chapter-item expanded "><a href="contracts.html"><strong aria-hidden="true">6.</strong> Contracts</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="contracts_chain_extension.html"><strong aria-hidden="true">6.1.</strong> Chain Extension</a></li><li class="chapter-item expanded "><a href="contracts_asset_exchange.html"><strong aria-hidden="true">6.2.</strong> Iris Asset Exchange</a></li></ol></li><li class="chapter-item expanded "><a href="governance_moderation.html"><strong aria-hidden="true">7.</strong> Governance and Moderation</a></li><li class="chapter-item expanded "><a href="glossary.html"><strong aria-hidden="true">8.</strong> Glossary</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="getting_started.html"><strong aria-hidden="true">2.</strong> Getting Started</a></li><li class="chapter-item expanded "><a href="tech_overview.html" class="active"><strong aria-hidden="true">3.</strong> Technical Overview</a></li><li class="chapter-item expanded "><a href="pallets.html"><strong aria-hidden="true">4.</strong> Pallets</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="pallets_iris_assets.html"><strong aria-hidden="true">4.1.</strong> Iris-Assets</a></li><li class="chapter-item expanded "><a href="pallets_iris_session.html"><strong aria-hidden="true">4.2.</strong> Iris-Session</a></li><li class="chapter-item expanded "><a href="pallets_iris_ledger.html"><strong aria-hidden="true">4.3.</strong> Iris-Ledger</a></li></ol></li><li class="chapter-item expanded "><a href="rpc.html"><strong aria-hidden="true">5.</strong> RPC Endpoint Implementation</a></li><li class="chapter-item expanded "><a href="contracts.html"><strong aria-hidden="true">6.</strong> Contracts</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="contracts_chain_extension.html"><strong aria-hidden="true">6.1.</strong> Chain Extension</a></li><li class="chapter-item expanded "><a href="contracts_asset_exchange.html"><strong aria-hidden="true">6.2.</strong> Iris Asset Exchange</a></li></ol></li><li class="chapter-item expanded "><a href="governance_moderation.html"><strong aria-hidden="true">7.</strong> Governance and Moderation</a></li><li class="chapter-item expanded "><a href="glossary.html"><strong aria-hidden="true">8.</strong> Glossary</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -142,58 +142,46 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="iris-assets"><a class="header" href="#iris-assets">Iris-Assets</a></h1>
-<p>Please reference the documentation <a href="TODO">here</a> for further details on extrinsics exposed by the module.</p>
-<p>The iris-assets module relies on the <a href="https://github.com/paritytech/substrate/blob/master/frame/assets/README.md">assets module</a> available in Substrate. This pallet provides capabilities for content owners and content consumers. This module is entirely independent of IPFS. It provides capabilities to:</p>
-<ul>
-<li>inject data into the network</li>
-<li>create and manage storage asset classes</li>
-<li>mint assets</li>
-</ul>
-<p>The iris-assets module delivers asset class and derived asset management. This module appends commands to a DataQueue which are processed by validator nodes (see the <a href="./pallets_iris_session.html">iris-session</a> module for more info) in a module which implements logic for offchain workers to process commands in the DataQueue (in our case, the iris-session pallet).</p>
-<h2 id="runtime-details"><a class="header" href="#runtime-details">Runtime Details</a></h2>
-<h3 id="extrinsics"><a class="header" href="#extrinsics">Extrinsics</a></h3>
-<p>Functions to inject data into the network and to create and manage asset classes and assets</p>
-<ul>
-<li><code>create</code></li>
-<li><code>mint</code></li>
-<li><code>burn</code></li>
-<li><code>destroy</code></li>
-<li><code>transfer_asset</code></li>
-</ul>
-<p>Function to allow consumers to request data from the network</p>
-<ul>
-<li><code>request_bytes</code></li>
-</ul>
-<p>Functions that allow offchain workers to submit results from IPFS commands</p>
-<ul>
-<li><code>submit_ipfs_add_results</code></li>
-<li><code>insert_pin_request</code></li>
-</ul>
-<h3 id="rpc"><a class="header" href="#rpc">RPC</a></h3>
-<p>The iris-assets pallet contains the implementation of the RPC endpoint which fetches dat from the network. See more details <a href="./rpc.html">here</a></p>
-<h3 id="data-ownership-as-asset-class-ownership"><a class="header" href="#data-ownership-as-asset-class-ownership">Data Ownership as Asset Class Ownership</a></h3>
-<p>When a node adds data to Iris, the OCW that processes the request constructs a new asset class backed by some initial (user defined) amount of native currency. This results in a new <code>DataCommand</code> being added to the processing queue. When an OCW proceses the command and publishes results on chain, a new asset class is created. Asset creation and access is initiated in the iris-assets pallet but processed in the iris-session pallet.</p>
-<p><img src="./resources/data_ingestion.drawio.png" alt="data-ingestion" /></p>
-<p>Our initial use case makes assumptions that we will break in the future:</p>
+                        <h1 id="technical-overview"><a class="header" href="#technical-overview">Technical Overview</a></h1>
 <ol>
-<li>There is an injective and surjective map between owner/cid and asset class.</li>
-<li>Owning any non-zero quantity of assets in an asset class grants the owner access to the underlying data</li>
+<li><a href="#tech-stack">Tech Stack</a></li>
+<li><a href="#the-iris-runtime">Runtime</a></li>
 </ol>
-<h3 id="accessing-data-via-minted-assets"><a class="header" href="#accessing-data-via-minted-assets">Accessing Data Via Minted Assets</a></h3>
-<p>To retrieve data, a node makes a request to Iris, adding a request to retrieve bytes to the queue. An OCW processes the command and adds the fetched content to local offchain storage. The node which requested the data can then invoke the <code>iris_retrieveBytes</code> RPC endpoint exposed on the node who fetched the content in order to retrieve it.</p>
-<p>First, a node that owns some positive balance of an asset requests access to it. When this request is processed by the calling node's OCW, the OCW stores the data in offchain storage. When the RPC endpoint is invoked, the data is returned to the authorized caller in the response.</p>
-<p><img src="./resources/data_ejection_p1.drawio.png" alt="data-ejection part 1" /></p>
+<h2 id="tech-stack"><a class="header" href="#tech-stack">Tech Stack</a></h2>
+<h3 id="ipfs"><a class="header" href="#ipfs">IPFS</a></h3>
+<p>Our integration with <a href="https://github.com/rs-ipfs/rust-ipfs">rust-ipfs</a> is based on <a href="https://rs-ipfs.github.io/offchain-ipfs-manual/introduction.html">prior work</a>. The iridium-labs/substrate <a href="https://github.com/iridium-labs/substrate/tree/offchain_ipfs_v3">offchain_ipfs_v3</a> branch maintained in sync with the latest substrate master.</p>
+<p>The ui we provide relies on a local IPFS instance to add data (iris does not). To add data through the UI you must first run an instance of IPFS locally (you don't need to run an IPFS if you want read only access).</p>
+<h3 id="substrate"><a class="header" href="#substrate">Substrate</a></h3>
+<p>Substrate is a blockchain framework built by parity. It provides the building blocks for creating a blockchain, including the database, consensus, rpc, and much more.</p>
+<h3 id="react"><a class="header" href="#react">React</a></h3>
+<p>We use react to build the user interface to interact with our node. We specifically rely on the <code>polkadotjs</code> and <code>ipfs-http-core</code> libraries.</p>
+<h2 id="the-iris-runtime"><a class="header" href="#the-iris-runtime">The Iris Runtime</a></h2>
+<p>Iris functions by embedding an IPFS node within the substrate runtime and allowing substrate nodes to form a private IPFS swarm. By building a blockchain layer on top of the embedded storage, we are able to track calls and responses to IPFS on chain, allowing nodes to be rewarded for storing and retrieving data.</p>
+<p>The Iris runtime builds from exsiting modules within the Substrate runtime, specifically the session and assets modules. It is currently a proof of authority network. In general, the Iris-Assets module, which depends on the assets modules, provides data ingestion, and asset class management. The Iris-Session module enables session based storage for content owner, where storage is provided by network validators. Read more on the Iris-assets and Iris-Session modules <a href="./pallets.html">here</a>.</p>
+<p><img src="./resources/runtime_modules.png" alt="runtime modules" /></p>
+<p>Currently there are four roles that nodes can take in Iris:</p>
+<ol>
+<li>data owner</li>
+<li>data consumer</li>
+<li>validator</li>
+<li>storage provider</li>
+</ol>
+<p>In the future another role will be created for moderation and governance capabilities.</p>
+<p>Data owners are responsible for adding data to Iris by creating, managing and minting asset classes and assets.</p>
+<p>Data consumers are capable of retrieving data from Iris when they hold an asset minted from some owned asset class.</p>
+<p>Any validator is capable of being a storage provider. A storage provider is a validator that is actively storing some data associated with an owned asset class. Validators are incentivized to store data by earning reward points when they process IPFS requests or when data they are pinning is accessed.</p>
+<p>Below, we see a high-level overview of how these four roles interact with one another. In the near future we intend to create a smart contract to realize an Iris Assets Exchange, a marketplace for data owners and data consumers to buy, sell, and share assets.</p>
+<p><img src="./resources/iris_overview.png" alt="iris-overview" /></p>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="pallets.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="getting_started.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next" href="pallets_iris_session.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next" href="pallets.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
 
@@ -203,11 +191,11 @@
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="pallets.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="getting_started.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next" href="pallets_iris_session.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next" href="pallets.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>

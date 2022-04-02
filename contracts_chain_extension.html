@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Getting Started - iris</title>
+        <title>Chain Extension - iris</title>
 
 
         <!-- Custom HTML head -->
@@ -81,7 +81,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="chapter_1.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="chapter_2.html" class="active"><strong aria-hidden="true">2.</strong> Getting Started</a></li><li class="chapter-item expanded "><a href="chapter_3.html"><strong aria-hidden="true">3.</strong> Technical Overview</a></li><li class="chapter-item expanded "><a href="pallets.html"><strong aria-hidden="true">4.</strong> Pallets</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="pallets_iris_assets.html"><strong aria-hidden="true">4.1.</strong> Iris-Assets</a></li><li class="chapter-item expanded "><a href="pallets_iris_session.html"><strong aria-hidden="true">4.2.</strong> Iris-Session</a></li></ol></li><li class="chapter-item expanded "><a href="rpc.html"><strong aria-hidden="true">5.</strong> RPC Endpoint Implementation</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="getting_started.html"><strong aria-hidden="true">2.</strong> Getting Started</a></li><li class="chapter-item expanded "><a href="tech_overview.html"><strong aria-hidden="true">3.</strong> Technical Overview</a></li><li class="chapter-item expanded "><a href="pallets.html"><strong aria-hidden="true">4.</strong> Pallets</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="pallets_iris_assets.html"><strong aria-hidden="true">4.1.</strong> Iris-Assets</a></li><li class="chapter-item expanded "><a href="pallets_iris_session.html"><strong aria-hidden="true">4.2.</strong> Iris-Session</a></li><li class="chapter-item expanded "><a href="pallets_iris_ledger.html"><strong aria-hidden="true">4.3.</strong> Iris-Ledger</a></li></ol></li><li class="chapter-item expanded "><a href="rpc.html"><strong aria-hidden="true">5.</strong> RPC Endpoint Implementation</a></li><li class="chapter-item expanded "><a href="contracts.html"><strong aria-hidden="true">6.</strong> Contracts</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="contracts_chain_extension.html" class="active"><strong aria-hidden="true">6.1.</strong> Chain Extension</a></li><li class="chapter-item expanded "><a href="contracts_asset_exchange.html"><strong aria-hidden="true">6.2.</strong> Iris Asset Exchange</a></li></ol></li><li class="chapter-item expanded "><a href="governance_moderation.html"><strong aria-hidden="true">7.</strong> Governance and Moderation</a></li><li class="chapter-item expanded "><a href="glossary.html"><strong aria-hidden="true">8.</strong> Glossary</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -142,99 +142,78 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="getting-started"><a class="header" href="#getting-started">Getting Started</a></h1>
-<ol>
-<li><a href="#installation">Installation</a></li>
-<li><a href="#running">Running</a></li>
-<li><a href="#interacting-with-your-node">Interacting with your Node</a></li>
-<li><a href="#testing">Testing</a></li>
-</ol>
-<h2 id="installation"><a class="header" href="#installation">Installation</a></h2>
-<p>There are three ways to install iris, either building the source code, building a docker image, or simply installing from docker.</p>
-<h3 id="sources"><a class="header" href="#sources">Sources</a></h3>
-<pre><code>git clone https://github.com/iridium-labs/substrate.git
-cd substrate
-git checkout iris
-cargo +nightly build --release
-</code></pre>
-<h3 id="docker"><a class="header" href="#docker">Docker</a></h3>
-<p>Install from the docker hub
-<code>docker pull iridiumlabs/iris</code></p>
-<p><strong>OR</strong></p>
-<p>From the latest sources, build the docker image:
-<code>docker build -t iridiumlabs/iris -f ./.maintain/Dockerfile .</code></p>
-<h2 id="running"><a class="header" href="#running">Running</a></h2>
-<h3 id="from-sources"><a class="header" href="#from-sources">From Sources</a></h3>
-<pre><code># purge the local chain data
-./target/release/node-template purge-chain --base-path /tmp/alice --dev -y
-# run the build
-./target/release/node-template \
-  --base-path /tmp/alice \
-  --dev \
-  --alice \
-  --port 30333 \
-  --ws-port 9944 \
-  --rpc-port 9933 \
-  --rpc-cors all \
-  --ws-external \
-  --rpc-external \
-  --rpc-methods=unsafe
-</code></pre>
-<p>Note: to specify a bootnode, use the bootnodes parameter. ex: <code>--bootnodes /ip4/127.0.0.1/tcp/30333/p2p/12D3KooWEdUQFXhAF4fu9hqRTWqsigioyjatRKRZ7mwyQCBoWyK3</code></p>
-<h3 id="from-docker"><a class="header" href="#from-docker">From Docker</a></h3>
-<pre><code>docker run -p 9944:9944 \
-  -p 9933:9933 \
-  -p 30333:30333 \
-  -p 9615:9615 \
-  -it \
-  --rm \
-  --name iris-alice \
-  iridiumlabs/iris \
-  --dev --ws-external --rpc-external \
-  --node-key 0000000000000000000000000000000000000000000000000000000000000001
-</code></pre>
-<p><em>note: node-key is only needed if you want this node to be a bootnode</em></p>
-<h1 id="interacting-with-your-node"><a class="header" href="#interacting-with-your-node">Interacting with your node</a></h1>
-<p><em>See the <a href="../src/chapter_3.html">tech overview</a> for information on extrinsics, rpc, etc.</em></p>
-<h2 id="polkadotjs"><a class="header" href="#polkadotjs">PolkadotJs</a></h2>
-<p>As the UI undergoes development, the most <em>stable</em> way to interact with your node is to use the default <a href="https://polkadot.js.org/">polkadotjs ui</a>.</p>
-<h2 id="the-iris-ui"><a class="header" href="#the-iris-ui">The Iris UI</a></h2>
-<p>The Iris UI provides a mechanism to add and retrieve data from Iris, to create an asset class, mint assets, privision data access, and manage both asset classes and assets.</p>
-<p>If you intend to add data to Iris, you must also run an IPFS node locally. This holds for running from sources as well as the docker image. Run IPFS with <code>ipfs daemon</code>.</p>
-<h3 id="running-from-sources"><a class="header" href="#running-from-sources">Running from Sources</a></h3>
-<pre><code>git clone https://github.com/iridium-labs/ui.git
-cd ui
-npm i
-REACT_APP_IPV4=&lt;your ipv4&gt; npm start
-</code></pre>
-<h3 id="running-from-docker"><a class="header" href="#running-from-docker">Running from Docker</a></h3>
-<pre><code>docker pull iridiumlabs/iris-ui
-# replace w.x.y.z with your ip
-docker run -it --rm -p 3000:3000 -e &quot;REACT_APP_IPV4=w.x.y.z&quot; iridiumlabs/iris-ui
-</code></pre>
-<h2 id="testing"><a class="header" href="#testing">Testing</a></h2>
-<p>Run the unit tests with <code>cargo test</code>.</p>
-<h2 id="guidelines"><a class="header" href="#guidelines">Guidelines</a></h2>
-<p>We aim for a minimum of 80% coverage on new code.</p>
-<h2 id="manual-testing"><a class="header" href="#manual-testing">Manual Testing</a></h2>
-<p>Our manual testing approach largely consists of invoking extrinsics and checking runtime storage. We do this using the polkadot UI:
-https://polkadot.js.org/apps/</p>
-<h3 id="useful-tools"><a class="header" href="#useful-tools">Useful Tools</a></h3>
-<h4 id="calling-substrate-rpc-endpoints"><a class="header" href="#calling-substrate-rpc-endpoints">Calling substrate RPC endpoints</a></h4>
-<p>To convert strings to hex, I like this tool:
-https://onlinestringtools.com/convert-string-to-hexadecimal</p>
-<h4 id="querying-substrate-storage"><a class="header" href="#querying-substrate-storage">Querying Substrate Storage</a></h4>
-<p>https://www.shawntabrizi.com/substrate-js-utilities/</p>
+                        <h1 id="chain-extension"><a class="header" href="#chain-extension">Chain Extension</a></h1>
+<p>The iris chain extension provides functionality for dapp developers to hook into the iris runtime. More specifically, it exposes the ability to call extrinsics from the iris-assets pallet and the iris-ledger pallet to enable developers to manage assets via mint and transfer abilities and to lock, unlock, and transfer tokens to other accounts.</p>
+<h2 id="exposed-functions"><a class="header" href="#exposed-functions">Exposed Functions</a></h2>
+<h3 id="from-the-iris-assets-pallet"><a class="header" href="#from-the-iris-assets-pallet">From the Iris-Assets pallet</a></h3>
+<p>See the <a href="./pallets_iris_assets.html">iris-assets</a> for more details.</p>
+<ul>
+<li>
+<p>mint</p>
+</li>
+<li>
+<p>transfer_assets</p>
+</li>
+</ul>
+<h2 id="from-the-iris-ledger-pallet"><a class="header" href="#from-the-iris-ledger-pallet">From the Iris-Ledger pallet</a></h2>
+<p>See the <a href="./pallets_iris_ledger.html">iris-ledger</a> for more details.</p>
+<ul>
+<li>
+<p>lock_currency</p>
+</li>
+<li>
+<p>unlock_and_transfer_currency</p>
+</li>
+</ul>
+<h2 id="usage"><a class="header" href="#usage">Usage</a></h2>
+<p>To functions from the chain extension in your smart contract, register the chain extension:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[ink::chain_extension]
+pub trait Iris {
+    type ErrorCode = IrisErr;
+
+    #[ink(extension = 0, returns_result = false)]
+    fn transfer_asset(
+        contract_account: ink_env::AccountId, 
+        consumer_account: ink_env::AccountId, 
+        asset_id: u32, 
+        asset_quantity: u64
+    ) -&gt; [u8; 32];
+
+    #[ink(extension = 1, returns_result = false)]
+    fn mint(caller: ink_env::AccountId, target: ink_env::AccountId, asset_id: u32, amount: u64) -&gt; [u8; 32];
+
+    #[ink(extension = 2, returns_result = false)]
+    fn lock(amount: u64) -&gt; [u8; 32];
+
+    #[ink(extension = 3, returns_result = false)]
+    fn unlock_and_transfer(target: ink_env::AccountId) -&gt; [u8; 32];
+} 
+<span class="boring">}
+</span></code></pre></pre>
+<p>and invoke the chain extension function:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span> self.env()
+    .extension()
+    .mint(
+        caller, self.env().account_id(), asset_id, amount,
+    ).map_err(|_| {}).ok();
+<span class="boring">}
+</span></code></pre></pre>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="chapter_1.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="contracts.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next" href="chapter_3.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next" href="contracts_asset_exchange.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
 
@@ -244,11 +223,11 @@ https://onlinestringtools.com/convert-string-to-hexadecimal</p>
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="chapter_1.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="contracts.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next" href="chapter_3.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next" href="contracts_asset_exchange.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>

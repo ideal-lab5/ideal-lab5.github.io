@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Iris-Assets - iris</title>
+        <title>Introduction - iris</title>
 
 
         <!-- Custom HTML head -->
@@ -81,7 +81,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="getting_started.html"><strong aria-hidden="true">2.</strong> Getting Started</a></li><li class="chapter-item expanded "><a href="tech_overview.html"><strong aria-hidden="true">3.</strong> Technical Overview</a></li><li class="chapter-item expanded "><a href="pallets.html"><strong aria-hidden="true">4.</strong> Pallets</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="pallets_iris_assets.html" class="active"><strong aria-hidden="true">4.1.</strong> Iris-Assets</a></li><li class="chapter-item expanded "><a href="pallets_iris_session.html"><strong aria-hidden="true">4.2.</strong> Iris-Session</a></li><li class="chapter-item expanded "><a href="pallets_iris_ledger.html"><strong aria-hidden="true">4.3.</strong> Iris-Ledger</a></li></ol></li><li class="chapter-item expanded "><a href="rpc.html"><strong aria-hidden="true">5.</strong> RPC Endpoint Implementation</a></li><li class="chapter-item expanded "><a href="contracts.html"><strong aria-hidden="true">6.</strong> Contracts</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="contracts_chain_extension.html"><strong aria-hidden="true">6.1.</strong> Chain Extension</a></li><li class="chapter-item expanded "><a href="contracts_asset_exchange.html"><strong aria-hidden="true">6.2.</strong> Iris Asset Exchange</a></li></ol></li><li class="chapter-item expanded "><a href="governance_moderation.html"><strong aria-hidden="true">7.</strong> Governance and Moderation</a></li><li class="chapter-item expanded "><a href="glossary.html"><strong aria-hidden="true">8.</strong> Glossary</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="introduction.html" class="active"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="getting_started.html"><strong aria-hidden="true">2.</strong> Getting Started</a></li><li class="chapter-item expanded "><a href="tech_overview.html"><strong aria-hidden="true">3.</strong> Technical Overview</a></li><li class="chapter-item expanded "><a href="pallets.html"><strong aria-hidden="true">4.</strong> Pallets</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="pallets_iris_assets.html"><strong aria-hidden="true">4.1.</strong> Iris-Assets</a></li><li class="chapter-item expanded "><a href="pallets_iris_session.html"><strong aria-hidden="true">4.2.</strong> Iris-Session</a></li><li class="chapter-item expanded "><a href="pallets_iris_ledger.html"><strong aria-hidden="true">4.3.</strong> Iris-Ledger</a></li></ol></li><li class="chapter-item expanded "><a href="rpc.html"><strong aria-hidden="true">5.</strong> RPC Endpoint Implementation</a></li><li class="chapter-item expanded "><a href="contracts.html"><strong aria-hidden="true">6.</strong> Contracts</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="contracts_chain_extension.html"><strong aria-hidden="true">6.1.</strong> Chain Extension</a></li><li class="chapter-item expanded "><a href="contracts_asset_exchange.html"><strong aria-hidden="true">6.2.</strong> Iris Asset Exchange</a></li></ol></li><li class="chapter-item expanded "><a href="governance_moderation.html"><strong aria-hidden="true">7.</strong> Governance and Moderation</a></li><li class="chapter-item expanded "><a href="glossary.html"><strong aria-hidden="true">8.</strong> Glossary</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -142,58 +142,58 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="iris-assets"><a class="header" href="#iris-assets">Iris-Assets</a></h1>
-<p>Please reference the documentation <a href="TODO">here</a> for further details on extrinsics exposed by the module.</p>
-<p>The iris-assets module relies on the <a href="https://github.com/paritytech/substrate/blob/master/frame/assets/README.md">assets module</a> available in Substrate. This pallet provides capabilities for content owners and content consumers. This module is entirely independent of IPFS. It provides capabilities to:</p>
+                        <h1 id="introduction"><a class="header" href="#introduction">Introduction</a></h1>
+<p>This is the official documentation for <a href="https://github.com/iridium-labs/substrate/tree/iris">Iris</a>.</p>
+<p><code>This documentation and any information in it is subject to frequent and radical change as Iris is developed.</code></p>
+<p><img src="./resources/web3_foundation_grants_badge_black.png" alt="sponsored by web3 foundation" /></p>
+<p>Read our w3f grant proposal <a href="https://github.com/w3f/Grants-Program/blob/master/applications/iris.md">here</a></p>
+<h2 id="what-is-iris"><a class="header" href="#what-is-iris">What is Iris?</a></h2>
+<p>Iris is a decentralized storage layer for Web 3.0. It is <strong>infrastructure for the decentralized web</strong>, providing a decentralized storage layer that can be leveraged by smart contracts and parachains, allowing access to content to be transferred across chains and monetized. It provides indexability, security, availability, and governance on top of IPFS, enabling data ownership, access management, and the commodification of latent storage capacity and content delivery. Built with IPFS and Substrate, Iris' dual network topology allows it to treat unique data as owned asset classes on the blockchain, while actual data is stored offchain in an IPFS network.</p>
+<h2 id="how-does-it-work"><a class="header" href="#how-does-it-work">How does it work?</a></h2>
+<p>Iris functions by embedding an IPFS node in the Substrate runtime, allowing us to encode the DHT status on-chain.</p>
+<p>Owned data is treated as a unique asset class within the blockchain, while access to the data is controlled by an asset minted from the asset class. Accounts that hold a positive balance of an asset are authorized to access the underlying content that the asset class is associated with. Iris will also have the capability to transfer assets between parachains and smart contracts, enabling a novel way to access data across the web.</p>
+<h2 id="key-features"><a class="header" href="#key-features">Key Features</a></h2>
 <ul>
-<li>inject data into the network</li>
-<li>create and manage storage asset classes</li>
-<li>mint assets</li>
-</ul>
-<p>The iris-assets module delivers asset class and derived asset management. This module appends commands to a DataQueue which are processed by validator nodes (see the <a href="./pallets_iris_session.html">iris-session</a> module for more info) in a module which implements logic for offchain workers to process commands in the DataQueue (in our case, the iris-session pallet).</p>
-<h2 id="runtime-details"><a class="header" href="#runtime-details">Runtime Details</a></h2>
-<h3 id="extrinsics"><a class="header" href="#extrinsics">Extrinsics</a></h3>
-<p>Functions to inject data into the network and to create and manage asset classes and assets</p>
+<li><strong>Ownership and Access via Assets</strong>
 <ul>
-<li><code>create</code></li>
-<li><code>mint</code></li>
-<li><code>burn</code></li>
-<li><code>destroy</code></li>
-<li><code>transfer_asset</code></li>
+<li>Owned content in Iris is treated as a unique asset class</li>
+<li>Access to content is synonymous with owning assets minted from the asset class. This allows us to easily transfer <em>access</em> to data across parachains and smart contracts.</li>
 </ul>
-<p>Function to allow consumers to request data from the network</p>
+</li>
+<li><strong>Decentralized Storage</strong>
 <ul>
-<li><code>request_bytes</code></li>
+<li>validator nodes can opt-in to provide storage to the network. Currently, this is only semi-decentralized while we are a proof of authority network, however we intend to transition to proof of storage capacity in the future.</li>
 </ul>
-<p>Functions that allow offchain workers to submit results from IPFS commands</p>
+</li>
+<li><strong>smart contract support</strong>
 <ul>
-<li><code>submit_ipfs_add_results</code></li>
-<li><code>insert_pin_request</code></li>
+<li>interact with the iris runtime through the <a href="./contracts_chain_extension.html">chain extension</a></li>
 </ul>
-<h3 id="rpc"><a class="header" href="#rpc">RPC</a></h3>
-<p>The iris-assets pallet contains the implementation of the RPC endpoint which fetches dat from the network. See more details <a href="./rpc.html">here</a></p>
-<h3 id="data-ownership-as-asset-class-ownership"><a class="header" href="#data-ownership-as-asset-class-ownership">Data Ownership as Asset Class Ownership</a></h3>
-<p>When a node adds data to Iris, the OCW that processes the request constructs a new asset class backed by some initial (user defined) amount of native currency. This results in a new <code>DataCommand</code> being added to the processing queue. When an OCW proceses the command and publishes results on chain, a new asset class is created. Asset creation and access is initiated in the iris-assets pallet but processed in the iris-session pallet.</p>
-<p><img src="./resources/data_ingestion.drawio.png" alt="data-ingestion" /></p>
-<p>Our initial use case makes assumptions that we will break in the future:</p>
-<ol>
-<li>There is an injective and surjective map between owner/cid and asset class.</li>
-<li>Owning any non-zero quantity of assets in an asset class grants the owner access to the underlying data</li>
-</ol>
-<h3 id="accessing-data-via-minted-assets"><a class="header" href="#accessing-data-via-minted-assets">Accessing Data Via Minted Assets</a></h3>
-<p>To retrieve data, a node makes a request to Iris, adding a request to retrieve bytes to the queue. An OCW processes the command and adds the fetched content to local offchain storage. The node which requested the data can then invoke the <code>iris_retrieveBytes</code> RPC endpoint exposed on the node who fetched the content in order to retrieve it.</p>
-<p>First, a node that owns some positive balance of an asset requests access to it. When this request is processed by the calling node's OCW, the OCW stores the data in offchain storage. When the RPC endpoint is invoked, the data is returned to the authorized caller in the response.</p>
-<p><img src="./resources/data_ejection_p1.drawio.png" alt="data-ejection part 1" /></p>
+</li>
+<li><strong>Transparent Governance</strong>
+<ul>
+<li>In the future Iris will provide a robust governance framework that allows us to accomplish the same level of governance as major platform and service providers while maintaining decentralization and full transparency.</li>
+</ul>
+</li>
+</ul>
+<h2 id="vision"><a class="header" href="#vision">Vision</a></h2>
+<p>Iris aims to be a general decentralized storage layer for web3 applications, specifically in the kusama/polkadot ecosystems. Iris enables parachains, smart contracts, and parathreads to benefit from secure decentralized storage by taking advantage of XCM to transfer assets between chains.</p>
+<p>We envision that Iris can facilitate a new variety of dapps that leverage decentralized storage, represented as asset classes, in a cross-chain, cross contract environment, where Iris can act as a common storage layer.</p>
+<p>The initial motivation of Iris is to solve the “streaming problem”: As the number of streaming services with exclusive rights to content increases, the actual content to which consumers have access diminishes due to the arbitrary cloistering of content. In a decentralized approach, individual content owners can retain ownership of their content while doing away with a subscription based model. However, Iris may facilitate a plethora of applications whose scope is far beyond streaming.</p>
+<h2 id="contact"><a class="header" href="#contact">Contact</a></h2>
+<ul>
+<li>twitter: https://twitter.com/Iridium_labs</li>
+<li>website: http://iridium.industries/</li>
+<li>email: driemworks@iridium.industries</li>
+<li>discord: https://discord.gg/w8PF9MM6</li>
+</ul>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="pallets.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
-                                <i class="fa fa-angle-left"></i>
-                            </a>
 
-                            <a rel="next" href="pallets_iris_session.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next" href="getting_started.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
 
@@ -203,11 +203,8 @@
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="pallets.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
-                        <i class="fa fa-angle-left"></i>
-                    </a>
 
-                    <a rel="next" href="pallets_iris_session.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next" href="getting_started.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>

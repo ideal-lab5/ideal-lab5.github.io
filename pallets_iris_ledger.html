@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Iris-Session - iris</title>
+        <title>Iris-Ledger - iris</title>
 
 
         <!-- Custom HTML head -->
@@ -81,7 +81,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="getting_started.html"><strong aria-hidden="true">2.</strong> Getting Started</a></li><li class="chapter-item expanded "><a href="tech_overview.html"><strong aria-hidden="true">3.</strong> Technical Overview</a></li><li class="chapter-item expanded "><a href="pallets.html"><strong aria-hidden="true">4.</strong> Pallets</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="pallets_iris_assets.html"><strong aria-hidden="true">4.1.</strong> Iris-Assets</a></li><li class="chapter-item expanded "><a href="pallets_iris_session.html" class="active"><strong aria-hidden="true">4.2.</strong> Iris-Session</a></li><li class="chapter-item expanded "><a href="pallets_iris_ledger.html"><strong aria-hidden="true">4.3.</strong> Iris-Ledger</a></li></ol></li><li class="chapter-item expanded "><a href="rpc.html"><strong aria-hidden="true">5.</strong> RPC Endpoint Implementation</a></li><li class="chapter-item expanded "><a href="contracts.html"><strong aria-hidden="true">6.</strong> Contracts</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="contracts_chain_extension.html"><strong aria-hidden="true">6.1.</strong> Chain Extension</a></li><li class="chapter-item expanded "><a href="contracts_asset_exchange.html"><strong aria-hidden="true">6.2.</strong> Iris Asset Exchange</a></li></ol></li><li class="chapter-item expanded "><a href="governance_moderation.html"><strong aria-hidden="true">7.</strong> Governance and Moderation</a></li><li class="chapter-item expanded "><a href="glossary.html"><strong aria-hidden="true">8.</strong> Glossary</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="getting_started.html"><strong aria-hidden="true">2.</strong> Getting Started</a></li><li class="chapter-item expanded "><a href="tech_overview.html"><strong aria-hidden="true">3.</strong> Technical Overview</a></li><li class="chapter-item expanded "><a href="pallets.html"><strong aria-hidden="true">4.</strong> Pallets</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="pallets_iris_assets.html"><strong aria-hidden="true">4.1.</strong> Iris-Assets</a></li><li class="chapter-item expanded "><a href="pallets_iris_session.html"><strong aria-hidden="true">4.2.</strong> Iris-Session</a></li><li class="chapter-item expanded "><a href="pallets_iris_ledger.html" class="active"><strong aria-hidden="true">4.3.</strong> Iris-Ledger</a></li></ol></li><li class="chapter-item expanded "><a href="rpc.html"><strong aria-hidden="true">5.</strong> RPC Endpoint Implementation</a></li><li class="chapter-item expanded "><a href="contracts.html"><strong aria-hidden="true">6.</strong> Contracts</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="contracts_chain_extension.html"><strong aria-hidden="true">6.1.</strong> Chain Extension</a></li><li class="chapter-item expanded "><a href="contracts_asset_exchange.html"><strong aria-hidden="true">6.2.</strong> Iris Asset Exchange</a></li></ol></li><li class="chapter-item expanded "><a href="governance_moderation.html"><strong aria-hidden="true">7.</strong> Governance and Moderation</a></li><li class="chapter-item expanded "><a href="glossary.html"><strong aria-hidden="true">8.</strong> Glossary</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -142,85 +142,24 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="iris-session"><a class="header" href="#iris-session">Iris-Session</a></h1>
-<p>The Iris-session pallet incorporates both IPFS and the <a href="https://github.com/paritytech/substrate/blob/master/frame/session/README.md">session module</a> to allow network validators to provide storage for some existing asset class for the duration of a session. In general, it provides the capabilities to:</p>
-<ul>
-<li>provide storage to the network</li>
-<li>capitalize on latent storage capacity</li>
-<li>eject data from the network</li>
-</ul>
+                        <h1 id="iris-ledger"><a class="header" href="#iris-ledger">Iris-Ledger</a></h1>
+<p>The ledger pallet is a utility pallet meant to facilitate locking and unlocking of funds to ensure existence of funds when buying and selling assets within the iris ecosystem.</p>
 <h2 id="runtime-details"><a class="header" href="#runtime-details">Runtime Details</a></h2>
-<h3 id="interaction-with-embedded-ipfs"><a class="header" href="#interaction-with-embedded-ipfs">Interaction with Embedded IPFS</a></h3>
-<p>The iris-session pallet contains the core logic for interacting with the embedded IPFS instance. In this module we expose the capability for offchain workers to process commands added to the DataQueue. Specifically, to:</p>
+<h3 id="extrinsics"><a class="header" href="#extrinsics">Extrinsics</a></h3>
 <ul>
-<li>read IPFS public key and muiltiaddresses</li>
-<li>add data to the IPFS by processing an AddBytes command</li>
-<li>fetch data from IPFS by processing a CatBytes command</li>
-<li>pin data to IPFS by processing a PinBytes command</li>
-</ul>
-<p>When a node adds an AddBytes command to the queue (via the iris-assets pallet), any other node is capable of processing the command and injecting the data into the network.</p>
-<p>When a node adds a CatBytes command to the queue, it is uniquely processed by the calling node, adding the data to offchain storage so that it can be fetched via the RPC endpoint.</p>
-<p>When a node adds a PinBytes command to the queue, it is uniquely processed by the calling node. The also results in the addition of the node to the <em>Pinners</em> storage map.</p>
-<h3 id="session-based-approach-to-adding-validators"><a class="header" href="#session-based-approach-to-adding-validators">Session-based approach to adding validators</a></h3>
-<p>Iris is a proof of authority network. Through the usage of the session pallet, we introduce a mechanism for an existing authority to add new validators to the network. Iris uses Aura for consensus and Grandpa for block finalization and there is no alteration to the default process through which nodes are rewarded.</p>
-<p>In the long term, we intend to create a new consensus, which we are calling <code>Nominated Proof of Storage Capacity</code>. Details of this to come.</p>
-<h3 id="session-based-approach-to-adding-and-rewarding-storage-providers"><a class="header" href="#session-based-approach-to-adding-and-rewarding-storage-providers">Session-based approach to adding and rewarding storage providers</a></h3>
-<p><em>Note</em>: We currently follow a fairly naive scheme for incentivizing validators to store content. We intend to replace the below scheme with something much more mature in the future.</p>
-<p>Validator nodes are a superset of the storage provider nodes. Validators, using the iris-session pallet, can request to store some owned content added to Iris. For example, if a node has added data and created a content asset class, then a validator node can request to store the content during the subsequent session.</p>
-<p>There are three phases to each session:</p>
-<ol>
-<li>a pre-session planning phase</li>
-<li>a session start phase</li>
-<li>a session end phase</li>
-</ol>
-<p>When we say <strong>current session</strong> we mean a session that has been <em>planned</em>, and for which the possible storage providers are locked but not yet necessarily providing active storage. An <strong>active session</strong> is a session that has been <em>started</em> and for which the nodes are active storage providers. This is elaborated below:</p>
-<ol>
-<li>
-<p>Pre-session planning: candidate storage providers that have pinned the CID they requested to store are added to a collection of active storage providers for that asset class for that session. The current session is incremented by one.</p>
-</li>
-<li>
-<p>Session Start: The active session is incremented by one.</p>
-</li>
-<li>
-<p>Session End: Validiators that have been storing data but have not accumulated any reward points for some preconfigured number of sessions (MaxDeadSessions) is removed from the validator pool.</p>
-</li>
-</ol>
-<h3 id="reward-point-calculation"><a class="header" href="#reward-point-calculation">Reward Point Calculation</a></h3>
-<p>Reward points are the interim rewards that storage providers receive for processing requests in the DataQueue. DataCommands are added to the DataQueue when:</p>
-<ul>
-<li>a content owner has requested to add data to Iris via the <code>create</code> extrinsic</li>
-<li>successfully pinning data</li>
-<li>a consumer has requested to fetch bytes from ipfs through the <code>retrieve_data</code> extrinsic.</li>
-</ul>
-<p>When data is requested from Iris, the underlying IPFS network will fetch the bytes from one of the storage providers (though it's possible it could exist in another node since we don't have much in terms of garbage collection in rust-ipfs). Though it may be possible to determine exactly which IPFS node the data was fetched from, this is most likely computationally expensive. We track the number of times some data was successfully requested (i.e. the number of times a consumer requested to fetch the content of an asset class of which they own an asset). At the end of the session, the total sum is distributed evenly to storage providers for that asset during the session.</p>
-<p>Validators are rewarded for:</p>
-<ul>
-<li>Processing requests to inject data into IPFS (basically <code>ipfs add [cid]</code>)
-<ul>
-<li>Awarded 1 RP</li>
-</ul>
-</li>
-<li>Pinning data to their embedded IPFS node (<code>ipfs pin [cid]</code>)
-<ul>
-<li>Awarded 1 RP</li>
-</ul>
-</li>
-<li>Indirectly, when another node requests data they are providing storage for
-<ul>
-<li>The number of unallocated tokens for the session is incremented by 1</li>
-</ul>
-</li>
+<li><code>lock</code> - lock some amount of native tokens</li>
+<li><code>unlock_and_transfer</code> - unlock the locked tokens and transfer all to some specified account</li>
 </ul>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="pallets_iris_assets.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="pallets_iris_session.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next" href="pallets_iris_ledger.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next" href="rpc.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
 
@@ -230,11 +169,11 @@
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="pallets_iris_assets.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="pallets_iris_session.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next" href="pallets_iris_ledger.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next" href="rpc.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>

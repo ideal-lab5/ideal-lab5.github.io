@@ -82,7 +82,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="chapter_1.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="chapter_2.html"><strong aria-hidden="true">2.</strong> Getting Started</a></li><li class="chapter-item expanded "><a href="chapter_3.html"><strong aria-hidden="true">3.</strong> Technical Overview</a></li><li class="chapter-item expanded "><a href="pallets.html"><strong aria-hidden="true">4.</strong> Pallets</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="pallets_iris_assets.html"><strong aria-hidden="true">4.1.</strong> Iris-Assets</a></li><li class="chapter-item expanded "><a href="pallets_iris_session.html"><strong aria-hidden="true">4.2.</strong> Iris-Session</a></li></ol></li><li class="chapter-item expanded "><a href="rpc.html"><strong aria-hidden="true">5.</strong> RPC Endpoint Implementation</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="getting_started.html"><strong aria-hidden="true">2.</strong> Getting Started</a></li><li class="chapter-item expanded "><a href="tech_overview.html"><strong aria-hidden="true">3.</strong> Technical Overview</a></li><li class="chapter-item expanded "><a href="pallets.html"><strong aria-hidden="true">4.</strong> Pallets</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="pallets_iris_assets.html"><strong aria-hidden="true">4.1.</strong> Iris-Assets</a></li><li class="chapter-item expanded "><a href="pallets_iris_session.html"><strong aria-hidden="true">4.2.</strong> Iris-Session</a></li><li class="chapter-item expanded "><a href="pallets_iris_ledger.html"><strong aria-hidden="true">4.3.</strong> Iris-Ledger</a></li></ol></li><li class="chapter-item expanded "><a href="rpc.html"><strong aria-hidden="true">5.</strong> RPC Endpoint Implementation</a></li><li class="chapter-item expanded "><a href="contracts.html"><strong aria-hidden="true">6.</strong> Contracts</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="contracts_chain_extension.html"><strong aria-hidden="true">6.1.</strong> Chain Extension</a></li><li class="chapter-item expanded "><a href="contracts_asset_exchange.html"><strong aria-hidden="true">6.2.</strong> Iris Asset Exchange</a></li></ol></li><li class="chapter-item expanded "><a href="governance_moderation.html"><strong aria-hidden="true">7.</strong> Governance and Moderation</a></li><li class="chapter-item expanded "><a href="glossary.html"><strong aria-hidden="true">8.</strong> Glossary</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -147,34 +147,39 @@
 <p>This is the official documentation for <a href="https://github.com/iridium-labs/substrate/tree/iris">Iris</a>.</p>
 <p><code>This documentation and any information in it is subject to frequent and radical change as Iris is developed.</code></p>
 <p><img src="./resources/web3_foundation_grants_badge_black.png" alt="sponsored by web3 foundation" /></p>
-<p>Read our initial web3 grant proposal <a href="https://github.com/w3f/Grants-Program/blob/master/applications/iris.md">here</a></p>
+<p>Read our w3f grant proposal <a href="https://github.com/w3f/Grants-Program/blob/master/applications/iris.md">here</a></p>
 <h2 id="what-is-iris"><a class="header" href="#what-is-iris">What is Iris?</a></h2>
-<p>Iris is a decentralized storage network that acts as a secure storage layer for Web 3.0. It is <strong>infrastructure for the decentralized web</strong> by providing a decentralized storage layer that can be leveraged by parachains and smart contracts in the Polkadot/Kusama ecosystem, allowing access to content to be transferred across chains and monetized. It provides indexability, security, availability, and governance on top of IPFS, enabling data ownership, access management, and the commodification of latent storage capacity and content delivery. Built with IPFS and Substrate, Iris can be used by parachains and smart contracts to create dapps that leverage private decentralized storage.</p>
+<p>Iris is a decentralized storage layer for Web 3.0. It is <strong>infrastructure for the decentralized web</strong>, providing a decentralized storage layer that can be leveraged by smart contracts and parachains, allowing access to content to be transferred across chains and monetized. It provides indexability, security, availability, and governance on top of IPFS, enabling data ownership, access management, and the commodification of latent storage capacity and content delivery. Built with IPFS and Substrate, Iris' dual network topology allows it to treat unique data as owned asset classes on the blockchain, while actual data is stored offchain in an IPFS network.</p>
 <h2 id="how-does-it-work"><a class="header" href="#how-does-it-work">How does it work?</a></h2>
 <p>Iris functions by embedding an IPFS node in the Substrate runtime, allowing us to encode the DHT status on-chain.</p>
 <p>Owned data is treated as a unique asset class within the blockchain, while access to the data is controlled by an asset minted from the asset class. Accounts that hold a positive balance of an asset are authorized to access the underlying content that the asset class is associated with. Iris will also have the capability to transfer assets between parachains and smart contracts, enabling a novel way to access data across the web.</p>
 <h2 id="key-features"><a class="header" href="#key-features">Key Features</a></h2>
 <ul>
-<li><strong>Transparent Governance</strong>
-<ul>
-<li>In the future Iris will provide a robust governance framework that allows us to accomplish the same level of governance as major platform and service providers while maintaining decentralization and full transparency.</li>
-<li>Data ownership and access to the data is completely transparent. Unlike centralized storage providers, data in Iris can never be removed by an external party (e.g. Iridium Industries) and instead can only be forcefully removed as a result of onchain governance.</li>
-</ul>
-</li>
 <li><strong>Ownership and Access via Assets</strong>
 <ul>
 <li>Owned content in Iris is treated as a unique asset class</li>
 <li>Access to content is synonymous with owning assets minted from the asset class. This allows us to easily transfer <em>access</em> to data across parachains and smart contracts.</li>
 </ul>
 </li>
-<li><strong>Storage</strong>
+<li><strong>Decentralized Storage</strong>
 <ul>
-<li>Validator nodes monetize their latent storage capacity by providing storage to the network.</li>
+<li>validator nodes can opt-in to provide storage to the network. Currently, this is only semi-decentralized while we are a proof of authority network, however we intend to transition to proof of storage capacity in the future.</li>
+</ul>
+</li>
+<li><strong>smart contract support</strong>
+<ul>
+<li>interact with the iris runtime through the <a href="./contracts_chain_extension.html">chain extension</a></li>
+</ul>
+</li>
+<li><strong>Transparent Governance</strong>
+<ul>
+<li>In the future Iris will provide a robust governance framework that allows us to accomplish the same level of governance as major platform and service providers while maintaining decentralization and full transparency.</li>
 </ul>
 </li>
 </ul>
 <h2 id="vision"><a class="header" href="#vision">Vision</a></h2>
 <p>Iris aims to be a general decentralized storage layer for web3 applications, specifically in the kusama/polkadot ecosystems. Iris enables parachains, smart contracts, and parathreads to benefit from secure decentralized storage by taking advantage of XCM to transfer assets between chains.</p>
+<p>We envision that Iris can facilitate a new variety of dapps that leverage decentralized storage, represented as asset classes, in a cross-chain, cross contract environment, where Iris can act as a common storage layer.</p>
 <p>The initial motivation of Iris is to solve the “streaming problem”: As the number of streaming services with exclusive rights to content increases, the actual content to which consumers have access diminishes due to the arbitrary cloistering of content. In a decentralized approach, individual content owners can retain ownership of their content while doing away with a subscription based model. However, Iris may facilitate a plethora of applications whose scope is far beyond streaming.</p>
 <h2 id="contact"><a class="header" href="#contact">Contact</a></h2>
 <ul>
@@ -185,10 +190,10 @@
 </ul>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="getting-started"><a class="header" href="#getting-started">Getting Started</a></h1>
 <ol>
-<li><a href="chapter_2.html#installation">Installation</a></li>
-<li><a href="chapter_2.html#running">Running</a></li>
-<li><a href="chapter_2.html#interacting-with-your-node">Interacting with your Node</a></li>
-<li><a href="chapter_2.html#testing">Testing</a></li>
+<li><a href="getting_started.html#installation">Installation</a></li>
+<li><a href="getting_started.html#running">Running</a></li>
+<li><a href="getting_started.html#interacting-with-your-node">Interacting with your Node</a></li>
+<li><a href="getting_started.html#testing">Testing</a></li>
 </ol>
 <h2 id="installation"><a class="header" href="#installation">Installation</a></h2>
 <p>There are three ways to install iris, either building the source code, building a docker image, or simply installing from docker.</p>
@@ -206,7 +211,7 @@ cargo +nightly build --release
 <code>docker build -t iridiumlabs/iris -f ./.maintain/Dockerfile .</code></p>
 <h2 id="running"><a class="header" href="#running">Running</a></h2>
 <h3 id="from-sources"><a class="header" href="#from-sources">From Sources</a></h3>
-<pre><code># purge the local chain data
+<pre><code class="language-bash"># purge the local chain data
 ./target/release/node-template purge-chain --base-path /tmp/alice --dev -y
 # run the build
 ./target/release/node-template \
@@ -223,7 +228,7 @@ cargo +nightly build --release
 </code></pre>
 <p>Note: to specify a bootnode, use the bootnodes parameter. ex: <code>--bootnodes /ip4/127.0.0.1/tcp/30333/p2p/12D3KooWEdUQFXhAF4fu9hqRTWqsigioyjatRKRZ7mwyQCBoWyK3</code></p>
 <h3 id="from-docker"><a class="header" href="#from-docker">From Docker</a></h3>
-<pre><code>docker run -p 9944:9944 \
+<pre><code class="language-bash">docker run -p 9944:9944 \
   -p 9933:9933 \
   -p 30333:30333 \
   -p 9615:9615 \
@@ -235,21 +240,21 @@ cargo +nightly build --release
   --node-key 0000000000000000000000000000000000000000000000000000000000000001
 </code></pre>
 <p><em>note: node-key is only needed if you want this node to be a bootnode</em></p>
-<h1 id="interacting-with-your-node"><a class="header" href="#interacting-with-your-node">Interacting with your node</a></h1>
+<h2 id="interacting-with-your-node"><a class="header" href="#interacting-with-your-node">Interacting with your node</a></h2>
 <p><em>See the <a href="../src/chapter_3.html">tech overview</a> for information on extrinsics, rpc, etc.</em></p>
-<h2 id="polkadotjs"><a class="header" href="#polkadotjs">PolkadotJs</a></h2>
+<h3 id="polkadotjs"><a class="header" href="#polkadotjs">PolkadotJs</a></h3>
 <p>As the UI undergoes development, the most <em>stable</em> way to interact with your node is to use the default <a href="https://polkadot.js.org/">polkadotjs ui</a>.</p>
-<h2 id="the-iris-ui"><a class="header" href="#the-iris-ui">The Iris UI</a></h2>
+<h3 id="the-iris-ui"><a class="header" href="#the-iris-ui">The Iris UI</a></h3>
 <p>The Iris UI provides a mechanism to add and retrieve data from Iris, to create an asset class, mint assets, privision data access, and manage both asset classes and assets.</p>
 <p>If you intend to add data to Iris, you must also run an IPFS node locally. This holds for running from sources as well as the docker image. Run IPFS with <code>ipfs daemon</code>.</p>
 <h3 id="running-from-sources"><a class="header" href="#running-from-sources">Running from Sources</a></h3>
-<pre><code>git clone https://github.com/iridium-labs/ui.git
+<pre><code class="language-bash">git clone https://github.com/iridium-labs/ui.git
 cd ui
 npm i
 REACT_APP_IPV4=&lt;your ipv4&gt; npm start
 </code></pre>
 <h3 id="running-from-docker"><a class="header" href="#running-from-docker">Running from Docker</a></h3>
-<pre><code>docker pull iridiumlabs/iris-ui
+<pre><code class="language-bash">docker pull iridiumlabs/iris-ui
 # replace w.x.y.z with your ip
 docker run -it --rm -p 3000:3000 -e &quot;REACT_APP_IPV4=w.x.y.z&quot; iridiumlabs/iris-ui
 </code></pre>
@@ -268,8 +273,8 @@ https://onlinestringtools.com/convert-string-to-hexadecimal</p>
 <p>https://www.shawntabrizi.com/substrate-js-utilities/</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="technical-overview"><a class="header" href="#technical-overview">Technical Overview</a></h1>
 <ol>
-<li><a href="chapter_3.html#tech-stack">Tech Stack</a></li>
-<li><a href="chapter_3.html#the-iris-runtime">Runtime</a></li>
+<li><a href="tech_overview.html#tech-stack">Tech Stack</a></li>
+<li><a href="tech_overview.html#the-iris-runtime">Runtime</a></li>
 </ol>
 <h2 id="tech-stack"><a class="header" href="#tech-stack">Tech Stack</a></h2>
 <h3 id="ipfs"><a class="header" href="#ipfs">IPFS</a></h3>
@@ -281,30 +286,70 @@ https://onlinestringtools.com/convert-string-to-hexadecimal</p>
 <p>We use react to build the user interface to interact with our node. We specifically rely on the <code>polkadotjs</code> and <code>ipfs-http-core</code> libraries.</p>
 <h2 id="the-iris-runtime"><a class="header" href="#the-iris-runtime">The Iris Runtime</a></h2>
 <p>Iris functions by embedding an IPFS node within the substrate runtime and allowing substrate nodes to form a private IPFS swarm. By building a blockchain layer on top of the embedded storage, we are able to track calls and responses to IPFS on chain, allowing nodes to be rewarded for storing and retrieving data.</p>
-<p>The Iris runtime builds from exsiting modules within the Substrate runtime, specifically the session and assets modules. In general, the Iris-Assets module, which depends on the assets modules, provides data ingestion, and asset class management. The Iris-Session module enables session based storage for content owner, where storage is provided by network validators. Read more on the Iris-assets and Iris-Session modules <a href="./pallets.html">here</a>.</p>
+<p>The Iris runtime builds from exsiting modules within the Substrate runtime, specifically the session and assets modules. It is currently a proof of authority network. In general, the Iris-Assets module, which depends on the assets modules, provides data ingestion, and asset class management. The Iris-Session module enables session based storage for content owner, where storage is provided by network validators. Read more on the Iris-assets and Iris-Session modules <a href="./pallets.html">here</a>.</p>
 <p><img src="./resources/runtime_modules.png" alt="runtime modules" /></p>
-<p>There are four roles that nodes can take in Iris:</p>
+<p>Currently there are four roles that nodes can take in Iris:</p>
 <ol>
 <li>data owner</li>
 <li>data consumer</li>
 <li>validator</li>
 <li>storage provider</li>
 </ol>
-<p>Data owners are responsible for adding data to the Iris and creating, managing and minting asset classes and assets.</p>
+<p>In the future another role will be created for moderation and governance capabilities.</p>
+<p>Data owners are responsible for adding data to Iris by creating, managing and minting asset classes and assets.</p>
 <p>Data consumers are capable of retrieving data from Iris when they hold an asset minted from some owned asset class.</p>
-<p>Iris is a PoA network, so validators are responsible for finalizing blocks.</p>
 <p>Any validator is capable of being a storage provider. A storage provider is a validator that is actively storing some data associated with an owned asset class. Validators are incentivized to store data by earning reward points when they process IPFS requests or when data they are pinning is accessed.</p>
 <p>Below, we see a high-level overview of how these four roles interact with one another. In the near future we intend to create a smart contract to realize an Iris Assets Exchange, a marketplace for data owners and data consumers to buy, sell, and share assets.</p>
 <p><img src="./resources/iris_overview.png" alt="iris-overview" /></p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="pallets"><a class="header" href="#pallets">Pallets</a></h1>
-<p>Iris provides two new pallets on top of those available by default in Substrate.</p>
+<p>Iris provides several new pallets on top of those available by default in Substrate.</p>
+<ol>
+<li><a href="./pallet_iris_assets.html">Iris-Assets</a></li>
+<li><a href="./pallet_iris_session.html">Iris-Session</a></li>
+<li><a href="./pallet_iris_ledger.html">Iris-Ledger</a></li>
+<li>Iris Democracy: Planned</li>
+<li>Iris Treasury: Planned</li>
+</ol>
 <p><img src="./resources/runtime_modules.png" alt="runtime modules" />
-<em>Modules unique to iris are marked in purple. Dependencies are represented as arrows</em></p>
+<em>Completed and active modules are marked in purple, planned modules in yellow. Dependencies are represented as arrows</em></p>
+<h2 id="iris-assets"><a class="header" href="#iris-assets">Iris Assets</a></h2>
 <p>The <a href="./pallet_iris_assets.html">Iris-Assets</a> pallet provides functionality for nodes to inject data into Iris, create and manage storage asset classes and to mint and burn assets.</p>
+<h2 id="iris-session"><a class="header" href="#iris-session">Iris Session</a></h2>
 <p>The <a href="./pallet_iris_session.html">Iris-Session</a> pallet provides session-based storage capabilities for network validators as well as enables ejecting data from the network. The iris-session palelt contains all functionality to interact with the embedded IPFS node. While a strict content-owner only node does not require the iris-session pallet, for both consumers and storage providers it is a necessity.</p>
-<p>These two pallets work in tandem to provide full functionality to inject and eject data from Iris. Though we discuss both pallets in depth in their respective chapters, here we will lay out the way that the two pallets work together to inject data, create asset classes, and to eject data. In general, the iris-assets pallet is responsible for adding commands to the data queue and the iris-session pallet is responsible for executing commands in the data queue.</p>
-<h2 id="data-ownership-as-asset-class-ownership"><a class="header" href="#data-ownership-as-asset-class-ownership">Data Ownership as Asset Class Ownership</a></h2>
-<p>When a node adds data to Iris, the OCW that processes the request constructs a new asset class backed by some initial (user defined) amount of native currency (see the <code>create_storage_asset</code> <a href="./chapter_3.html">extrinsic</a>). This results in a new <code>DataCommand</code> being added to the processing queue. When an OCW proceses the command and publishes results on chain, a new asset class is created. Asset creation and access is initiated in the iris-assets pallet but processed in the iris-session pallet.</p>
+<h2 id="iris-ledger"><a class="header" href="#iris-ledger">Iris Ledger</a></h2>
+<p>The <a href="./pallets_iris_ledger.html">Iris-Ledger</a> pallet allows nodes to lock, unlock, and transfer native tokens.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="iris-assets-1"><a class="header" href="#iris-assets-1">Iris-Assets</a></h1>
+<p>Please reference the documentation <a href="TODO">here</a> for further details on extrinsics exposed by the module.</p>
+<p>The iris-assets module relies on the <a href="https://github.com/paritytech/substrate/blob/master/frame/assets/README.md">assets module</a> available in Substrate. This pallet provides capabilities for content owners and content consumers. This module is entirely independent of IPFS. It provides capabilities to:</p>
+<ul>
+<li>inject data into the network</li>
+<li>create and manage storage asset classes</li>
+<li>mint assets</li>
+</ul>
+<p>The iris-assets module delivers asset class and derived asset management. This module appends commands to a DataQueue which are processed by validator nodes (see the <a href="./pallets_iris_session.html">iris-session</a> module for more info) in a module which implements logic for offchain workers to process commands in the DataQueue (in our case, the iris-session pallet).</p>
+<h2 id="runtime-details"><a class="header" href="#runtime-details">Runtime Details</a></h2>
+<h3 id="extrinsics"><a class="header" href="#extrinsics">Extrinsics</a></h3>
+<p>Functions to inject data into the network and to create and manage asset classes and assets</p>
+<ul>
+<li><code>create</code></li>
+<li><code>mint</code></li>
+<li><code>burn</code></li>
+<li><code>destroy</code></li>
+<li><code>transfer_asset</code></li>
+</ul>
+<p>Function to allow consumers to request data from the network</p>
+<ul>
+<li><code>request_bytes</code></li>
+</ul>
+<p>Functions that allow offchain workers to submit results from IPFS commands</p>
+<ul>
+<li><code>submit_ipfs_add_results</code></li>
+<li><code>insert_pin_request</code></li>
+</ul>
+<h3 id="rpc"><a class="header" href="#rpc">RPC</a></h3>
+<p>The iris-assets pallet contains the implementation of the RPC endpoint which fetches dat from the network. See more details <a href="./rpc.html">here</a></p>
+<h3 id="data-ownership-as-asset-class-ownership"><a class="header" href="#data-ownership-as-asset-class-ownership">Data Ownership as Asset Class Ownership</a></h3>
+<p>When a node adds data to Iris, the OCW that processes the request constructs a new asset class backed by some initial (user defined) amount of native currency. This results in a new <code>DataCommand</code> being added to the processing queue. When an OCW proceses the command and publishes results on chain, a new asset class is created. Asset creation and access is initiated in the iris-assets pallet but processed in the iris-session pallet.</p>
 <p><img src="./resources/data_ingestion.drawio.png" alt="data-ingestion" /></p>
 <p>Our initial use case makes assumptions that we will break in the future:</p>
 <ol>
@@ -315,22 +360,7 @@ https://onlinestringtools.com/convert-string-to-hexadecimal</p>
 <p>To retrieve data, a node makes a request to Iris, adding a request to retrieve bytes to the queue. An OCW processes the command and adds the fetched content to local offchain storage. The node which requested the data can then invoke the <code>iris_retrieveBytes</code> RPC endpoint exposed on the node who fetched the content in order to retrieve it.</p>
 <p>First, a node that owns some positive balance of an asset requests access to it. When this request is processed by the calling node's OCW, the OCW stores the data in offchain storage. When the RPC endpoint is invoked, the data is returned to the authorized caller in the response.</p>
 <p><img src="./resources/data_ejection_p1.drawio.png" alt="data-ejection part 1" /></p>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="iris-assets"><a class="header" href="#iris-assets">Iris-Assets</a></h1>
-<p>Please reference the documentation <a href="TODO">here</a> for further details on extrinsics exposed by the module.</p>
-<p>The iris-assets module relies on the <a href="https://github.com/paritytech/substrate/blob/master/frame/assets/README.md">assets module</a> available in Substrate. This pallet provides capabilities for content owners and content consumers. This module is entirely independent of IPFS. It provides capabilities to:</p>
-<ul>
-<li>inject data into the network</li>
-<li>create and manage storage asset classes</li>
-<li>mint assets</li>
-</ul>
-<p>The iris-assets module delivers asset class and derived asset management. This module appends commands to a DataQueue which are processed by validator nodes (see the <a href="./pallets_iris_session.html">iris-session</a> module for more info) in a module which implements logic for offchain workers to process commands in the DataQueue (in our case, the iris-session pallet).</p>
-<h2 id="runtime-details"><a class="header" href="#runtime-details">Runtime Details</a></h2>
-<h3 id="content-as-an-asset-class"><a class="header" href="#content-as-an-asset-class">Content as an asset class</a></h3>
-<p>Asset class creation is accomplished through the <code>create</code> extrinsic. The extrinsic writes to the DataQueue, adding an Addbytes command. This command is processed by validator nodes in the iris-session pallet</p>
-<h3 id="access-via-assets"><a class="header" href="#access-via-assets">Access via Assets</a></h3>
-<p>After a node has successfully created an asset class, they can mint assets from the asset class. Each asset is synonymous with access to the underlying content.</p>
-<p>This module also exposes an extrinsic to request data from the network.</p>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="iris-session"><a class="header" href="#iris-session">Iris-Session</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="iris-session-1"><a class="header" href="#iris-session-1">Iris-Session</a></h1>
 <p>The Iris-session pallet incorporates both IPFS and the <a href="https://github.com/paritytech/substrate/blob/master/frame/session/README.md">session module</a> to allow network validators to provide storage for some existing asset class for the duration of a session. In general, it provides the capabilities to:</p>
 <ul>
 <li>provide storage to the network</li>
@@ -399,29 +429,147 @@ https://onlinestringtools.com/convert-string-to-hexadecimal</p>
 </ul>
 </li>
 </ul>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="rpc"><a class="header" href="#rpc">RPC</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="iris-ledger-1"><a class="header" href="#iris-ledger-1">Iris-Ledger</a></h1>
+<p>The ledger pallet is a utility pallet meant to facilitate locking and unlocking of funds to ensure existence of funds when buying and selling assets within the iris ecosystem.</p>
+<h2 id="runtime-details-2"><a class="header" href="#runtime-details-2">Runtime Details</a></h2>
+<h3 id="extrinsics-1"><a class="header" href="#extrinsics-1">Extrinsics</a></h3>
+<ul>
+<li><code>lock</code> - lock some amount of native tokens</li>
+<li><code>unlock_and_transfer</code> - unlock the locked tokens and transfer all to some specified account</li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="rpc-1"><a class="header" href="#rpc-1">RPC</a></h1>
+<p>Iris only exposes one custom RPC endpoint. The retreiveBytes endpoint allows authorized nodes to fetch data from the iris network.</p>
 <h2 id="spec"><a class="header" href="#spec">Spec</a></h2>
 <ul>
 <li><code>iris_retrieveBytes</code></li>
-<li>Description: This RPC endpoint allows external origins to access data to which they have been granted access. The account id should be the account id of the caller node.</li>
+<li>Description: This RPC endpoint allows external origins to access data to which they have been granted access.</li>
 <li>Parameters:
 <ul>
-<li>message: The CID to of the content to fetch encoded in hex</li>
+<li>asset_id: The desired asset id</li>
 </ul>
 </li>
 </ul>
 <h2 id="implementation"><a class="header" href="#implementation">Implementation</a></h2>
-<p>The RPC endpoint reads from offchain storage to fetch the bytes. Data is added to a unqieu node's offchain storage when the following conditions are met:</p>
+<p>The RPC endpoint reads from offchain storage to fetch the bytes.</p>
+<p>Invocation of this endpoint necessitates a few prerequisites:</p>
 <ol>
 <li>The node owns an asset minted from some asset class</li>
-<li>A node is storing the data</li>
-<li>The node invoked the <code>request_bytes</code> extrinsic</li>
+<li>Some node is storing the data in the embedded IPFS node, be it a storage provider, the data owner, or just some other consumer who has already requested the data.</li>
+<li>The node has invoked the <code>request_bytes</code> extrinsic, which fetches the data from IPFS and adds it to offchain storage</li>
 </ol>
 <h2 id="example"><a class="header" href="#example">Example</a></h2>
-<p>Assume that you have requested access to some CID: <code>QmVsbXUbr5JwUDibTBmmh224GhWy1FWguTbHb3DTU3ahTE</code>.
-First, convert the CID to hex: <code>0x516d56736258556272354a775544696254426d6d6832323447685779314657677554624862334454553361685445</code></p>
-<p>and use it as the <code>message</code> field value, passing empty bytes to the other fields.</p>
-<p><code>curl http://localhost:9933 -H &quot;Content-Type:application/json;charset=utf-8&quot; -d '{&quot;jsonrpc&quot;: &quot;2.0&quot;, &quot;id&quot;: &quot;1&quot;, &quot;method&quot;: &quot;iris_retrieveBytes&quot;, &quot;params&quot;:  [&quot;0x516d56736258556272354a775544696254426d6d6832323447685779314657677554624862334454553361685445&quot;]}'</code></p>
+<p>Assume that you have requested access to some CID: QmVsbXUbr5JwUDibTBmmh224GhWy1FWguTbHb3DTU3ahTE. First, convert the CID to hex: 0x516d56736258556272354a775544696254426d6d6832323447685779314657677554624862334454553361685445</p>
+<p>and use it as the message field value, passing empty bytes to the other fields.</p>
+<p>curl http://localhost:9933 -H &quot;Content-Type:application/json;charset=utf-8&quot; -d '{&quot;jsonrpc&quot;: &quot;2.0&quot;, &quot;id&quot;: &quot;1&quot;, &quot;method&quot;: &quot;iris_retrieveBytes&quot;, &quot;params&quot;: [&quot;392&quot;]}'</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="building-smart-contracts-on-iris"><a class="header" href="#building-smart-contracts-on-iris">Building smart contracts on iris</a></h1>
+<p>Iris leverages the contracts module to allow users to deploy their own contracts to the iris blockchain. We enable developers to build dapps that take advantage of the iris runtime. In particular, Iris exposes a chain extension that provides functionality to call into the iris runtime from contracts deployed to the chain.</p>
+<h2 id="dapps-on-iris"><a class="header" href="#dapps-on-iris">DApps on Iris</a></h2>
+<h3 id="the-iris-asset-exchange"><a class="header" href="#the-iris-asset-exchange">The Iris Asset Exchange</a></h3>
+<p>The first app built on Iris is an asset exchange to allow data owners to sell access to data consumers.</p>
+<p><a href="./contracts_asset_exchange.html">Iris Asset Exchange</a></p>
+<h3 id="developing-a-dapp"><a class="header" href="#developing-a-dapp">Developing a dapp</a></h3>
+<h4 id="the-iris-chain-extension"><a class="header" href="#the-iris-chain-extension">The Iris Chain extension</a></h4>
+<p><a href="./contracts_chain_extension.html">chain extension</a></p>
+<h3 id="deploying-a-dapp"><a class="header" href="#deploying-a-dapp">Deploying a dapp</a></h3>
+<p>TODO</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="chain-extension"><a class="header" href="#chain-extension">Chain Extension</a></h1>
+<p>The iris chain extension provides functionality for dapp developers to hook into the iris runtime. More specifically, it exposes the ability to call extrinsics from the iris-assets pallet and the iris-ledger pallet to enable developers to manage assets via mint and transfer abilities and to lock, unlock, and transfer tokens to other accounts.</p>
+<h2 id="exposed-functions"><a class="header" href="#exposed-functions">Exposed Functions</a></h2>
+<h3 id="from-the-iris-assets-pallet"><a class="header" href="#from-the-iris-assets-pallet">From the Iris-Assets pallet</a></h3>
+<p>See the <a href="./pallets_iris_assets.html">iris-assets</a> for more details.</p>
+<ul>
+<li>
+<p>mint</p>
+</li>
+<li>
+<p>transfer_assets</p>
+</li>
+</ul>
+<h2 id="from-the-iris-ledger-pallet"><a class="header" href="#from-the-iris-ledger-pallet">From the Iris-Ledger pallet</a></h2>
+<p>See the <a href="./pallets_iris_ledger.html">iris-ledger</a> for more details.</p>
+<ul>
+<li>
+<p>lock_currency</p>
+</li>
+<li>
+<p>unlock_and_transfer_currency</p>
+</li>
+</ul>
+<h2 id="usage"><a class="header" href="#usage">Usage</a></h2>
+<p>To functions from the chain extension in your smart contract, register the chain extension:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[ink::chain_extension]
+pub trait Iris {
+    type ErrorCode = IrisErr;
+
+    #[ink(extension = 0, returns_result = false)]
+    fn transfer_asset(
+        contract_account: ink_env::AccountId, 
+        consumer_account: ink_env::AccountId, 
+        asset_id: u32, 
+        asset_quantity: u64
+    ) -&gt; [u8; 32];
+
+    #[ink(extension = 1, returns_result = false)]
+    fn mint(caller: ink_env::AccountId, target: ink_env::AccountId, asset_id: u32, amount: u64) -&gt; [u8; 32];
+
+    #[ink(extension = 2, returns_result = false)]
+    fn lock(amount: u64) -&gt; [u8; 32];
+
+    #[ink(extension = 3, returns_result = false)]
+    fn unlock_and_transfer(target: ink_env::AccountId) -&gt; [u8; 32];
+} 
+<span class="boring">}
+</span></code></pre></pre>
+<p>and invoke the chain extension function:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span> self.env()
+    .extension()
+    .mint(
+        caller, self.env().account_id(), asset_id, amount,
+    ).map_err(|_| {}).ok();
+<span class="boring">}
+</span></code></pre></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="iris-asset-exchange"><a class="header" href="#iris-asset-exchange">Iris Asset Exchange</a></h1>
+<p>The Iris Asset Exchange is a decentralized exchange to facilitate the buying and selling of assets in Iris.</p>
+<h2 id="usage-1"><a class="header" href="#usage-1">Usage</a></h2>
+<p>The source code and README for the IAE is located <a href="https://github.com/iridium-labs/contracts/tree/main/iris_asset_exchange">here</a>.</p>
+<p>The iris-ui exposes a user interface to interact with the contract.</p>
+<h2 id="functions"><a class="header" href="#functions">Functions</a></h2>
+<h3 id="publish_token_sale"><a class="header" href="#publish_token_sale">publish_token_sale</a></h3>
+<p>Mint new tokens and gives ownership of them to the contract account. The owner specifies a static price that consumers pay in order to purchase the asset.</p>
+<p>Parameters:</p>
+<ul>
+<li>asset_id: The id of some owned asset</li>
+<li>quantity: The quanity of assets to mint and transfer to the contract</li>
+<li>price: The price per minted asset</li>
+</ul>
+<h3 id="purchase_tokens"><a class="header" href="#purchase_tokens">purchase_tokens</a></h3>
+<ol>
+<li>lock price*amount tokens</li>
+<li>transfer tokens to the caller (from the contract account)</li>
+<li>unlock tokens</li>
+<li>caller transfer tokens to the owner</li>
+</ol>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="governance-and-moderation"><a class="header" href="#governance-and-moderation">Governance and Moderation</a></h1>
+<p>Governance and decentralized moderation are planned for the future and do not currently exist within Iris.</p>
+<p>We intend for there to be three layers to this.
+Layer 0: Automod capabilities via some ML algorithm.
+Layer 1: User initiated reporting and reviewing/reputation score buildup
+Layer 2: Democratically elected moderators to provide human input - much the same as moderators exist today.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="glossary"><a class="header" href="#glossary">Glossary</a></h1>
+<ul>
+<li>asset</li>
+<li>asset class</li>
+<li>cid</li>
+<li>ipfs</li>
+<li>multiaddress</li>
+<li>substrate</li>
+</ul>
 
                     </main>
 
