@@ -81,7 +81,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="getting_started.html"><strong aria-hidden="true">2.</strong> Getting Started</a></li><li class="chapter-item expanded "><a href="tech_overview.html"><strong aria-hidden="true">3.</strong> Technical Overview</a></li><li class="chapter-item expanded "><a href="pallets.html" class="active"><strong aria-hidden="true">4.</strong> Pallets</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="pallets_iris_assets.html"><strong aria-hidden="true">4.1.</strong> Iris-Assets</a></li><li class="chapter-item expanded "><a href="pallets_iris_session.html"><strong aria-hidden="true">4.2.</strong> Iris-Session</a></li><li class="chapter-item expanded "><a href="pallets_iris_ledger.html"><strong aria-hidden="true">4.3.</strong> Iris-Ledger</a></li></ol></li><li class="chapter-item expanded "><a href="rpc.html"><strong aria-hidden="true">5.</strong> RPC Endpoint Implementation</a></li><li class="chapter-item expanded "><a href="contracts.html"><strong aria-hidden="true">6.</strong> Contracts</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="contracts_chain_extension.html"><strong aria-hidden="true">6.1.</strong> Chain Extension</a></li><li class="chapter-item expanded "><a href="contracts_asset_exchange.html"><strong aria-hidden="true">6.2.</strong> Iris Asset Exchange</a></li></ol></li><li class="chapter-item expanded "><a href="governance_moderation.html"><strong aria-hidden="true">7.</strong> Governance and Moderation</a></li><li class="chapter-item expanded "><a href="glossary.html"><strong aria-hidden="true">8.</strong> Glossary</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="quickstart.html"><strong aria-hidden="true">2.</strong> Quickstart</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="quickstart/tech_overview.html"><strong aria-hidden="true">2.1.</strong> Technical Overview</a></li><li class="chapter-item expanded "><a href="quickstart/development_status.html"><strong aria-hidden="true">2.2.</strong> Development Status</a></li><li class="chapter-item expanded "><a href="quickstart/getting_started.html"><strong aria-hidden="true">2.3.</strong> Getting Started</a></li><li class="chapter-item expanded "><a href="quickstart/data_spaces.html"><strong aria-hidden="true">2.4.</strong> Data Spaces</a></li><li class="chapter-item expanded "><a href="quickstart/data_assets.html"><strong aria-hidden="true">2.5.</strong> Adding and Retrieving Data</a></li><li class="chapter-item expanded "><a href="quickstart/storage.html"><strong aria-hidden="true">2.6.</strong> Storage Nodes</a></li><li class="chapter-item expanded "><a href="quickstart/proxy.html"><strong aria-hidden="true">2.7.</strong> Proxy Nodes</a></li><li class="chapter-item expanded "><a href="quickstart/governance_moderation.html"><strong aria-hidden="true">2.8.</strong> Governance and Moderation</a></li></ol></li><li class="chapter-item expanded "><a href="developers.html"><strong aria-hidden="true">3.</strong> Developers</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="pallets.html" class="active"><strong aria-hidden="true">3.1.</strong> Pallets</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="pallets/pallets_iris_assets.html"><strong aria-hidden="true">3.1.1.</strong> Iris-Assets</a></li><li class="chapter-item expanded "><a href="pallets/pallets_iris_session.html"><strong aria-hidden="true">3.1.2.</strong> Iris-Session</a></li><li class="chapter-item expanded "><a href="pallets/pallets_iris_ledger.html"><strong aria-hidden="true">3.1.3.</strong> Iris-Ledger</a></li><li class="chapter-item expanded "><a href="pallets/pallets_data_spaces.html"><strong aria-hidden="true">3.1.4.</strong> Data-Spaces</a></li></ol></li><li class="chapter-item expanded "><a href="rpc.html"><strong aria-hidden="true">3.2.</strong> RPC Endpoint Implementation</a></li><li class="chapter-item expanded "><a href="contracts.html"><strong aria-hidden="true">3.3.</strong> Contracts</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="contracts/contracts_chain_extension.html"><strong aria-hidden="true">3.3.1.</strong> Chain Extension</a></li><li class="chapter-item expanded "><a href="contracts/contracts_asset_exchange.html"><strong aria-hidden="true">3.3.2.</strong> Iris Asset Exchange</a></li></ol></li></ol></li><li class="chapter-item expanded "><a href="glossary.html"><strong aria-hidden="true">4.</strong> Glossary</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -145,30 +145,37 @@
                         <h1 id="pallets"><a class="header" href="#pallets">Pallets</a></h1>
 <p>Iris provides several new pallets on top of those available by default in Substrate.</p>
 <ol>
-<li><a href="./pallet_iris_assets.html">Iris-Assets</a></li>
-<li><a href="./pallet_iris_session.html">Iris-Session</a></li>
-<li><a href="./pallet_iris_ledger.html">Iris-Ledger</a></li>
-<li>Iris Democracy: Planned</li>
-<li>Iris Treasury: Planned</li>
+<li><a href="./pallets/pallet_iris_assets.html">Iris-Assets</a></li>
+<li><a href="./pallets/pallet_iris_session.html">Iris-Session</a></li>
+<li><a href="./pallets/pallet_iris_ledger.html">Iris-Ledger</a></li>
+<li><a href="./pallets/pallets_data_spaces.html">Data Spaces</a></li>
+<li>Iris-Storage: In development</li>
+<li>Iris-Proxy: In development</li>
 </ol>
 <p><img src="./resources/runtime_modules.png" alt="runtime modules" />
 <em>Completed and active modules are marked in purple, planned modules in yellow. Dependencies are represented as arrows</em></p>
+<h2 id="data-spaces"><a class="header" href="#data-spaces">Data Spaces</a></h2>
+<p>The <a href="./pallets/pallets_data_spaces.html">Data Spaces</a> pallet lets users define data spaces that data asset classes can be associated with.</p>
 <h2 id="iris-assets"><a class="header" href="#iris-assets">Iris Assets</a></h2>
-<p>The <a href="./pallet_iris_assets.html">Iris-Assets</a> pallet provides functionality for nodes to inject data into Iris, create and manage storage asset classes and to mint and burn assets.</p>
+<p>The <a href="./pallets/pallet_iris_assets.html">Iris-Assets</a> pallet provides functionality for nodes to inject data into Iris, create and manage storage asset classes and to mint and burn assets.</p>
 <h2 id="iris-session"><a class="header" href="#iris-session">Iris Session</a></h2>
-<p>The <a href="./pallet_iris_session.html">Iris-Session</a> pallet provides session-based storage capabilities for network validators as well as enables ejecting data from the network. The iris-session palelt contains all functionality to interact with the embedded IPFS node. While a strict content-owner only node does not require the iris-session pallet, for both consumers and storage providers it is a necessity.</p>
+<p>The <a href="./pallets/pallet_iris_session.html">Iris-Session</a> pallet provides session-based storage capabilities for network validators as well as enables ejecting data from the network. The iris-session palelt contains all functionality to interact with the embedded IPFS node. While a strict content-owner only node does not require the iris-session pallet, for both consumers and storage providers it is a necessity.</p>
 <h2 id="iris-ledger"><a class="header" href="#iris-ledger">Iris Ledger</a></h2>
-<p>The <a href="./pallets_iris_ledger.html">Iris-Ledger</a> pallet allows nodes to lock, unlock, and transfer native tokens.</p>
+<p>The <a href="./pallets/pallets_iris_ledger.html">Iris-Ledger</a> pallet allows nodes to lock, unlock, and transfer native tokens.</p>
+<h2 id="iris-storage"><a class="header" href="#iris-storage">Iris Storage</a></h2>
+<p>A to-be-developed pallet which will enable the storage system.</p>
+<h2 id="iris-proxy"><a class="header" href="#iris-proxy">Iris Proxy</a></h2>
+<p>A to-be-developed pallet which will enable proxy node functionality.</p>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="tech_overview.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="developers.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next" href="pallets_iris_assets.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next" href="pallets/pallets_iris_assets.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
 
@@ -178,11 +185,11 @@
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="tech_overview.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="developers.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next" href="pallets_iris_assets.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next" href="pallets/pallets_iris_assets.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>
