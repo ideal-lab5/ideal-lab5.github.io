@@ -149,7 +149,7 @@
 <p><img src="./resources/web3_foundation_grants_badge_black.png" alt="sponsored by web3 foundation" /></p>
 <p>Read our w3f grant proposal <a href="https://github.com/w3f/Grants-Program/blob/master/applications/iris.md">here</a></p>
 <h2 id="what-is-iris"><a class="header" href="#what-is-iris">What is Iris?</a></h2>
-<p>Iris is a decentralized data exchange protocol that enables a secure data storage, delivery, and ownership layer for Web 3.0 applications. It is infrastructure for the decentralized web, providing a data exchange which enables the transfer and monetization of access to and ownership of data across chains, smart contracts and participants in the network or connected through a relay chain, by building a cryptographically verifiable relationship between storage and ownership. Iris provides security, availability, reputation, and governance on top of storage, enabling data ownership, access management, smart contract support for data, and content delivery. It applies defi concepts to data, reputation, storage capacity and availability to synthesize computation and storage and to represent off-chain assets in an on-chain context.</p>
+<p>Iris is a <strong>decentralized data exchange protocol</strong> that enables a secure data ownership, access management, and delivery layer for Web 3.0 applications. It is infrastructure for the decentralized web. By building a cryptographically verifiable relationship between storage and ownership, Iris provides a data exchange which enables the transfer and monetization of access to and ownership of data across chains, smart contracts and participants in the network or connected through a relay chain. Iris provides security, reputation, and governance on top of storage, enabling data ownership, monetization, access management, capabilities to define unique business logic for data access and authorization, as well as smart contract support for content delivery. It applies DeFi concepts to data to represent off-chain assets in an on-chain context by representing data as a unique asset class with access to the underlying data controlled by ownership of assets minted from the asset class.</p>
 <h2 id="how-does-it-work"><a class="header" href="#how-does-it-work">How does it work?</a></h2>
 <p>Iris functions by building a <strong>cryptographically verifiable relationship</strong> between data ownership, access, and availability. Data ownership is treated as an on-chain asset class, while access (equivalently, partial ownership) is granted by owning an asset minted from the asset class, subject to business logic as determined by the data owner (via <a href="./contracts/composable_access_rules.html">composable access rules</a>).</p>
 <h2 id="key-features"><a class="header" href="#key-features">Key Features</a></h2>
@@ -165,9 +165,14 @@
 <li>Data spaces act as unique, owned enclaves of data within the network. Any node can create their own data space, define who can associate their data with it, and further what kinds of data are allowed to exist within their space.</li>
 </ul>
 </li>
+<li><strong>Unique Authorization and Access Models</strong>
+<ul>
+<li>Data owners can use rule executors and composable access rules to define unique authorization and access models for their data.</li>
+</ul>
+</li>
 <li><strong>Configurable Storage System</strong>
 <ul>
-<li>Iris is capable of leveraging many different storage systems to meet user needs.</li>
+<li>Iris is capable of leveraging many different storage systems to meet user needs, including support for both centralized and decentralized storage solutions.</li>
 </ul>
 </li>
 <li><strong>smart contract support</strong>
