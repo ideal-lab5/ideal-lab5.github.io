@@ -77,6 +77,6 @@ sudo systemctl status docker
 
 # fetch the chain spec
 cd ~
-wget https://raw.githubusercontent.com/driemworks/iris/main/iris.json
+wget https://raw.githubusercontent.com/ideal-lab5/iris/main/iris.json
 
 echo "Complete! Your node is ready to run Iris.)"

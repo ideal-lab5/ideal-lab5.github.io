@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Contracts - iris</title>
+        <title>Pallets - iris</title>
 
 
         <!-- Custom HTML head -->
@@ -80,7 +80,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="../introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="../quickstart.html"><strong aria-hidden="true">2.</strong> Quickstart</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../quickstart/tech_overview.html"><strong aria-hidden="true">2.1.</strong> Technical Overview</a></li><li class="chapter-item expanded "><a href="../quickstart/quick_setup.html"><strong aria-hidden="true">2.2.</strong> Quick setup guide</a></li><li class="chapter-item expanded "><a href="../quickstart/iris_overview.html"><strong aria-hidden="true">2.3.</strong> Iris Overview</a></li><li class="chapter-item expanded "><a href="../quickstart/data_ingestion.html"><strong aria-hidden="true">2.4.</strong> Data Ingestion</a></li><li class="chapter-item expanded "><a href="../quickstart/data_ejection.html"><strong aria-hidden="true">2.5.</strong> Data Ejection</a></li></ol></li><li class="chapter-item expanded "><a href="../developers.html"><strong aria-hidden="true">3.</strong> Developers</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../developers/development_guide.html"><strong aria-hidden="true">3.1.</strong> Full Node Setup Guide</a></li><li class="chapter-item expanded "><a href="../developers/nodes/ec2_setup.html"><strong aria-hidden="true">3.2.</strong> Configure a Hosted Node</a></li><li class="chapter-item expanded "><a href="../developers/contracts.html" class="active"><strong aria-hidden="true">3.3.</strong> Contracts</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../developers/contracts/contracts_chain_extension.html"><strong aria-hidden="true">3.3.1.</strong> Chain Extension</a></li><li class="chapter-item expanded "><a href="../developers/contracts/composable_access_rules.html"><strong aria-hidden="true">3.3.2.</strong> Composable Access Rule and Rule Executor</a></li><li class="chapter-item expanded "><a href="../developers/contracts/contracts_asset_exchange.html"><strong aria-hidden="true">3.3.3.</strong> Iris Asset Exchange</a></li></ol></li><li class="chapter-item expanded "><a href="../ui.html"><strong aria-hidden="true">3.4.</strong> Iris.js SDK</a></li></ol></li><li class="chapter-item expanded "><a href="../reference.html"><strong aria-hidden="true">4.</strong> Reference</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../reference/pallets.html"><strong aria-hidden="true">4.1.</strong> Pallets</a></li></ol></li><li class="chapter-item expanded "><a href="../glossary.html"><strong aria-hidden="true">5.</strong> Glossary</a></li><li class="chapter-item expanded "><a href="../contact.html"><strong aria-hidden="true">6.</strong> Contact</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="../introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="../quickstart.html"><strong aria-hidden="true">2.</strong> Quickstart</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../quickstart/tech_overview.html"><strong aria-hidden="true">2.1.</strong> Technical Overview</a></li><li class="chapter-item expanded "><a href="../quickstart/quick_setup.html"><strong aria-hidden="true">2.2.</strong> Quick setup guide</a></li><li class="chapter-item expanded "><a href="../quickstart/iris_overview.html"><strong aria-hidden="true">2.3.</strong> Iris Overview</a></li><li class="chapter-item expanded "><a href="../quickstart/data_ingestion.html"><strong aria-hidden="true">2.4.</strong> Data Ingestion</a></li><li class="chapter-item expanded "><a href="../quickstart/data_ejection.html"><strong aria-hidden="true">2.5.</strong> Data Ejection</a></li></ol></li><li class="chapter-item expanded "><a href="../developers.html"><strong aria-hidden="true">3.</strong> Developers</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../developers/development_guide.html"><strong aria-hidden="true">3.1.</strong> Full Node Setup Guide</a></li><li class="chapter-item expanded "><a href="../developers/nodes/ec2_setup.html"><strong aria-hidden="true">3.2.</strong> Configure a Hosted Node</a></li><li class="chapter-item expanded "><a href="../developers/contracts.html"><strong aria-hidden="true">3.3.</strong> Contracts</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../developers/contracts/contracts_chain_extension.html"><strong aria-hidden="true">3.3.1.</strong> Chain Extension</a></li><li class="chapter-item expanded "><a href="../developers/contracts/composable_access_rules.html"><strong aria-hidden="true">3.3.2.</strong> Composable Access Rule and Rule Executor</a></li><li class="chapter-item expanded "><a href="../developers/contracts/contracts_asset_exchange.html"><strong aria-hidden="true">3.3.3.</strong> Iris Asset Exchange</a></li></ol></li><li class="chapter-item expanded "><a href="../ui.html"><strong aria-hidden="true">3.4.</strong> Iris.js SDK</a></li></ol></li><li class="chapter-item expanded "><a href="../reference.html"><strong aria-hidden="true">4.</strong> Reference</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../reference/pallets.html" class="active"><strong aria-hidden="true">4.1.</strong> Pallets</a></li></ol></li><li class="chapter-item expanded "><a href="../glossary.html"><strong aria-hidden="true">5.</strong> Glossary</a></li><li class="chapter-item expanded "><a href="../contact.html"><strong aria-hidden="true">6.</strong> Contact</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -141,27 +141,39 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="building-smart-contracts-on-iris"><a class="header" href="#building-smart-contracts-on-iris">Building smart contracts on iris</a></h1>
-<p>Iris leverages the contracts module to allow users to deploy their own contracts to the iris blockchain. We enable developers to build dapps that take advantage of the iris runtime. In particular, Iris exposes a chain extension that provides functionality to call into the iris runtime from contracts deployed to the chain.</p>
-<h2 id="dapps-on-iris"><a class="header" href="#dapps-on-iris">DApps on Iris</a></h2>
-<h3 id="the-iris-asset-exchange"><a class="header" href="#the-iris-asset-exchange">The Iris Asset Exchange</a></h3>
-<p>The first app built on Iris is an asset exchange to allow data owners to sell access to data consumers.</p>
-<p><a href="./contracts_asset_exchange.html">Iris Asset Exchange</a></p>
-<h3 id="developing-a-dapp"><a class="header" href="#developing-a-dapp">Developing a dapp</a></h3>
-<h4 id="the-iris-chain-extension"><a class="header" href="#the-iris-chain-extension">The Iris Chain extension</a></h4>
-<p><a href="./contracts_chain_extension.html">chain extension</a></p>
-<h3 id="deploying-a-dapp"><a class="header" href="#deploying-a-dapp">Deploying a dapp</a></h3>
-<p>TODO</p>
+                        <h1 id="pallets"><a class="header" href="#pallets">Pallets</a></h1>
+<p>Iris provides several new pallets on top of those available by default in Substrate.</p>
+<ol>
+<li><a href="./pallets/pallet_data_assets.md.html">Data Assets</a></li>
+<li><a href="./pallets/pallet_iris_session.html">Authorities</a></li>
+<li><a href="./pallets/pallet_iris_ledger.html">Ledger</a></li>
+<li><a href="./pallets/pallet_data_spaces.html">Data Spaces</a></li>
+<li><a href="./pallets/pallet_proxy.html">Proxy</a></li>
+</ol>
+<p><img src="./resources/runtime_modules.png" alt="runtime modules" />
+<em>Completed and active modules are marked in purple, planned modules in yellow. Dependencies are represented as arrows</em></p>
+<h2 id="data-spaces"><a class="header" href="#data-spaces">Data Spaces</a></h2>
+<p>The <a href="./pallets/pallet_data_spaces.html">Data Spaces</a> pallet lets users define data spaces that data asset classes can be associated with.</p>
+<h2 id="iris-assets"><a class="header" href="#iris-assets">Iris Assets</a></h2>
+<p>The <a href="./pallets/pallet_iris_assets.html">Iris-Assets</a> pallet provides functionality for nodes to inject data into Iris, create and manage storage asset classes and to mint and burn assets.</p>
+<h2 id="iris-session"><a class="header" href="#iris-session">Iris Session</a></h2>
+<p>The <a href="./pallets/pallet_iris_session.html">Iris-Session</a> pallet provides session-based storage capabilities for network validators as well as enables ejecting data from the network. The iris-session palelt contains all functionality to interact with the embedded IPFS node. While a strict content-owner only node does not require the iris-session pallet, for both consumers and storage providers it is a necessity.</p>
+<h2 id="iris-ledger"><a class="header" href="#iris-ledger">Iris Ledger</a></h2>
+<p>The <a href="./pallets/pallet_iris_ledger.html">Iris-Ledger</a> pallet allows nodes to lock, unlock, and transfer native tokens.</p>
+<h2 id="iris-storage"><a class="header" href="#iris-storage">Iris Storage</a></h2>
+<p>A to-be-developed pallet which will enable the storage system.</p>
+<h2 id="iris-proxy"><a class="header" href="#iris-proxy">Iris Proxy</a></h2>
+<p>A to-be-developed pallet which will enable proxy node functionality.</p>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="../developers/nodes/ec2_setup.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="../reference.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next" href="../developers/contracts/contracts_chain_extension.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next" href="../glossary.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
 
@@ -171,11 +183,11 @@
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="../developers/nodes/ec2_setup.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="../reference.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next" href="../developers/contracts/contracts_chain_extension.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next" href="../glossary.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>
