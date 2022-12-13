@@ -173,17 +173,7 @@ docker pull ideallabs/iris
 # pull the latest chain spec
 wget https://raw.githubusercontent.com/ideal-lab5/iris/main/iris.json
 # run an iris node
-docker run --add-host host.docker.internal:host-gateway -p 9944:9944 \
-  -p 9933:9933 \
-  -p 30333:30333 \
-  -p 9615:9615 \
-  -v ~/iris.json:mnt/iris.json
-  -it \
-  --rm \
-  --name iris-node \
-  ideallabs/iris \
-  --chain=/mnt/iris.json \
-  --rpc-cors all --unsafe-ws-external --rpc-external --rpc-methods=unsafe
+docker run --add-host host.docker.internal:host-gateway -p 9944:9944 -p 9933:9933 -p 30333:30333 -p 9615:9615 -v ~/iris.json:/mnt/iris.json -it --rm --name iris-node ideallabs/iris --chain=/mnt/iris.json --rpc-cors all --unsafe-ws-external --rpc-external --rpc-methods=unsafe
 </code></pre>
 <p>If you want to connect to a different chain, you can use <a href="../developers/development_guide.html#generating-a-custom-chain-spec">your own chainspec</a> or specify the chain as <code>--chain=dev</code> or <code>--chain=local</code>, which are both available to all nodes.</p>
 

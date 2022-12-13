@@ -150,6 +150,9 @@
 <p>Iris uses kubo (previously go-ipfs) for our 'hot' storage system. IPFS is a distributed peer-to-peer file sharing tool. As opposed to a location based addresssing system (e.g. fetching data from a server by passing the server's address and file location on the server), IPFS uses a content identifier (CID) based approach. Each unique sequence of bytes is assigned a unique CID, which Iris uses to associate data with asset identifiers. See <a href="https://ipfs.tech/">here</a> for more information on IPFS.</p>
 <h3 id="react"><a class="header" href="#react">React</a></h3>
 <p>We use react to build the user interface to interact with our node. We specifically rely on the <code>polkadotjs</code> and <code>ipfs-http-core</code> libraries.</p>
+<h3 id="high-level-network-architecture"><a class="header" href="#high-level-network-architecture">High Level Network Architecture</a></h3>
+<p>Iris has a dual network topology. At one layer, the Iris nodes form an IPFS network, and at the other the Iris nodes themselves form a second network. As an example, our initial test network uses an architeture like the one below:</p>
+<p><img src="../resources/testnet_architecture_simple.drawio.png" alt="" /></p>
 
                     </main>
 
