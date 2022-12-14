@@ -149,7 +149,7 @@
 <h3 id="step-0-setup"><a class="header" href="#step-0-setup">Step 0: Setup</a></h3>
 <p>Run an IPFS node and an Iris node. Either build your own network or connect to the testnet (as per the <a href="./quick_setup.html">quick setup guide</a>). The only stipulation is that the network must have at least one proxy node and one gateway node availiable. Ensure that your IPFS node is properly configured as per the instructions <a href="../developers/development_guide.html#ipfs-installation-and-configuration">here</a>.</p>
 <h3 id="step-1-encryption"><a class="header" href="#step-1-encryption">Step 1: Encryption</a></h3>
-<p>In this first phase, we encrypt some plaintext using the <code>iris_encrypt</code> RPC endpoint exposed by each Iris node. The endpoint uses the umbral_pre TPRE library to generate new keys and encrypt your data. Subsequently, it sends an unsigned tx to include the generated 'capsule' and public key on-chain (see <a href="TODO">iris protocol</a> for more details). To allow a valid address to be authenticated and used for signing, the endpoint requires the caller to pass their account id along with a signature and signed message, which is used to recover the caller's account.</p>
+<p>In this first phase, we encrypt some plaintext using the <code>iris_encrypt</code> RPC endpoint exposed by each Iris node. The endpoint uses the umbral_pre TPRE library to generate new keys and encrypt your data. Subsequently, it sends an unsigned tx to include the generated 'capsule' and public key on-chain (see <a href="https://github.com/ideal-lab5/whitepaper/blob/main/IRIS_PROTOCOL_DRAFT_0.0.1.pdf">iris protocol</a> for more details). To allow a valid address to be authenticated and used for signing, the endpoint requires the caller to pass their account id along with a signature and signed message, which is used to recover the caller's account.</p>
 <p><strong>To choose a proxy node</strong> query the x25519_public_keys runtime storage map in the 'Authorities' pallet and choose any validator with a key.</p>
 <p>Messages can be signed with the polkadotJS library:</p>
 <pre><code class="language-javascript">import { stringToU8a, u8aToHex } from '@polkadot/util';
@@ -164,7 +164,6 @@ let sig_as_hex = u8aToHex(signature);
         .then(res =&gt; success_callback(res))
         .catch(err =&gt; error_callback(err));
 </code></pre>
-<p>For an example, see how we handle uploads in the <a href="TODO">iris-ui</a></p>
 <h3 id="step-2-add-ciphertext-to-ipfs"><a class="header" href="#step-2-add-ciphertext-to-ipfs">Step 2: Add ciphertext to IPFS</a></h3>
 <p>First, ensure that your IPFS node is properly configured by attempting to find a peer who is mapped to a known validator (using <code>ipfs dht findpeer &lt;peerID&gt;</code>). This data is available in the 'SubstrateIpfsBridge' runtime storage map in the IPFS pallet.</p>
 <p>Once the rpc call returns the generated ciphertext, the caller is responsible for choosing a gateway node and adding the ciphertext to an IFPS node that is reachable by the selected gateway. This would be handled within the <code>success_callback</code> that's called in the <code>then</code> block above by calling <code>ipfs add /path/to/ciphertext</code>. Once the data is in IPFS and the transaction submitted by the RPC call is encoded onchain, you can proceed to the next step.</p>
