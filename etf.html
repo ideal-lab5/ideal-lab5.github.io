@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Developers - iris</title>
+        <title>Math - etf-docs</title>
 
 
         <!-- Custom HTML head -->
@@ -30,8 +30,11 @@
 
         <!-- Custom theme stylesheets -->
 
+        <!-- MathJax -->
+        <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     </head>
     <body>
+    <div id="body-container">
         <!-- Provide site root to javascript -->
         <script>
             var path_to_root = "";
@@ -69,10 +72,12 @@
         <!-- Hide / unhide sidebar before it is displayed -->
         <script>
             var html = document.querySelector('html');
-            var sidebar = 'hidden';
+            var sidebar = null;
             if (document.body.clientWidth >= 1080) {
                 try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
                 sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
             }
             html.classList.remove('sidebar-visible');
             html.classList.add("sidebar-" + sidebar);
@@ -80,16 +85,38 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="quickstart.html"><strong aria-hidden="true">2.</strong> Quickstart</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="quickstart/tech_overview.html"><strong aria-hidden="true">2.1.</strong> Technical Overview</a></li><li class="chapter-item expanded "><a href="quickstart/quick_setup.html"><strong aria-hidden="true">2.2.</strong> Quick setup guide</a></li><li class="chapter-item expanded "><a href="quickstart/iris_overview.html"><strong aria-hidden="true">2.3.</strong> Iris Overview</a></li><li class="chapter-item expanded "><a href="quickstart/data_ingestion.html"><strong aria-hidden="true">2.4.</strong> Data Ingestion</a></li><li class="chapter-item expanded "><a href="quickstart/data_ejection.html"><strong aria-hidden="true">2.5.</strong> Data Ejection</a></li></ol></li><li class="chapter-item expanded "><a href="developers.html" class="active"><strong aria-hidden="true">3.</strong> Developers</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="developers/development_guide.html"><strong aria-hidden="true">3.1.</strong> Full Node Setup Guide</a></li><li class="chapter-item expanded "><a href="developers/nodes/ec2_setup.html"><strong aria-hidden="true">3.2.</strong> Configure a Hosted Node</a></li><li class="chapter-item expanded "><a href="developers/contracts.html"><strong aria-hidden="true">3.3.</strong> Contracts</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="developers/contracts/contracts_chain_extension.html"><strong aria-hidden="true">3.3.1.</strong> Chain Extension</a></li><li class="chapter-item expanded "><a href="developers/contracts/composable_access_rules.html"><strong aria-hidden="true">3.3.2.</strong> Composable Access Rule and Rule Executor</a></li><li class="chapter-item expanded "><a href="developers/contracts/contracts_asset_exchange.html"><strong aria-hidden="true">3.3.3.</strong> Iris Asset Exchange</a></li></ol></li><li class="chapter-item expanded "><a href="ui.html"><strong aria-hidden="true">3.4.</strong> Iris.js SDK</a></li></ol></li><li class="chapter-item expanded "><a href="reference.html"><strong aria-hidden="true">4.</strong> Reference</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="reference/pallets.html"><strong aria-hidden="true">4.1.</strong> Pallets</a></li></ol></li><li class="chapter-item expanded "><a href="glossary.html"><strong aria-hidden="true">5.</strong> Glossary</a></li><li class="chapter-item expanded "><a href="contact.html"><strong aria-hidden="true">6.</strong> Contact</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="overview.html"><strong aria-hidden="true">1.</strong> Overview</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="getting_started.html"><strong aria-hidden="true">1.1.</strong> Getting Started</a></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">2.</strong> Etf</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="architecture.html"><strong aria-hidden="true">2.1.</strong> Architecture</a></li><li class="chapter-item expanded "><a href="etf.html" class="active"><strong aria-hidden="true">2.2.</strong> Math</a></li><li class="chapter-item expanded "><a href="use_cases.html"><strong aria-hidden="true">2.3.</strong> Use Cases</a></li></ol></li><li class="chapter-item expanded "><a href="etf_monitor.html"><strong aria-hidden="true">3.</strong> Etf Monitor</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
+
+        <!-- Track and set sidebar scroll position -->
+        <script>
+            var sidebarScrollbox = document.querySelector('#sidebar .sidebar-scrollbox');
+            sidebarScrollbox.addEventListener('click', function(e) {
+                if (e.target.tagName === 'A') {
+                    sessionStorage.setItem('sidebar-scroll', sidebarScrollbox.scrollTop);
+                }
+            }, { passive: true });
+            var sidebarScrollTop = sessionStorage.getItem('sidebar-scroll');
+            sessionStorage.removeItem('sidebar-scroll');
+            if (sidebarScrollTop) {
+                // preserve sidebar scroll position when navigating via links within sidebar
+                sidebarScrollbox.scrollTop = sidebarScrollTop;
+            } else {
+                // scroll sidebar to current active section when navigating via "next/previous chapter" buttons
+                var activeSection = document.querySelector('#sidebar .active');
+                if (activeSection) {
+                    activeSection.scrollIntoView({ block: 'center' });
+                }
+            }
+        </script>
 
         <div id="page-wrapper" class="page-wrapper">
 
             <div class="page">
                                 <div id="menu-bar-hover-placeholder"></div>
-                <div id="menu-bar" class="menu-bar sticky bordered">
+                <div id="menu-bar" class="menu-bar sticky">
                     <div class="left-buttons">
                         <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
                             <i class="fa fa-bars"></i>
@@ -109,7 +136,7 @@
                         </button>
                     </div>
 
-                    <h1 class="menu-title">iris</h1>
+                    <h1 class="menu-title">etf-docs</h1>
 
                     <div class="right-buttons">
                         <a href="print.html" title="Print this book" aria-label="Print this book">
@@ -141,18 +168,48 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="developers"><a class="header" href="#developers">Developers</a></h1>
-<p>Information for developers to learn more about how iris works and how to develop apps on Iris.</p>
+                        <h1 id="encryption-to-the-future-the-math"><a class="header" href="#encryption-to-the-future-the-math">Encryption to the Future (the math)</a></h1>
+<p>The EtF network uses a slot-based consensus mechanism (Aura) and identity based encryption methods to associate an identity with each slot. The initial version of the network uses a simple approach for deriving keys, but which requires a significant amount of trust to be placed in each authority. Each authority is an IBE master secret key custodian and is made responsible for deriving and leaking IBE secret keys within each slot where they're an author. By encrypting to the public key associated with each slot, messages can be encrypted so that the decryption key is only made public when a block is authored in that slot.</p>
+<h2 id="how-it-works"><a class="header" href="#how-it-works">How it works</a></h2>
+<p>The encryption to the future (EtF) scheme consists of two PPT algorithms, \((Enc, Dec)\), such that:</p>
+<ul>
+<li>\( ct \leftarrow Enc(m, sl_k) \) for some future slot \(sl_k\) and a message \(m \in {0, 1}^*\). It outputs the ciphertext \(ct\).</li>
+<li>\(m' \leftarrow Dec(ct, sk_{S_k})\) where \(sk_{S_k}\) is the secret key (as in the derive phase of the IBE scheme) leaked in the block authored in slot \(sl_k\).</li>
+</ul>
+<p>By using IBE and DLEQ proofs, slot winners calculate a proof of knowledge of the master secret along with the derived slot secret, which they include in each block header. Block importers validate the DLEQ proof when importing blocks, ensuring that secrets are only included when they are provably valid. </p>
+<h3 id="identity-based-encryption"><a class="header" href="#identity-based-encryption">Identity Based Encryption</a></h3>
+<p>EtF uses a flavor of the <a href="https://crypto.stanford.edu/~dabo/papers/bfibe.pdf">Boneh-Franklin IBE scheme</a>. In brief, identity based encryption is a scheme were a message can be encrypted for an arbitrary string, rather than some specific public key. For example, a message could be encrypted for &quot;bob@encryptme.com&quot; so that only the owner of the identity &quot;bob@encryptme.com&quot; is able to decrypt the message. The BF-IBE consists of four PPT algorithms (Setup, Extract, Encrypt, Decrypt). In brief, these can be defined as:</p>
+<ul>
+<li>\(Setup(1^\lambda) \to (pp, mk)\) where \(\lambda\) is the security parameter, \(pp\) is the output (system) params and \(mk\) is the master key.</li>
+<li>\(Extract(mk, ID) \to sk_{ID}\) outputs the private key for \(ID\).</li>
+<li>\(Encrypt(pp, ID, m) \to ct\) outputs the ciphertext \(ct\) for any message \(m \in {0, 1}^*\).</li>
+<li>\(Decrypt(sk_{ID}, ct) \to m\) outputs the decrytped message \(m\)</li>
+</ul>
+<h3 id="dleq-proofs"><a class="header" href="#dleq-proofs">DLEQ Proofs</a></h3>
+<p>EtF uses DLEQ proofs to verify the correctness of slot secrets without exposing the master secret for the IBE. In brief, the DLEQ proof allows a prover to construct a proof that two group elements were calculated from the same secret (e.g. xH and xG were calculated from the same x) without exposing the secret. Our scheme uses DLEQ proofs to leak an IBE slot secret \(d = sQ\) without exposing the master key, s.</p>
+<p>The prover and verifier agree on two group generators, G and H and makes xG and xH publicly known. The goal is for the prover to demonstrate they know xG and xH were derived from the same x.</p>
+<p>First, the prover:</p>
+<ol>
+<li>chooses a random \(r \in Z_p\) and calculates \(R1 = rG, R2 = rH\).</li>
+<li>calculates the challenge value with a hash function \(c = H(R1, R2, xG, xH)\)</li>
+<li>calculates the proof of knowledge \(s = r + c* x\)</li>
+<li>shares \((R1, R2, s)\)</li>
+</ol>
+<p>With the agreed upon public parameters \(G, H\) and the proof \((R1, R2, s)\), a verifier can be convinced that the prover knows \(x\) without revealing it. The verifier:</p>
+<ol>
+<li>calculates the challenge value by hashing \(c = H(R1, R2, xG, xH)\)</li>
+<li>checks if \(c(xG) - sG == R1 &amp;&amp; c(xH) - sH == R2\). If both equalities are true, the proof is valid. otherwise, it is invalid.</li>
+</ol>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="quickstart/data_ejection.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="architecture.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next" href="developers/development_guide.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next" href="use_cases.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
 
@@ -162,11 +219,11 @@
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="quickstart/data_ejection.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="architecture.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next" href="developers/development_guide.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next" href="use_cases.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>
@@ -192,5 +249,6 @@
         <!-- Custom JS scripts -->
 
 
+    </div>
     </body>
 </html>

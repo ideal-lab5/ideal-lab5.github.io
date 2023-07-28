@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>iris</title>
+        <title>etf-docs</title>
         <meta name="robots" content="noindex" />
 
 
@@ -31,8 +31,11 @@
 
         <!-- Custom theme stylesheets -->
 
+        <!-- MathJax -->
+        <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     </head>
     <body>
+    <div id="body-container">
         <!-- Provide site root to javascript -->
         <script>
             var path_to_root = "";
@@ -70,10 +73,12 @@
         <!-- Hide / unhide sidebar before it is displayed -->
         <script>
             var html = document.querySelector('html');
-            var sidebar = 'hidden';
+            var sidebar = null;
             if (document.body.clientWidth >= 1080) {
                 try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
                 sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
             }
             html.classList.remove('sidebar-visible');
             html.classList.add("sidebar-" + sidebar);
@@ -81,16 +86,38 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="quickstart.html"><strong aria-hidden="true">2.</strong> Quickstart</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="quickstart/tech_overview.html"><strong aria-hidden="true">2.1.</strong> Technical Overview</a></li><li class="chapter-item expanded "><a href="quickstart/quick_setup.html"><strong aria-hidden="true">2.2.</strong> Quick setup guide</a></li><li class="chapter-item expanded "><a href="quickstart/iris_overview.html"><strong aria-hidden="true">2.3.</strong> Iris Overview</a></li><li class="chapter-item expanded "><a href="quickstart/data_ingestion.html"><strong aria-hidden="true">2.4.</strong> Data Ingestion</a></li><li class="chapter-item expanded "><a href="quickstart/data_ejection.html"><strong aria-hidden="true">2.5.</strong> Data Ejection</a></li></ol></li><li class="chapter-item expanded "><a href="developers.html"><strong aria-hidden="true">3.</strong> Developers</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="developers/development_guide.html"><strong aria-hidden="true">3.1.</strong> Full Node Setup Guide</a></li><li class="chapter-item expanded "><a href="developers/nodes/ec2_setup.html"><strong aria-hidden="true">3.2.</strong> Configure a Hosted Node</a></li><li class="chapter-item expanded "><a href="developers/contracts.html"><strong aria-hidden="true">3.3.</strong> Contracts</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="developers/contracts/contracts_chain_extension.html"><strong aria-hidden="true">3.3.1.</strong> Chain Extension</a></li><li class="chapter-item expanded "><a href="developers/contracts/composable_access_rules.html"><strong aria-hidden="true">3.3.2.</strong> Composable Access Rule and Rule Executor</a></li><li class="chapter-item expanded "><a href="developers/contracts/contracts_asset_exchange.html"><strong aria-hidden="true">3.3.3.</strong> Iris Asset Exchange</a></li></ol></li><li class="chapter-item expanded "><a href="ui.html"><strong aria-hidden="true">3.4.</strong> Iris.js SDK</a></li></ol></li><li class="chapter-item expanded "><a href="reference.html"><strong aria-hidden="true">4.</strong> Reference</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="reference/pallets.html"><strong aria-hidden="true">4.1.</strong> Pallets</a></li></ol></li><li class="chapter-item expanded "><a href="glossary.html"><strong aria-hidden="true">5.</strong> Glossary</a></li><li class="chapter-item expanded "><a href="contact.html"><strong aria-hidden="true">6.</strong> Contact</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="overview.html"><strong aria-hidden="true">1.</strong> Overview</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="getting_started.html"><strong aria-hidden="true">1.1.</strong> Getting Started</a></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">2.</strong> Etf</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="architecture.html"><strong aria-hidden="true">2.1.</strong> Architecture</a></li><li class="chapter-item expanded "><a href="etf.html"><strong aria-hidden="true">2.2.</strong> Math</a></li><li class="chapter-item expanded "><a href="use_cases.html"><strong aria-hidden="true">2.3.</strong> Use Cases</a></li></ol></li><li class="chapter-item expanded "><a href="etf_monitor.html"><strong aria-hidden="true">3.</strong> Etf Monitor</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
+
+        <!-- Track and set sidebar scroll position -->
+        <script>
+            var sidebarScrollbox = document.querySelector('#sidebar .sidebar-scrollbox');
+            sidebarScrollbox.addEventListener('click', function(e) {
+                if (e.target.tagName === 'A') {
+                    sessionStorage.setItem('sidebar-scroll', sidebarScrollbox.scrollTop);
+                }
+            }, { passive: true });
+            var sidebarScrollTop = sessionStorage.getItem('sidebar-scroll');
+            sessionStorage.removeItem('sidebar-scroll');
+            if (sidebarScrollTop) {
+                // preserve sidebar scroll position when navigating via links within sidebar
+                sidebarScrollbox.scrollTop = sidebarScrollTop;
+            } else {
+                // scroll sidebar to current active section when navigating via "next/previous chapter" buttons
+                var activeSection = document.querySelector('#sidebar .active');
+                if (activeSection) {
+                    activeSection.scrollIntoView({ block: 'center' });
+                }
+            }
+        </script>
 
         <div id="page-wrapper" class="page-wrapper">
 
             <div class="page">
                                 <div id="menu-bar-hover-placeholder"></div>
-                <div id="menu-bar" class="menu-bar sticky bordered">
+                <div id="menu-bar" class="menu-bar sticky">
                     <div class="left-buttons">
                         <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
                             <i class="fa fa-bars"></i>
@@ -110,7 +137,7 @@
                         </button>
                     </div>
 
-                    <h1 class="menu-title">iris</h1>
+                    <h1 class="menu-title">etf-docs</h1>
 
                     <div class="right-buttons">
                         <a href="print.html" title="Print this book" aria-label="Print this book">
@@ -142,622 +169,139 @@
 
                 <div id="content" class="content">
                     <main>
-                        <p>This is the official documentation for <a href="https://github.com/ideal-lab5/iris">Iris</a>, developed and maintained by <a href="https://idealabs.network">Ideal Labs</a>.</p>
-<p align="center">
-  <img width="600" height="600" src="./resources/iris_logo_small.png">
-</p>
-<p><code>This documentation and any information in it is subject to frequent and radical change as Iris is developed.</code></p>
-<h1 id="introduction"><a class="header" href="#introduction">Introduction</a></h1>
-<h2 id="what-is-iris"><a class="header" href="#what-is-iris">What is Iris?</a></h2>
-<p>Iris is a blockchain that enables a general purpose <strong>decentralized data exchange</strong>. It is infrastructure for the decentralized web, allowing for the development of decentralized applications where data sovereignty is preserved, data provenance is provable, and where decentralized governance and moderation without censorship is feasible. It is intended to enable transfer and monetization of access to and ownership of data across blockchains, smart contracts and participants in the network. </p>
-<h2 id="how-does-it-work"><a class="header" href="#how-does-it-work">How does it work?</a></h2>
-<p>Iris functions by building a <strong>cryptographically verifiable relationship</strong> between data ownership, access, and availability. Data ownership is treated as an on-chain asset class, which allows for the fractionalization of ownership of digital assets. Through a rule based, smart contract approach, data access models are <a href="./contracts/composable_access_rules.html">programmable</a> and fully transparent. The network implements a [secret sharing protocol](link here) that uses proxy reencryption and ECDH to provide security and ownership to your data. </p>
-<h2 id="key-features"><a class="header" href="#key-features">Key Features</a></h2>
+                        <h1 id="overview"><a class="header" href="#overview">Overview</a></h1>
+<p>EtF Network is a <a href="https://github.com/paritytech/substrate.git">Substrate</a>-based blockchain that utilizes identity-based encryption and zero knowledge proofs to enable &quot;encryption to the future.&quot; Encryption to the future, similar in idea to timelock encryption, uses a slot-based consensus system as a reference clock to which messages can be encrypted. Valid blocks authored in future slots contain the corresponding secret keys. The initial version of our network uses a fork of Aura to implement a PoA version of EtF.</p>
+<h2 id="getting-started"><a class="header" href="#getting-started">Getting Started</a></h2>
 <ul>
-<li>Provable Data Ownership and Provenance</li>
-<li>Fractionalized Ownership of Digital Assets</li>
-<li>Smart Contract Support and Programmable Data Access Models</li>
-<li>Data Security using Encryption and Decryption with proxy reencryption and ECDH</li>
-<li>Transparent Data Governance and Moderation Capabilities</li>
+<li>Learn about <a href="./architecture.html">how Etf works</a></li>
+<li>See the <a href="./getting_started.html">getting started guide</a> for an in-depth guide on running your own node.</li>
 </ul>
-<p>For a full breakdown of where we are in the implementation of these features, take a look at our <a href="./quickstart/development_status.html">roadmap</a>.</p>
-<h2 id="vision"><a class="header" href="#vision">Vision</a></h2>
-<p>We believe that decentralization of the web, tranisitioning from web2 to web3, is the optimal path moving forward, and that this ecosystem requires mechanisms to securely store, transport, and prove ownability, and that Iris provides the groundwork for a general decentralized data exhcange system. As such, we envision Iris as being a key enabler in a new class of decentralized applications that take advantage of provable data ownership and provenance to construct decentralized systems that fairly reward creators, consumers, and other participants in the system. We see Iris as providing a framework for inverting the present relationship between data creators and 'centralized platform providers', where rather than supplying data to a platform where the ownership is transferred, data creators are able to 'lease' their data to platforms or dapps using transparents governance, policies, and agreements.</p>
-<h2 id="partners"><a class="header" href="#partners">Partners</a></h2>
-<p><img src="./resources/web3_foundation_grants_badge_black.png" alt="sponsored by web3 foundation" /></p>
-<p>Read our w3f grant proposal <a href="https://github.com/w3f/Grants-Program/blob/master/applications/iris_followup.md">here</a></p>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="quickstart"><a class="header" href="#quickstart">Quickstart</a></h1>
-<p>Documentation on the inner workings of Iris and tutorials to get you up and running.</p>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="technical-overview"><a class="header" href="#technical-overview">Technical Overview</a></h1>
-<p>This is a brief overview of the core technologies used by the Iris blockchain.</p>
-<h2 id="tech-stack"><a class="header" href="#tech-stack">Tech Stack</a></h2>
-<h3 id="substrate"><a class="header" href="#substrate">Substrate</a></h3>
-<p>Iris is built using the substrate framework. Substrate is a blockchain framework built by parity. It provides the building blocks for creating a blockchain, including the database, consensus, rpc, and much more. Additionally, it also provides the opportunity to connect to a rely chain, allowing for Iris to be leveraged in the context of other blockchains. See <a href="https://docs.substrate.io/">here</a> for more information on the substrate framework.</p>
-<h3 id="ipfs"><a class="header" href="#ipfs">IPFS</a></h3>
-<p>Iris uses kubo (previously go-ipfs) for our 'hot' storage system. IPFS is a distributed peer-to-peer file sharing tool. As opposed to a location based addresssing system (e.g. fetching data from a server by passing the server's address and file location on the server), IPFS uses a content identifier (CID) based approach. Each unique sequence of bytes is assigned a unique CID, which Iris uses to associate data with asset identifiers. See <a href="https://ipfs.tech/">here</a> for more information on IPFS.</p>
-<h3 id="react"><a class="header" href="#react">React</a></h3>
-<p>We use react to build the user interface to interact with our node. We specifically rely on the <code>polkadotjs</code> and <code>ipfs-http-core</code> libraries.</p>
-<h3 id="high-level-network-architecture"><a class="header" href="#high-level-network-architecture">High Level Network Architecture</a></h3>
-<p>Iris has a dual network topology. At one layer, the Iris nodes form an IPFS network, and at the other the Iris nodes themselves form a second network. As an example, our initial test network uses an architeture like the one below:</p>
-<p><img src="quickstart/../resources/testnet_architecture_simple.drawio.png" alt="" /></p>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="iris-quickstart"><a class="header" href="#iris-quickstart">Iris Quickstart</a></h1>
-<p>This guide shows you the easiest way to get an iris node up and running.</p>
-<p>Note: Iris is designed specifically for linux based operating systems. If you are using Windows, it is heavily advised that you use wsl2 and install an Ubuntu distribution to run your node. It is not guaranteed to work on Windows.</p>
-<h2 id="prerequisites"><a class="header" href="#prerequisites">Prerequisites</a></h2>
+<h3 id="repos"><a class="header" href="#repos">Repos</a></h3>
 <ul>
-<li><a href="https://docs.docker.com/getdocker/">install Docker</a></li>
-<li><a href="https://docs.ipfs.tech/install/">install IPFS</a></li>
+<li><a href="https://github.com/ideal-lab5/substrate/tree/milestone1">Etf Network</a> The implementation of etf consensus along with the etf pallet.</li>
+<li><a href="https://github.com/ideal-lab5/etf-monitor">Etf Network Monitor</a> A simple React app using polkadotjs to decode block headers and display decoded slot secrets.</li>
 </ul>
-<h2 id="configure-ipfs"><a class="header" href="#configure-ipfs">Configure IPFS</a></h2>
-<p>First, we will configure IPFS so that it is reachable by our node and can be discovered in the DHT. This is a crucial step that will allow Iris to find your data. If not done correctly, you will not be able to interact with the data layer.</p>
-<pre><code class="language-bash"># fetch the swarm.key and copy it to your .ipfs folder
-wget https://raw.githubusercontent.com/ideal-lab5/iris/main/swarm.key
-# ensure your IPFS node is reachable
-ipfs config Addresses.API &quot;/ip4/0.0.0.0/tcp/5001&quot;
-ipfs config Addresses.Gateway &quot;/ip4/0.0.0.0/tcp/8080&quot;
-ipfs config --json API.HTTPHeaders.Access-Control-Allow-Origin &quot;[\&quot;*\&quot;]&quot;
-ipfs config --json API.HTTPHeaders.Access-Control-Allow-Credentials &quot;[\&quot;true\&quot;]&quot;
-# reconfigure bootstrap nodes
-ipfs bootstrap rm --all
-ipfs bootstrap add /ip4/18.118.65.202/tcp/4001/p2p/12D3KooWJ5wuqGnr6u8XV6FeBbP1MBBamUpavwfotRag2JnTrF9p
-# start the daemon
-ipfs daemon 
-# verify connection by listing peers (may have to be done in new terminal)
-ipfs swarm peers 
-</code></pre>
-<h2 id="run-iris"><a class="header" href="#run-iris">Run Iris</a></h2>
-<p>The code snippet below shows you how to run an Iris validator node using the well-known 'Alice' account, which is predefined in the 'development' chain spec. If you're interested in running from other chain specs (e.g. connecting to a testnet) or building your own, see the <a href="quickstart/../developers/development_guide.html#generating-a-custom-chain-spec">development guide</a></p>
-<pre><code class="language-bash"># pull the latest iris docker image
-docker pull ideallabs/iris
-# pull the latest chain spec
-wget https://raw.githubusercontent.com/ideal-lab5/iris/main/iris.json
-# run an iris node
-docker run --add-host host.docker.internal:host-gateway -p 9944:9944 -p 9933:9933 -p 30333:30333 -p 9615:9615 -v ~/iris.json:/mnt/iris.json -it --rm --name iris-node ideallabs/iris --chain=/mnt/iris.json --rpc-cors all --unsafe-ws-external --rpc-external --rpc-methods=unsafe
-</code></pre>
-<p>If you want to connect to a different chain, you can use <a href="quickstart/../developers/development_guide.html#generating-a-custom-chain-spec">your own chainspec</a> or specify the chain as <code>--chain=dev</code> or <code>--chain=local</code>, which are both available to all nodes.</p>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="iris-a-decentralized-data-sharing-network"><a class="header" href="#iris-a-decentralized-data-sharing-network">Iris: A decentralized data sharing network</a></h1>
-<p>The Iris blockchain implements the Iris protocol, which uses threshold proxy reencryption (TPRE) and elliptic curve Diffie-Hellman (ECDH) to secure data and delegate decryption rights to authorized nodes. What that means is a data owner can encrypt their data one time and deploy a contract that specifies conditions that must be met in order to be granted decryption rights (e.g. some number of tokens must be transferred), and data consumers who meet those conditions can authorized to decrypt and download the data with no interaction from the data owner. This is made possible through the TPRE system (umbral pre), wherein Iris validator nodes are made responsible for processing requests to reencrypt data for consumers when requested.</p>
-<h2 id="data-assets"><a class="header" href="#data-assets">Data Assets</a></h2>
-<p>In the context of Iris, an <strong>asset class</strong> is an owned 'class' that is able to mint <strong>assets</strong> from that class and distribute them to peers. At the bare minimum, each asset class has an owner and metadata, which defines an identifier, along with functionality to mint assets. Each asset class has an additional property, <code>supply</code>, which is the total number of assets minted from the class. For those familiar with EVM based smart contracts, asset classes behave similarly to an ERC20 contract, with coins minted by the ERC20 being synonymous with those minted from the asset class.</p>
-<p>Taking this one step further, we introduce the concept of a <code>data asset class</code>, which Iris uses to verify existence, ownership, and accessibility of data. A data asset class is an asset class mapped to a set of metadata which identifies some ciphertext, based on a <a href="quickstart/../glossary.html#cid">CID</a>, which has been verified as having been both properly encrypted and able to be decrypted by parties when they are authorized. In our network, data asset classes are (almost) never directly created by a data owner, but on their behalf by a 'gateway' node. The data asset class ties together data ingestion, encryption, and authorization into a cohesive cryptographically verifiable onchain entity. Further, it enables the fractionalization of data ownership (and fractionalization of rewards), the programmability of data access models, and more.</p>
-<h2 id="adding-data-and-creating-asset-classes"><a class="header" href="#adding-data-and-creating-asset-classes">Adding data and Creating Asset Classes</a></h2>
-<p>Data asset class creation is always preceded by data encryption, ciphertext ingestion, and finally gateway node ingestion and verification. Our data ingestion design relies on two new types of nodes: the proxy node, to enable the TPRE system, and the gateway node, which facilitates secure data ingestion and data asset class creation. Both types of nodes are required to be validator nodes prior to taking on one of these roles. In the diagram below, RPC represents the RPC endpoints exposed by an Iris node and OCW is the node's offchain worker.</p>
-<p><img src="quickstart/./data_ingestion_with_gateway.drawio.png" alt="data_ingestion" />
-Fig 1. Ingestion and Asset class creation</p>
-<p>In the figure above, you see a high level overview of how data encryption and ingestion functions. A potential 'data owner' invokes an RPC endpoint, iris_encrypt exposed by Iris to encrypt their data. Specifically, the endpoint accepts a signed message, signature, and signer account id, along with the plaintext to be encrypted and a proxy node's account id. In the present version of the network, any node who declares themselves as a proxy must accept any and all requests sent to it (in the next iteration of Iris, this will not be economically viable). The endpoint will verify the signature to recover the account id, then generate new keys, encrypt the plaintext, submit an unsigned transaction to submit encryption artifacts on-chain and finally, it returns the ciphertext to the caller. This process is more finely detailed in the Iris protocol <a href="https://github.com/ideal-lab5/whitepaper/blob/main/IRIS_PROTOCOL_DRAFT_0.0.1.pdf">whitepaper</a>. After adding the ciphertext to an IPFS node that's reachable by a gateway node, the data owner then calls an extrinsic to request that a gateway node verify the existence of their data and create a new data asset class on their behalf.</p>
-<h3 id="data-access-authorization"><a class="header" href="#data-access-authorization">Data Access Authorization</a></h3>
-<p>To make the process both non-interactive and transparent, we have exposed functionality through a chain extension that allows smart contracts to call into the Iris runtime to dictate if a node is or is not authorized to access some data. This is accomplished through the 'Authorization' pallet that exists as part of our runtime. </p>
-<h2 id="provisioning-data-access"><a class="header" href="#provisioning-data-access">Provisioning data access</a></h2>
-<p><img src="quickstart/./decryption.png" alt="cfrag-gen-and-decryption" /></p>
-<p>To provision access to data, an owner of a data asset class mints new assets from the asset class and registers an account id who is authorized to grant users access to data. This account id could potentially be yourself or another node, but to make the process non-interactive, predictable, and transparent, we have exposed functionality that allows smart contracts on Iris to be able to submit extrinsics that allow or deny access to callers (through the chain extension). We refer to contracts such as these as 'rule executors'. So the first step is for the data owner to register such a contract and for the data consumer to request access to data by calling some function in the contract that calls into Iris to authorize the user. 
-If the consumer is authorized, a new request will be encoded onchain to reencrypt the data for the consumer. The proxy node (defined on ingestion) generates new key fragments (see the Iris protocol paper) and distributes them to three randomly-chosen validator nodes (note: the number 'three' here is arbitrary, and we used three only because our testnet is small. This number could potentially scale with the number of validators available.). Once key fragments are distributed, each selected validator generates a new capsule fragment and encodes it on chain. Finally, the consumer can gather two (again, arbitrary) capsule fragments, and the reencryption key, and finally decrypt the data and download it. </p>
-<p>And with this, the data has been successfully exchanged from the original data owner to a data consumer who met all of the rules set by the owner.</p>
-<h1 id="data-spaces"><a class="header" href="#data-spaces">Data Spaces</a></h1>
-<h2 id="what-is-a-data-space"><a class="header" href="#what-is-a-data-space">What is a data space?</a></h2>
-<p>A data space is a user created and owned 'space' that data can be associated with. Data spaces allows nodes to group together disparate data sets based on ownership of the data asset classes that the data is associated with. A data space allows the owner to specify which nodes are authorized to associate data with their space. Data spaces form the basis for moderation within the network. You can think of it like a DAO, where membership to the DAO (owning an NFT) allows you to associate your data with it. Or in other terms, a 'Dataspace' is like a directory the is read-only for all users unless they have special write permission.</p>
-<p>For example, a dapp developer may want all data added to iris that should be associated with their application to be both easily found within Iris and also subject to additional checks specific to their application, such as only allowing certain types of file extensions or moderating data in some specific way (more on this in the moderation and governance section). By creating their own data space, the owner can authorize users of their dapp to associate data with the space.</p>
-<h2 id="the-role-of-dataspaces"><a class="header" href="#the-role-of-dataspaces">The Role of Dataspaces</a></h2>
-<p>Dataspaces allow dapp developers to have a modicum of control of what types of data is available within their applications and allows them to only allows data that they want. In essence, it provides the framework for moderation without censorship in a decentralized way. For example, suppose that you want to develop a decentralized marketplace to buy and sell the rights to music. Most likely, you would specifically only want files to be included in your marketplace if they are in specific formats for audio files (e.g. .mp3, .wav, etc). By creating a new dataspace, tokens can be minted and distributed to trusted nodes who must agree to the rules of the dataspace (e.g. only associating data with the given extension). If the rules are not followed, the node can be punished or access revoked, as per the rules of the dataspace. Presently, we have not yet designed or implemented the moderation or rule definition for dataspace members, however it will be part of the next iteration of Iris. </p>
-<h2 id="creating-a-data-space"><a class="header" href="#creating-a-data-space">Creating a Data Space</a></h2>
-<p>A data space is really an asset class mapped to a set of configuration items. The creation of a dataspace is the creation of a new asset class and an entry in the 'Dataspaces' storage map, which maps the dataspace id to the dataspaces metadata, which is just the name of the dataspace currently. </p>
-<h2 id="granting-access"><a class="header" href="#granting-access">Granting access</a></h2>
-<p>To grant access to your data space to another address in the network, mint new assets from the asset class and assign them to the given address. This can be done in several different ways with varying degress of control over how the holder of the asset can associate their own data assets the data space. In general, either the owner of the asset class can:</p>
-<ul>
-<li>lock transfers of the asset, meaning the holder cannot transfer it to any other accounts</li>
-<li>retain rights to revoke the asset, meaning the data space administrator can block previously authorized users</li>
-</ul>
-<p><img src="quickstart/../../resources/data_spaces.png" alt="data spaces" /></p>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="data-ingestion"><a class="header" href="#data-ingestion">Data Ingestion</a></h1>
-<p>This is a quick overview of how you can ingest data into the Iris network from a user interface and to create an owned data asset class. We won't go into details on specifics of the blockchain implementation or analyze runtime storage in this overview; if you're interested in a deeper look into the specifics take a look <a href="quickstart/../developers/data_assets.html">here</a>. Examples are provided on how to use the polkadotjs SDK to interact with Iris.</p>
-<p><em>Note:</em> In the current version of Iris, only validator nodes are able to ingest data into the network.</p>
-<h2 id="data-ingestion-workflow"><a class="header" href="#data-ingestion-workflow">Data ingestion workflow</a></h2>
-<p>Data ingestion in Iris works through a multi-phase process. First, the data needs to be encrypted through the <code>iris_encrypt</code> RPC endpoint, which results in some encryption artifacts being encoded onchain while the caller is responsible for adding the generated ciphertext to IPFS and making their IPFS node discoverable by the iris gateway node IPFS network. Once added to IPFS, the data owner then invokes an extrinsic to 'complete' the ingestion of their data. Essentially, this sends a request to a gateway node to verify the data is properly encrypted, artifacts exists, the data is owned by the caller, and finally creates an data asset class on behalf of the caller, and we are done. </p>
-<h3 id="step-0-setup"><a class="header" href="#step-0-setup">Step 0: Setup</a></h3>
-<p>Run an IPFS node and an Iris node. Either build your own network or connect to the testnet (as per the <a href="quickstart/./quick_setup.html">quick setup guide</a>). The only stipulation is that the network must have at least one proxy node and one gateway node availiable. Ensure that your IPFS node is properly configured as per the instructions <a href="quickstart/../developers/development_guide.html#ipfs-installation-and-configuration">here</a>.</p>
-<h3 id="step-1-encryption"><a class="header" href="#step-1-encryption">Step 1: Encryption</a></h3>
-<p>In this first phase, we encrypt some plaintext using the <code>iris_encrypt</code> RPC endpoint exposed by each Iris node. The endpoint uses the umbral_pre TPRE library to generate new keys and encrypt your data. Subsequently, it sends an unsigned tx to include the generated 'capsule' and public key on-chain (see <a href="https://github.com/ideal-lab5/whitepaper/blob/main/IRIS_PROTOCOL_DRAFT_0.0.1.pdf">iris protocol</a> for more details). To allow a valid address to be authenticated and used for signing, the endpoint requires the caller to pass their account id along with a signature and signed message, which is used to recover the caller's account.</p>
-<p><strong>To choose a proxy node</strong> query the x25519_public_keys runtime storage map in the 'Authorities' pallet and choose any validator with a key.</p>
-<p>Messages can be signed with the polkadotJS library:</p>
-<pre><code class="language-javascript">import { stringToU8a, u8aToHex } from '@polkadot/util';
-// connect to node, create keyring and get 'account'
-let message = 'random message';
-let signature = account.sign(stringToU8a(message));
-// convert the signature to hex before calling extrinsic
-let sig_as_hex = u8aToHex(signature);
-</code></pre>
-<p>You can then call the iris_encrypt RPC with</p>
-<pre><code class="language-javascript"> await api.rpc.iris.encrypt(plaintext, signature, signer, message, proxy)
-        .then(res =&gt; success_callback(res))
-        .catch(err =&gt; error_callback(err));
-</code></pre>
-<h3 id="step-2-add-ciphertext-to-ipfs"><a class="header" href="#step-2-add-ciphertext-to-ipfs">Step 2: Add ciphertext to IPFS</a></h3>
-<p>First, ensure that your IPFS node is properly configured by attempting to find a peer who is mapped to a known validator (using <code>ipfs dht findpeer &lt;peerID&gt;</code>). This data is available in the 'SubstrateIpfsBridge' runtime storage map in the IPFS pallet.</p>
-<p>Once the rpc call returns the generated ciphertext, the caller is responsible for choosing a gateway node and adding the ciphertext to an IFPS node that is reachable by the selected gateway. This would be handled within the <code>success_callback</code> that's called in the <code>then</code> block above by calling <code>ipfs add /path/to/ciphertext</code>. Once the data is in IPFS and the transaction submitted by the RPC call is encoded onchain, you can proceed to the next step.</p>
-<h3 id="step-2-specify-gateway-node-and-complete-request"><a class="header" href="#step-2-specify-gateway-node-and-complete-request">Step 2: Specify gateway node and complete request</a></h3>
-<p>Here we make a request to a gateway node to verify and ingest our data and to create a data asset class.
-To do so, select a gateway node and call the <code>create_request</code> extrinsic exposed by the DataAssets FRAME pallet. This is the fist paid transaction for the caller, where they must pay the transaction fees as well as supply reserve currency to the requested gateway as incentive to process the transaction. Furturistically, we intent to add functionality to increase the priority of requests and to kill requests entirely. </p>
-<p>Using the polkadotjs SDK, this can be called as:</p>
-<pre><code class="language-javascript">await api.tx.dataAssets.createRequest(gatewayAddress, gatewayReserveAmount, cid, multiaddress, existentialDeposit)
-    .signAndSend(account, result =&gt; {
-        if (result.status.isInBlock) {
-            isInBlockCallback(result);
-        } else if (result.status.isFinalize) {
-            isFinalizedCallback(result);
-        }
-    });
-</code></pre>
-<h3 id="step-3-done"><a class="header" href="#step-3-done">Step 3: Done!</a></h3>
-<p>If the gateway is able to successfully verify and ingest your data, then it will create a new data asset class on your behalf. See <a href="quickstart/../developers/nodes/gateway_node.html#asset_id_generation">here</a> for details on how asset ids are generated. </p>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="data-ejection"><a class="header" href="#data-ejection">Data Ejection</a></h1>
-<h2 id="step-1-configure-data-authorization-mechanism"><a class="header" href="#step-1-configure-data-authorization-mechanism">Step 1: Configure Data Authorization Mechanism</a></h2>
-<p>In this initial step, the data owner is responsible for configuring a mechanism to authorize access to their data. Through the 'Authorization' pallet, a data owner can register an account id with their asset id, delegating that account id the ability to grant data access to other participants in the network. There is no limitation, only that it be a valida account id. The simplest way to do this is to register your own id, in which case you would have to manually approve requests to access the data. Another approach would be to deploy a rule executor contract (or use one that is already deployed) to the chain and to register the contract's address withy our asset id. This will let you configure any conditions that you want a potential consumer to meet and also setup the mechanisms needed to automatically verify these conditions. </p>
-<p>To deploy a contract, we use the polkadotJS user interface and the Contracts pallet. For more info, see th e guide written by Parity <a href="https://wiki.polkadot.network/docs/build-smart-contracts">here</a>. You can read more about composable access rules and rule executors <a href="quickstart/../developers/contracts/composable_access_rules.html">here</a> for more information.</p>
-<h2 id="step-2-generate-keys"><a class="header" href="#step-2-generate-keys">Step 2: Generate Keys</a></h2>
-<p>During the data reencryption process, a proxy node generates a new keypair whose secret must be known (along with recovered capsule fragments) at the time of decryption. To secure this secret key, we allow the data consumer to pass a 32-byte public key built on curve 25519 that will be used to encrypt the newly generated secret. The corresponding secret key will be needed when we call decrypt in step 4.</p>
-<p>Using javascript, the easiest way to generate the keypair is with tweetnacl:</p>
-<pre><code class="language-javascript">const tweetnacl = require('tweetnacl');
-let keyPair = tweetnacl.box.keyPair();
-</code></pre>
-<h2 id="step-3-invoke-contract"><a class="header" href="#step-3-invoke-contract">Step 3: Invoke Contract</a></h2>
-<p>As a consumer, the registered rule executor is retrievable via the <code>Regsistry</code> runtime storage map in the 'Authorization' pallet.</p>
-<p>Call the contract, passing your newly generated public key and the asset id of the asset </p>
-<h2 id="step-4-decrypt-and-download-data"><a class="header" href="#step-4-decrypt-and-download-data">Step 4: Decrypt and Download data</a></h2>
-<p>In this final step, we finally decrypt ciphertext with the <code>iris_decrypt</code> RPC and then download the decrypted plaintext. We will also use the secret key from the keypair generated in step 2. </p>
-<p>First, ensure that the ciphertext is available in your IPFS instance (i.e. ensure <code>ipfs get &lt;CID&gt;</code> returns a value)</p>
-<p>Then, the <code>iris_decrypt</code> RPC endpoint can be invoked with the following, where the message signing is the same process as when we <a href="quickstart/./data_ingestion.html#step-1-encryption">called the iris_encrypt rpc</a>.</p>
-<pre><code class="language-javascript">await api.rpc.iris.decrypt(ciphertext, signature, signer, message, assetId, secretKey)
-    .then(res =&gt; successCallback(res))
-    .catch(err =&gt; errorCallback(err));
-</code></pre>
-<p>And Voila! If successful, then the plaintext is recovered!</p>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="developers"><a class="header" href="#developers">Developers</a></h1>
-<p>Information for developers to learn more about how iris works and how to develop apps on Iris.</p>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="getting-started"><a class="header" href="#getting-started">Getting Started</a></h1>
-<p>This is a minimal guide on how to build and run a full Iris node <em>locally</em>, both from docker and sources. For a full guide on properly setting up an hosted Iris node, see <a href="developers/../nodes/ec2_setup.html">here</a> </p>
-<h2 id="building"><a class="header" href="#building">Building</a></h2>
-<h3 id="prerequisites-1"><a class="header" href="#prerequisites-1">Prerequisites</a></h3>
-<ul>
-<li><a href="https://www.rust-lang.org/tools/install">Install Rust</a> and dependencies</li>
-</ul>
-<pre><code class="language-bash">curl https://sh.rustup.rs -sSf | sh
-rustup update
-sudo apt install build-essential git clang libclang-dev pkg-config libssl-dev
-</code></pre>
-<ul>
-<li><a href="developers/development_guide.html#ipfs-installation-and-configuration">Install and Configure IPFS</a></li>
-</ul>
-<h3 id="build"><a class="header" href="#build">Build</a></h3>
-<p>Clone the main repo and build the node. This can take up to 10 minutes.</p>
-<pre><code class="language-bash">git clone https://github.com/ideal-lab5/iris.git
-cd iris
+<h2 id="contact"><a class="header" href="#contact">Contact</a></h2>
+<p>driemworks@idealabs.network
+https://idealabs.network</p>
+<h2 id="license"><a class="header" href="#license">License</a></h2>
+<p>These docs and the code for both etf-network and etf-monitor are licensed as GPlv3.0.</p>
+<p>This project is sponsored by a <a href="https://github.com/ideal-lab5/Grants-Program/blob/master/applications/cryptex.md">web3 foundation grant</a>. The work presented here represents the first milestone of the grant.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="getting-started-1"><a class="header" href="#getting-started-1">Getting Started</a></h1>
+<p>EtF Network is a substrate based blockchain. In general, all commands that work with the default CLI implemented in substrate are compatible with this blockchain.</p>
+<h2 id="setup"><a class="header" href="#setup">Setup</a></h2>
+<h3 id="installation"><a class="header" href="#installation">Installation</a></h3>
+<p>To build the blockchain locally:</p>
+<pre><code class="language-bash"># clone substrate and checkout milestone1 branch
+git clone git@github.com:ideal-lab5/substrate.git
+cd substrate
+git checkout milestone1
+# nightly build
 cargo +nightly build --release
 </code></pre>
-<h4 id="run"><a class="header" href="#run">Run</a></h4>
-<pre><code class="language-bash"># purge the local chain data
-./target/release/node-template purge-chain --base-path /tmp/alice --dev -y
-# run the build
-./target/release/iris-node \
-  --base-path /tmp/alice \
-  --dev \
-  --alice \
-  --port 30333 \
-  --ws-port 9944 \
-  --rpc-port 9933 \
-  --rpc-cors all \
-  --ws-external \
-  --rpc-external \
-  --rpc-methods=unsafe \
-  --validator \
-  --node-key 0000000000000000000000000000000000000000000000000000000000000001
+<p>(Optional) Setup the <a href="./etf_monitor.html">Etf monitor tool</a></p>
+<h3 id="run"><a class="header" href="#run">Run</a></h3>
+<p><strong>From Sources</strong>
+As previously stated, all default substrate commands will work. For example, to run the blockchain in dev mode as Alice, use:</p>
+<pre><code class="language-bash">./target/release/node-template --tmp --dev --alice
 </code></pre>
-<p>Note: to specify a bootnode, use the bootnodes parameter. ex: <code>--bootnodes /ip4/127.0.0.1/tcp/30333/p2p/12D3KooWEdUQFXhAF4fu9hqRTWqsigioyjatRKRZ7mwyQCBoWyK3</code></p>
-<h3 id="run-from-docker"><a class="header" href="#run-from-docker">Run from Docker</a></h3>
-<h4 id="prerequisites-2"><a class="header" href="#prerequisites-2">Prerequisites</a></h4>
-<ul>
-<li><a href="https://docs.docker.com/getdocker/">install Docker</a></li>
-</ul>
-<p>Install from the docker hub
-<code>docker pull ideallabs/iris</code></p>
-<p><strong>OR</strong></p>
-<p>From the latest sources, build the docker image:
-<code>docker build -t ideallabs/iris -f /Dockerfile .</code></p>
-<h4 id="run-1"><a class="header" href="#run-1">Run</a></h4>
-<pre><code class="language-bash"># run as validator node (e.g. first node)
-docker run -p 9944:9944 \
-  -p 9933:9933 \
-  -p 30333:30333 \
-  -p 9615:9615 \
-  -it \
-  --rm \
-  --name iris-alice \
-  ideallabs/iris \
-  --dev --ws-external --rpc-external --validator --alice \
-  --node-key 0000000000000000000000000000000000000000000000000000000000000001
-</code></pre>
-<h2 id="interacting-with-your-node"><a class="header" href="#interacting-with-your-node">Interacting with your node</a></h2>
-<p>See <a href="developers/../developers/data_ingestion/md">here</a> for a more in depth treatment of </p>
-<h3 id="ipfs-installation-and-configuration"><a class="header" href="#ipfs-installation-and-configuration">IPFS Installation and Configuration</a></h3>
-<ul>
-<li><a href="https://docs.ipfs.tech/install/">install IPFS</a> and configure</li>
-</ul>
-<pre><code class="language-bash">wget https://dist.ipfs.io/kubo/v0.14.0/kubo_v0.14.0_linux-amd64.tar.gz
-tar -xvzf kubo_v0.14.0_linux-amd64.tar.gz
-cd kubo
-sudo bash install.sh
-ipfs --version
-</code></pre>
-<p>Update your ipfs configuration to specify the IPFS bootstrap nodes exposed by the testnet. This step will allow Iris gateway nodes to find your data.</p>
-<p>First, ensure that your ipfs node is reachable </p>
-<pre><code class="language-bash">ipfs config Addresses.API &quot;/ip4/0.0.0.0/tcp/5001&quot;
-ipfs config Addresses.Gateway &quot;/ip4/0.0.0.0/tcp/8080&quot;
-ipfs config --json API.HTTPHeaders.Access-Control-Allow-Origin &quot;[\&quot;*\&quot;]&quot;
-ipfs config --json API.HTTPHeaders.Access-Control-Allow-Credentials &quot;[\&quot;true\&quot;]&quot;
-</code></pre>
-<p>This step is optional. Generally, finding peers in the IPFS DHT is rather slow. Due to this, using a public IPFS network can mean that the calls to find data take a very long time, which causes validator nodes to be  removed from the validator set. Due to this, it is recommended that you either use the <a href="https://raw.githubusercontent.com/ideal-lab5/iris/main/swarm.key">swarm.key</a> in use by Iris or generate your own.</p>
-<p>Generate a swarm key:</p>
-<pre><code class="language-bash">echo -e &quot;/key/swarm/psk/1.0.0/\n/base16/\n`tr -dc 'a-f0-9' &lt; /dev/urandom | head -c64`&quot; &gt; ~/.ipfs/swarm.key
-</code></pre>
-<p>and share the generated file with each validator in your testnet.</p>
-<p>Now, configure Available bootstrap nodes are available in the 'bootstrap nodes' runtime storage map in the ipfs pallet.</p>
-<pre><code class="language-bash"># fetch the swarm.key and copy it to your .ipfs folder
-wget https://raw.githubusercontent.com/ideal-lab5/iris/main/swarm.key
-# reconfigure bootstrap nodes
-ipfs bootstrap rm --all
-# replace the 
-ipfs bootstrap add /ip4/&lt;ip address&gt;/tcp/4001/p2p/&lt;peerID&gt;
-</code></pre>
-<h2 id="generating-a-custom-chain-spec"><a class="header" href="#generating-a-custom-chain-spec">Generating a custom chain spec</a></h2>
-<pre><code class="language-bash">cargo +nightly build --release
-./target/release/iris-node build-spec --chain=dev --raw --disable-default-bootnode &gt; iris.json
+<p><strong>From Docker</strong></p>
+<p>The latest docker image can be found <a href="https://hub.docker.com/r/ideallabs/etf">here</a></p>
+<pre><code class="language-bash">docker pull ideallabs/etf
+docker run &lt;image&gt;
 </code></pre>
 <h2 id="testing"><a class="header" href="#testing">Testing</a></h2>
-<p>Run the unit tests with <code>cargo +nightly test iris</code>.</p>
-<h2 id="guidelines"><a class="header" href="#guidelines">Guidelines</a></h2>
-<p>We aim for a minimum of 80% coverage on new code.</p>
-<h2 id="manual-testing"><a class="header" href="#manual-testing">Manual Testing</a></h2>
-<p>Our manual testing approach largely consists of invoking extrinsics and checking runtime storage. We do this using the polkadot UI:
-https://polkadot.js.org/apps/</p>
-<h3 id="useful-tools"><a class="header" href="#useful-tools">Useful Tools</a></h3>
-<h4 id="calling-substrate-rpc-endpoints"><a class="header" href="#calling-substrate-rpc-endpoints">Calling substrate RPC endpoints</a></h4>
-<p>To convert strings to hex, I like this tool:
-https://onlinestringtools.com/convert-string-to-hexadecimal</p>
-<h4 id="querying-substrate-storage"><a class="header" href="#querying-substrate-storage">Querying Substrate Storage</a></h4>
-<p>https://www.shawntabrizi.com/substrate-js-utilities/</p>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="setup-a-full-iris-node-on-an-amazon-aws-ec2"><a class="header" href="#setup-a-full-iris-node-on-an-amazon-aws-ec2">Setup a full Iris node on an Amazon AWS EC2</a></h1>
-<p>This document explains how to run a full Iris node an AWS EC2 instance running Amazon Linux 2. This guide can also apply to most substrate based nodes, with the IPFS specific steps beings extreneous. If you just want to get to the script, it's <a href="developers/nodes/../resources/scripts/ec2_setup.sh">here</a>.</p>
-<h2 id="create-an-ec2-instance"><a class="header" href="#create-an-ec2-instance">Create an EC2 instance</a></h2>
-<p>Create an EC2 instance with the amazon linux 2 AMI. We used a t2.micro.</p>
-<h3 id="configuring-security-groups"><a class="header" href="#configuring-security-groups">Configuring Security Groups</a></h3>
-<p>Iris uses ports 9933, 9944, 9615, and 30333, so you must allow inbound/outbound traffic on those ports at least.</p>
-<p>Additionally, if you're running the IPFS node as well, you can choose to allow the IPFS gateawy to be exposed from your instance as well by exposing the proper ports (default 8080).</p>
-<h3 id="setup-elastic-ip-optional"><a class="header" href="#setup-elastic-ip-optional">Setup Elastic IP (optional)</a></h3>
-<p>You'll find it useful to allocate an elastic IP to your EC2 instance. It's not required, but will save you time in the future to avoid your instance's IP changing. </p>
-<h2 id="installing-prerequisites"><a class="header" href="#installing-prerequisites">Installing Prerequisites</a></h2>
-<p>The following is a breakdown of the different components that are required and how to install and configure them. They are encompassed within the <code>ec2_setup.sh</code> script. To install from the script, run:</p>
-<pre><code class="language-bash">wget https://raw.githubusercontent.com/ideal-lab5/iris-docs/master/src/resources/scripts/ec2_setup.sh
-sudo chmod 744 ec2_setup.sh
-./ec2_setup.sh
-sudo rm ec2_setup.sh
-</code></pre>
-<h3 id="update-instance"><a class="header" href="#update-instance">Update instance</a></h3>
-<p>Update the EC2 instance's libraries to the latest versions.</p>
-<pre><code class="language-bash">sudo yum update -y
-sudo yum upgrade -y
-</code></pre>
-<h2 id="ipfs-installation-and-configuration-1"><a class="header" href="#ipfs-installation-and-configuration-1">IPFS Installation and Configuration</a></h2>
-<p>The first thing we will do is install IPFS. </p>
-<pre><code class="language-bash">wget https://dist.ipfs.io/kubo/v0.14.0/kubo_v0.14.0_linux-amd64.tar.gz
-tar -xvzf kubo_v0.14.0_linux-amd64.tar.gz
-cd kubo
-sudo bash install.sh
-ipfs --version
-</code></pre>
-<h3 id="configure-ipfs-1"><a class="header" href="#configure-ipfs-1">Configure IPFS</a></h3>
-<p>See <a href="developers/nodes/../development_guide.html#ipfs-configuration">here</a>.</p>
-<h3 id="setup-as-service"><a class="header" href="#setup-as-service">Setup as Service</a></h3>
-<p>Finally, setup IPFS as a system service. Doing this will allow you to enable IPFS to start when the instance starts. This is optional, however doing so is a good practice.</p>
+<h3 id="unit-tests"><a class="header" href="#unit-tests">unit tests</a></h3>
+<p><code>cargo +nightly test</code></p>
+<h3 id="benchmarks"><a class="header" href="#benchmarks">Benchmarks</a></h3>
+<p>first build with <code>cargo +nightly build --profile=production --features runtime-benchmarks</code></p>
+<p>run benchmark tests with
+<code> cargo test --package pallet-etf --features runtime-benchmarks</code></p>
+<p>Once built, run benchmarks against compiled runtime with:</p>
+<p>list available benchmarks:
+./target/production/node-template benchmark pallet --chain dev --pallet &quot;<em>&quot; --extrinsic &quot;</em>&quot; --repeat 0</p>
+<p>./target/production/node-template benchmark pallet <br />
+--chain dev <br />
+--wasm-execution=compiled <br />
+--pallet pallet_etf <br />
+--extrinsic &quot;*&quot; <br />
+--steps 50 <br />
+--repeat 20 <br />
+--output bin/node-template/pallets/etf/src/weight.rs</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="etf-network-architecture"><a class="header" href="#etf-network-architecture">EtF Network Architecture</a></h1>
+<p>ETF network is based on Aura consensus, a round-robin PoA (Proof of Authority) slot-based consensus mechanism. It utilizes DLEQ (Discrete Logarithm Equality) proofs to create BLS (Boneh-Lynn-Shacham) IBE (Identity-Based Encryption) block seals. Block importers verify the validity of the DLEQ proof when importing each block.</p>
+<p>We also introduce the EtF pallet, which stores public parameters for the identity based encryption scheme. The pallet uses arkworks to ensure parameters stored in the runtime are decodable as valid group elements.</p>
+<p>The AuraAPI has been enhanced to deliver IBE parameters and secret keys to both block proposers and block verifiers, facilitating a more efficient and secure block proposal and verification process.</p>
+<h2 id="pallets"><a class="header" href="#pallets">Pallets</a></h2>
+<p><img src="./assets/pallets_overview_architecture.png" alt="pallets overview" /></p>
+<h2 id="encryption-to-the-future"><a class="header" href="#encryption-to-the-future">Encryption to the Future</a></h2>
+<p>Here we present a high-level overview of how EtF works. For a more in depth look, jump to the <a href="./etf.html">math</a></p>
+<p>The initial version of the network uses a fork of Aura, a round-robin proof of authority consensus mechanism. Each authority knows the same secret, the IBE master secret which makes the identity based encryption scheme work (more on this <a href="">here</a>). They are trusted to act as a secret key custodian (a requirement we will relax in the future).  When a slot author proposes a block, they first use the master secret to calculate a slot secret, which they add to the block header. This slot secret is intended to be <strong>leaked</strong> and made public. Next, in order to ensure the correctness of the secret to be leaked, block producers include a DLEQ proof that shows the slot secret was correctly calculated. Along with this, they also sign the block as usual. </p>
+<p>Block importers simply fetch the public IBE parameters from the EtF pallet and use it to verify the DLEQ proof. If the DLEQ proof is not valid, the block is rejected. </p>
+<p><img src="./assets/high_level_flow_of_data.drawio.png" alt="high-level" /></p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="encryption-to-the-future-the-math"><a class="header" href="#encryption-to-the-future-the-math">Encryption to the Future (the math)</a></h1>
+<p>The EtF network uses a slot-based consensus mechanism (Aura) and identity based encryption methods to associate an identity with each slot. The initial version of the network uses a simple approach for deriving keys, but which requires a significant amount of trust to be placed in each authority. Each authority is an IBE master secret key custodian and is made responsible for deriving and leaking IBE secret keys within each slot where they're an author. By encrypting to the public key associated with each slot, messages can be encrypted so that the decryption key is only made public when a block is authored in that slot.</p>
+<h2 id="how-it-works"><a class="header" href="#how-it-works">How it works</a></h2>
+<p>The encryption to the future (EtF) scheme consists of two PPT algorithms, \((Enc, Dec)\), such that:</p>
+<ul>
+<li>\( ct \leftarrow Enc(m, sl_k) \) for some future slot \(sl_k\) and a message \(m \in {0, 1}^*\). It outputs the ciphertext \(ct\).</li>
+<li>\(m' \leftarrow Dec(ct, sk_{S_k})\) where \(sk_{S_k}\) is the secret key (as in the derive phase of the IBE scheme) leaked in the block authored in slot \(sl_k\).</li>
+</ul>
+<p>By using IBE and DLEQ proofs, slot winners calculate a proof of knowledge of the master secret along with the derived slot secret, which they include in each block header. Block importers validate the DLEQ proof when importing blocks, ensuring that secrets are only included when they are provably valid. </p>
+<h3 id="identity-based-encryption"><a class="header" href="#identity-based-encryption">Identity Based Encryption</a></h3>
+<p>EtF uses a flavor of the <a href="https://crypto.stanford.edu/~dabo/papers/bfibe.pdf">Boneh-Franklin IBE scheme</a>. In brief, identity based encryption is a scheme were a message can be encrypted for an arbitrary string, rather than some specific public key. For example, a message could be encrypted for &quot;bob@encryptme.com&quot; so that only the owner of the identity &quot;bob@encryptme.com&quot; is able to decrypt the message. The BF-IBE consists of four PPT algorithms (Setup, Extract, Encrypt, Decrypt). In brief, these can be defined as:</p>
+<ul>
+<li>\(Setup(1^\lambda) \to (pp, mk)\) where \(\lambda\) is the security parameter, \(pp\) is the output (system) params and \(mk\) is the master key.</li>
+<li>\(Extract(mk, ID) \to sk_{ID}\) outputs the private key for \(ID\).</li>
+<li>\(Encrypt(pp, ID, m) \to ct\) outputs the ciphertext \(ct\) for any message \(m \in {0, 1}^*\).</li>
+<li>\(Decrypt(sk_{ID}, ct) \to m\) outputs the decrytped message \(m\)</li>
+</ul>
+<h3 id="dleq-proofs"><a class="header" href="#dleq-proofs">DLEQ Proofs</a></h3>
+<p>EtF uses DLEQ proofs to verify the correctness of slot secrets without exposing the master secret for the IBE. In brief, the DLEQ proof allows a prover to construct a proof that two group elements were calculated from the same secret (e.g. xH and xG were calculated from the same x) without exposing the secret. Our scheme uses DLEQ proofs to leak an IBE slot secret \(d = sQ\) without exposing the master key, s.</p>
+<p>The prover and verifier agree on two group generators, G and H and makes xG and xH publicly known. The goal is for the prover to demonstrate they know xG and xH were derived from the same x.</p>
+<p>First, the prover:</p>
 <ol>
-<li>run <code>sudo nano /etc/systemd/system/ipfs.service</code>
-and paste the below file:</li>
+<li>chooses a random \(r \in Z_p\) and calculates \(R1 = rG, R2 = rH\).</li>
+<li>calculates the challenge value with a hash function \(c = H(R1, R2, xG, xH)\)</li>
+<li>calculates the proof of knowledge \(s = r + c* x\)</li>
+<li>shares \((R1, R2, s)\)</li>
 </ol>
-<pre><code>[Unit]
-Description=IPFS Daemon
-After=network.target
-
-[Service]
-User=ec2-user
-Group=ec2-user
-Environment=IPFS_PATH=/home/ec2-user/.ipfs
-ExecStart=/usr/local/bin/ipfs daemon --init --migrate
-StandardOutput=journal
-Restart=on-failure
-KillSignal=SIGINT
-
-[Install]
-WantedBy=multi-user.target
-</code></pre>
-<p>and run the following:</p>
-<pre><code class="language-bash"># to enable the service on startup
-sudo systemctl enable ipfs
-# to start the service
-sudo systemctl start ipfs
-# verify ipfs is running
-sudo systemctl status ipfs 
-</code></pre>
-<p><em>Note: your IPFS node's storage is limited by your EC2's storage capacity, so make sure you don't tell Iris you have more capacity than is provided.</em></p>
-<p>You can now use IPFS on your EC2! Try adding and fetching some data. However, we won't be able to securely communicate with our IFPS instance quite yet. We will need to install and configure Nginx, which we cover <a href="developers/nodes/ec2_setup.html#nginx-installation-and-configuration">here</a></p>
-<h2 id="docker-installation-and-configuration"><a class="header" href="#docker-installation-and-configuration">Docker Installation and Configuration</a></h2>
-<pre><code class="language-bash"># install docker
-sudo yum install docker
-# add group membership for default user 
-# this is optional, but doing so lets you avoid using `sudo docker ...` later (e.g. in a script)
-sudo usermod -a -G docker ec2-user
-id ec2-user
-newgrp docker
-# enable as system service at startup
-sudo systemctl enable docker
-# start service
-sudo systemctl start docker
-# verify running
-sudo systemctl status docker
-</code></pre>
-<h2 id="iris-installation-and-configuration"><a class="header" href="#iris-installation-and-configuration">Iris Installation and Configuration</a></h2>
-<pre><code class="language-bash"># pull the latest iris docker image
-docker pull ideallabs/iris
-# pull the latest chain spec
-wget https://raw.githubusercontent.com/ideal-lab5/iris/main/iris.json
-# run your iris node
-# there are many variations you can use to run your node
-# see the [getting started guide](../quickstart/getting_started.md) for details
-docker run --add-host host.docker.internal:host-gateway -p 9944:9944 \
-  -p 9933:9933 \
-  -p 30333:30333 \
-  -p 9615:9615 \
-  -v ~/iris.json:mnt/iris.json
-  -it \
-  --rm \
-  --name iris-node \
-  ideallabs/iris \
-  --chain=/mnt/iris.json \
-  --rpc-cors all --unsafe-ws-external --rpc-external --rpc-methods=unsafe
-</code></pre>
-<h3 id="setup-as-service-1"><a class="header" href="#setup-as-service-1">Setup as service</a></h3>
-<h2 id="nginx-and-certbot-installation-and-configuration"><a class="header" href="#nginx-and-certbot-installation-and-configuration">Nginx and Certbot Installation and Configuration</a></h2>
-<h3 id="install-nginx"><a class="header" href="#install-nginx">install nginx</a></h3>
-<pre><code class="language-bash">sudo amazon-linux-extras install -y nginx1
-# enable as system service
-sudo systemctl enable nginx
-# start service
-sudo systemctl start nginx
-</code></pre>
-<h3 id="setup-certs-with-certbot"><a class="header" href="#setup-certs-with-certbot">setup certs with certbot</a></h3>
-<p>Follow the guide here to create certs for your instance: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/SSL-on-amazon-linux-2.html#letsencrypt.</p>
-<p>You can find your nginx config at <code>/etc/nginx/nginx.conf</code>.
-And then paste the server blocks:</p>
-<pre><code>server {
-
-  server_name &lt;your server name&gt;;
-
-  root /var/www/html;
-  index index.html;
-
-  location / {
-    try_files $uri $uri/ =404;
-
-    proxy_buffering off;
-    proxy_pass http://localhost:9944;
-    proxy_set_header X-Real-IP $remote_addr;
-    proxy_set_header Host $host;
-    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-
-    proxy_http_version 1.1;
-    proxy_set_header Upgrade $http_upgrade;
-    proxy_set_header Connection &quot;upgrade&quot;;
-  }
-
-  listen [::]:443 ssl ipv6only=on;
-  listen 443 ssl;
-  ssl_certificate /etc/ssl/certs/nginx-selfsigned.crt;
-  ssl_certificate_key /etc/ssl/private/nginx-selfsigned.key;
-
-  ssl_session_cache shared:cache_nginx_SSL:1m;
-  ssl_session_timeout 1440m;
-
-  ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
-  ssl_prefer_server_ciphers on;
-
-  ssl_ciphers &quot;ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES256-SHA384:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA:ECDHE-RSA-AES256-SHA:DHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-RSA-AES256-SHA256:DHE-RSA-AES256-SHA:ECDHE-ECDSA-DES-CBC3-SHA:ECDHE-RSA-DES-CBC3-SHA:EDH-RSA-DES-CBC3-SHA:AES128-GCM-SHA256:AES256-GCM-SHA384:AES128-SHA256:AES256-SHA256:AES128-SHA:AES256-SHA:DES-CBC3-SHA:!DSS&quot;;
-
-  ssl_dhparam /etc/ssl/certs/dhparam.pem;
+<p>With the agreed upon public parameters \(G, H\) and the proof \((R1, R2, s)\), a verifier can be convinced that the prover knows \(x\) without revealing it. The verifier:</p>
+<ol>
+<li>calculates the challenge value by hashing \(c = H(R1, R2, xG, xH)\)</li>
+<li>checks if \(c(xG) - sG == R1 &amp;&amp; c(xH) - sH == R2\). If both equalities are true, the proof is valid. otherwise, it is invalid.</li>
+</ol>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="use-cases"><a class="header" href="#use-cases">Use Cases</a></h1>
+<p>Here we detail some use cases of EtF network at a high level. None of these currently exist and are only speculative, but this serves to showcase the networks capabilities.</p>
+<h2 id="atomic-asset-swap"><a class="header" href="#atomic-asset-swap">Atomic Asset Swap</a></h2>
+<p>Suppose there are two asset classes, A and B, and that Alice has <code>a</code> tokens of asset A and Bob has <code>b</code> tokens of asset B. Alice and Bob want to swap their assets, however, they do not trust each other. They both want to ensure that the asset swap only succeeds if both participants act honestly. We can accomplish this using the EtF network. First, recall that the network provides us the algorithms:</p>
+<ul>
+<li>\(ct \leftarrow E(m, sl_k)\) where \(m \in {0, 1}^*\) and \(sl_k\) is some future epoch</li>
+<li>\(m \leftarrow D(ct, sk_k)\) where ct is the ciphertext and \(sk_k\) is the slot secret</li>
+</ul>
+<p>To perform the atomic asset swap, we’ll use a smart contract to act as intermediary holding of the assets. The protocol is as follows:</p>
+<ol>
+<li>Alice deposits <code>a</code> into the contract. Bob deposits <code>b</code> into the contract.</li>
+<li>Alice prepares a transaction that calls a function in the contract, <code>execute</code>, which sends her locked tokens to Bob. She signs the transactions, then encrypts it for a future epoch and publishes the encrypted transaction and signature in the contract. </li>
+<li>Bob does the same, submitting an encrypted transaction that sends his locked asset to Alice, encrypted for the same epoch as Alice’s transaction.</li>
+<li>After the slot secret is revealed, both transactions can be decrypted and executed. Here, both transactions will call the contract <code>execute</code> function. The execute function checks if the other party provided a valid proof for their encrypted transaction, and if so, executes it. If the other party failed to submit a valid encrypted tx, then the swap fails and the offending party is slashed which the other receives all tokens back. </li>
+</ol>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="etf-monitor"><a class="header" href="#etf-monitor">Etf Monitor</a></h1>
+<p>The etf monitor is a simple React app to monitor the etf network. Presently, it simply subscribes to incoming blocks and decodes the headers, displaying slot ids and slot secrets as new blocks are imported. At present, it is hardcoded to connect to a node's RPC on localhost:9944. This can be modified by updating the code and rebuilding. Enhancements will be coming soon.</p>
+<h2 id="overview-1"><a class="header" href="#overview-1">Overview</a></h2>
+<p>Essentially, it simply decodes the predigest of each incoming slot header, which stores the slot id, secret, and DLEQ proof, and displays them in a table. </p>
+<pre><code class="language-javascript">PreDigest: {
+    slot: 'u64',
+    secret: '[u8;32]',
+    proof: '([u8;48], [u8;48], [u8;32], [u8;48])'
 }
 </code></pre>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="building-smart-contracts-on-iris"><a class="header" href="#building-smart-contracts-on-iris">Building smart contracts on iris</a></h1>
-<p>Iris leverages the contracts module to allow users to deploy their own contracts to the iris blockchain. We enable developers to build dapps that take advantage of the iris runtime. In particular, Iris exposes a chain extension that provides functionality to call into the iris runtime from contracts deployed to the chain.</p>
-<h2 id="dapps-on-iris"><a class="header" href="#dapps-on-iris">DApps on Iris</a></h2>
-<h3 id="the-iris-asset-exchange"><a class="header" href="#the-iris-asset-exchange">The Iris Asset Exchange</a></h3>
-<p>The first app built on Iris is an asset exchange to allow data owners to sell access to data consumers.</p>
-<p><a href="developers/./contracts_asset_exchange.html">Iris Asset Exchange</a></p>
-<h3 id="developing-a-dapp"><a class="header" href="#developing-a-dapp">Developing a dapp</a></h3>
-<h4 id="the-iris-chain-extension"><a class="header" href="#the-iris-chain-extension">The Iris Chain extension</a></h4>
-<p><a href="developers/./contracts_chain_extension.html">chain extension</a></p>
-<h3 id="deploying-a-dapp"><a class="header" href="#deploying-a-dapp">Deploying a dapp</a></h3>
-<p>See: https://wiki.polkadot.network/docs/build-smart-contracts</p>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="chain-extension"><a class="header" href="#chain-extension">Chain Extension</a></h1>
-<p>The iris chain extension provides functionality for dapp developers to hook into the iris runtime. More specifically, it exposes the ability to call extrinsics from the iris-assets pallet and the iris-ledger pallet to enable developers to manage assets via mint and transfer abilities and to lock, unlock, and transfer tokens to other accounts.</p>
-<h2 id="exposed-functions"><a class="header" href="#exposed-functions">Exposed Functions</a></h2>
-<p>To use functions from the chain extension in your smart contract, register the chain extension in your contract:</p>
-<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
-</span><span class="boring">fn main() {
-</span>#[ink::chain_extension]
-pub trait Iris {
-    type ErrorCode = IrisErr;
-
-    #[ink(extension = 0, returns_result = false)]
-    fn transfer_asset(
-        contract_account: ink_env::AccountId, 
-        consumer_account: ink_env::AccountId, 
-        asset_id: u32, 
-        asset_quantity: u64
-    ) -&gt; [u8; 32];
-
-    #[ink(extension = 1, returns_result = false)]
-    fn mint(caller: ink_env::AccountId, target: ink_env::AccountId, asset_id: u32, amount: u64) -&gt; [u8; 32];
-
-    #[ink(extension = 2, returns_result = false)]
-    fn lock(amount: u64) -&gt; [u8; 32];
-
-    #[ink(extension = 3, returns_result = false)]
-    fn unlock_and_transfer(target: ink_env::AccountId) -&gt; [u8; 32];
-
-    #[ink(extension = 4, returns_result = false)]
-    fn submit_results(
-        caller: ink_env::AccountId, 
-        consumer: ink_env::AccountId, 
-        asset_id: u32, 
-        result: bool, 
-        public_key: [u8;32],
-    ) -&gt; [u8; 32];
-} 
-<span class="boring">}</span></code></pre></pre>
-<p>and invoke the chain extension function:</p>
-<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
-</span><span class="boring">fn main() {
-</span> self.env()
-    .extension()
-    .mint(
-        caller, self.env().account_id(), asset_id, amount,
-    ).map_err(|_| {}).ok();
-<span class="boring">}</span></code></pre></pre>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="composable-access-rules-and-rule-executors"><a class="header" href="#composable-access-rules-and-rule-executors">Composable Access Rules and Rule Executors</a></h1>
-<p>A <strong>composable access rule</strong> is a smart contract that allows data owners to define and specify unique business models which are executed when a consumer nodes attempts to fetch it from the network. Composable access rules are executed within the context of a <strong>rule executor</strong> contract. In general, each composable access rule should be as small as possible and only check for one condition. The idea is that composable access rules can be deployed to the network and then used within many different rule executors (more on this below). Composable access rules are by no means the only way to write rules for your data and are just one potential, resuable approach that can be taken. </p>
-<p>A <strong>rule executor</strong> allows a data owner to determine a unique collection of rules that shall be executed in order to provide authorization to data consumers to access their data. At a basic level, a rule executor makes cross contract calls to each composable access rule and then uses the <code>submit_execution_results</code> function exposed from our chain extension to report the results back on chain, which feeds into the locking mechanism managed by the <a href="developers/contracts/../pallets/pallet_iris_ejection.html">iris-ejection pallet</a>. </p>
-<h2 id="how-it-works"><a class="header" href="#how-it-works">How it works</a></h2>
-<p>A rule exeuctor can theoretically be any contract that can make calls to the Iris runtime using the 'submit results' chain extension. The owner of a data asset class must register a rule executor contract address with their data through the 'Authorization' pallet after the exeuctor is deployed and their data asset class exists. This delegates rights to the rule executor to grant access to other nodes that meet the rules specified. That is, every rule exeuctor must call:</p>
-<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
-</span><span class="boring">fn main() {
-</span>#[ink::chain_extension]
-pub trait Iris {
-    type ErrorCode = CustomError;
-    #[ink(extension = 4, returns_result = false)]
-    fn submit_results(
-        caller: ink_env::AccountId, 
-        consumer: ink_env::AccountId, 
-        asset_id: u32, 
-        result: bool, 
-        public_key: [u8;32],
-    ) -&gt; [u8; 32];
-} 
-<span class="boring">}</span></code></pre></pre>
-<p>and invoke the chain extension function:</p>
-<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
-</span><span class="boring">fn main() {
-</span> self.env()
-    .extension()
-    .submit_results(
-        contract_acct,
-        caller.clone(),
-        asset_id.clone(), 
-        true,
-        public_key.clone(),
-    );
-<span class="boring">}</span></code></pre></pre>
-<p>And also be registered in the Authorization pallet.</p>
-<h2 id="available-rules"><a class="header" href="#available-rules">Available Rules</a></h2>
-<p>Composable Access Rules can be found in the <a href="https://github.com/ideal-lab5/contracts/tree/main/composable_access_rules">contracts</a> repository</p>
-<h3 id="examples"><a class="header" href="#examples">Examples</a></h3>
-<p>See the examples folder of the github repo. </p>
-<h4 id="trivial-rule-executor"><a class="header" href="#trivial-rule-executor">Trivial Rule Executor</a></h4>
-<p>The trivial rule executor applies no rules. Basically, this means your data is free and open to anyone.</p>
-<h4 id="limited-use-rule"><a class="header" href="#limited-use-rule">Limited Use Rule</a></h4>
-<p>The limited use rule contract specifies some number of times N that a consumer can use their asset to access the data.</p>
-<h3 id="example"><a class="header" href="#example">Example</a></h3>
-<p>For an example rule executor, take a look at the <a href="https://github.com/ideal-lab5/contracts/tree/main/composable_access_rules/rule_executor">contracts</a> repository.</p>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="iris-asset-exchange"><a class="header" href="#iris-asset-exchange">Iris Asset Exchange</a></h1>
-<p>The Iris Asset Exchange is a decentralized exchange to facilitate the buying and selling of assets in Iris.</p>
-<h2 id="usage"><a class="header" href="#usage">Usage</a></h2>
-<p>The source code and README for the IAE is located <a href="https://github.com/ideal-labs/contracts/tree/main/iris_asset_exchange">here</a>.</p>
-<p>The iris-ui exposes a user interface to interact with the contract.</p>
-<h2 id="functions"><a class="header" href="#functions">Functions</a></h2>
-<h3 id="publish_token_sale"><a class="header" href="#publish_token_sale">publish_token_sale</a></h3>
-<p>Mint new tokens and gives ownership of them to the contract account. The owner specifies a static price that consumers pay in order to purchase the asset.</p>
-<p>Parameters:</p>
-<ul>
-<li>asset_id: The id of some owned asset</li>
-<li>quantity: The quanity of assets to mint and transfer to the contract</li>
-<li>price: The price per minted asset</li>
-</ul>
-<h3 id="purchase_tokens"><a class="header" href="#purchase_tokens">purchase_tokens</a></h3>
-<ol>
-<li>lock price*amount tokens</li>
-<li>transfer tokens to the caller (from the contract account)</li>
-<li>unlock tokens</li>
-<li>caller transfer tokens to the owner</li>
-</ol>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="iris-ui"><a class="header" href="#iris-ui">Iris UI</a></h1>
-<p>The UI is hosted at https://iris.idealabs.network. In order to use the hosted UI, you will need to be able to communicate with your IPFS over https.</p>
-<p>The Iris UI provides a mechanism to add and retrieve data from Iris, to create an asset class, mint assets, privision data access, and manage both asset classes and assets.</p>
-<p>If you intend to add data to Iris, you must also run an IPFS node locally. This holds for running from sources as well as the docker image. Run IPFS with <code>ipfs daemon</code>.</p>
-<h2 id="running-from-sources"><a class="header" href="#running-from-sources">Running from Sources</a></h2>
-<pre><code class="language-bash">git clone https://github.com/ideal-lab5/ui.git
-cd ui
-npm i
-npm start
+<p><img src="./assets/etf_monitor.png" alt="etf-monitor" /></p>
+<h2 id="setup-1"><a class="header" href="#setup-1">Setup</a></h2>
+<pre><code class="language-bash">git clone git@github.com:ideal-lab5/etf-monitor.git
+cd etf-monitor
+npm i &amp;&amp; npm run start
 </code></pre>
-<h2 id="running-from-docker"><a class="header" href="#running-from-docker">Running from Docker</a></h2>
-<pre><code class="language-bash">docker pull ideallabs/iris-ui
-docker run -it --rm -p 3000:3000 ideallabs/iris-ui
-</code></pre>
-<h2 id="polkadotjs"><a class="header" href="#polkadotjs">PolkadotJs</a></h2>
-<p>The <a href="https://polkadot.js.org/">polkadotjs apps</a> user interface is a useful tool for interacting with and monitoring the network state.</p>
-<h2 id="light-client"><a class="header" href="#light-client">Light Client</a></h2>
-<p><em>Coming Soon</em></p>
-<ul>
-<li>relay chain deployed</li>
-<li>parachain registered</li>
-<li>chain spec generation and distribution</li>
-<li>Configuration in iris ui</li>
-</ul>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="reference"><a class="header" href="#reference">Reference</a></h1>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="pallets"><a class="header" href="#pallets">Pallets</a></h1>
-<p>Iris provides several new pallets on top of those available by default in Substrate.</p>
-<ol>
-<li><a href="reference/./pallets/pallet_data_assets.md.html">Data Assets</a></li>
-<li><a href="reference/./pallets/pallet_iris_session.html">Authorities</a></li>
-<li><a href="reference/./pallets/pallet_iris_ledger.html">Ledger</a></li>
-<li><a href="reference/./pallets/pallet_data_spaces.html">Data Spaces</a></li>
-<li><a href="reference/./pallets/pallet_proxy.html">Proxy</a></li>
-</ol>
-<p><img src="reference/./resources/runtime_modules.png" alt="runtime modules" />
-<em>Completed and active modules are marked in purple, planned modules in yellow. Dependencies are represented as arrows</em></p>
-<h2 id="data-spaces-1"><a class="header" href="#data-spaces-1">Data Spaces</a></h2>
-<p>The <a href="reference/./pallets/pallet_data_spaces.html">Data Spaces</a> pallet lets users define data spaces that data asset classes can be associated with.</p>
-<h2 id="iris-assets"><a class="header" href="#iris-assets">Iris Assets</a></h2>
-<p>The <a href="reference/./pallets/pallet_iris_assets.html">Iris-Assets</a> pallet provides functionality for nodes to inject data into Iris, create and manage storage asset classes and to mint and burn assets.</p>
-<h2 id="iris-session"><a class="header" href="#iris-session">Iris Session</a></h2>
-<p>The <a href="reference/./pallets/pallet_iris_session.html">Iris-Session</a> pallet provides session-based storage capabilities for network validators as well as enables ejecting data from the network. The iris-session palelt contains all functionality to interact with the embedded IPFS node. While a strict content-owner only node does not require the iris-session pallet, for both consumers and storage providers it is a necessity.</p>
-<h2 id="iris-ledger"><a class="header" href="#iris-ledger">Iris Ledger</a></h2>
-<p>The <a href="reference/./pallets/pallet_iris_ledger.html">Iris-Ledger</a> pallet allows nodes to lock, unlock, and transfer native tokens.</p>
-<h2 id="iris-storage"><a class="header" href="#iris-storage">Iris Storage</a></h2>
-<p>A to-be-developed pallet which will enable the storage system.</p>
-<h2 id="iris-proxy"><a class="header" href="#iris-proxy">Iris Proxy</a></h2>
-<p>A to-be-developed pallet which will enable proxy node functionality.</p>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="glossary"><a class="header" href="#glossary">Glossary</a></h1>
-<h2 id="asset-class"><a class="header" href="#asset-class">asset class</a></h2>
-<h2 id="cid"><a class="header" href="#cid">cid</a></h2>
-<h2 id="data-space"><a class="header" href="#data-space">data space</a></h2>
-<h2 id="ipfs-1"><a class="header" href="#ipfs-1">ipfs</a></h2>
-<h2 id="multiaddress"><a class="header" href="#multiaddress">multiaddress</a></h2>
-<h2 id="substrate-1"><a class="header" href="#substrate-1">substrate</a></h2>
-<h2 id="wasm"><a class="header" href="#wasm">wasm</a></h2>
-<div style="break-before: page; page-break-before: always;"></div><h2 id="contact"><a class="header" href="#contact">Contact</a></h2>
-<p>For any feedback or inquiries:</p>
-<ul>
-<li>twitter: https://twitter.com/ideal_labs</li>
-<li>website: https://idealabs.network/</li>
-<li>email: driemworks@idealabs.network</li>
-<li>discord: https://discord.gg/w8PF9MM6</li>
-<li>github: github.com/ideal-lab5</li>
-</ul>
 
                     </main>
 
@@ -796,9 +340,12 @@ docker run -it --rm -p 3000:3000 ideallabs/iris-ui
 
         <script>
         window.addEventListener('load', function() {
-            window.setTimeout(window.print, 100);
+            MathJax.Hub.Register.StartupHook('End', function() {
+                window.setTimeout(window.print, 100);
+            });
         });
         </script>
 
+    </div>
     </body>
 </html>

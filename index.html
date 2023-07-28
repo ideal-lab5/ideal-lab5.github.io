@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Introduction - iris</title>
+        <title>Overview - etf-docs</title>
 
 
         <!-- Custom HTML head -->
@@ -30,8 +30,11 @@
 
         <!-- Custom theme stylesheets -->
 
+        <!-- MathJax -->
+        <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     </head>
     <body>
+    <div id="body-container">
         <!-- Provide site root to javascript -->
         <script>
             var path_to_root = "";
@@ -69,10 +72,12 @@
         <!-- Hide / unhide sidebar before it is displayed -->
         <script>
             var html = document.querySelector('html');
-            var sidebar = 'hidden';
+            var sidebar = null;
             if (document.body.clientWidth >= 1080) {
                 try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
                 sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
             }
             html.classList.remove('sidebar-visible');
             html.classList.add("sidebar-" + sidebar);
@@ -80,16 +85,38 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="introduction.html" class="active"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="quickstart.html"><strong aria-hidden="true">2.</strong> Quickstart</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="quickstart/tech_overview.html"><strong aria-hidden="true">2.1.</strong> Technical Overview</a></li><li class="chapter-item expanded "><a href="quickstart/quick_setup.html"><strong aria-hidden="true">2.2.</strong> Quick setup guide</a></li><li class="chapter-item expanded "><a href="quickstart/iris_overview.html"><strong aria-hidden="true">2.3.</strong> Iris Overview</a></li><li class="chapter-item expanded "><a href="quickstart/data_ingestion.html"><strong aria-hidden="true">2.4.</strong> Data Ingestion</a></li><li class="chapter-item expanded "><a href="quickstart/data_ejection.html"><strong aria-hidden="true">2.5.</strong> Data Ejection</a></li></ol></li><li class="chapter-item expanded "><a href="developers.html"><strong aria-hidden="true">3.</strong> Developers</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="developers/development_guide.html"><strong aria-hidden="true">3.1.</strong> Full Node Setup Guide</a></li><li class="chapter-item expanded "><a href="developers/nodes/ec2_setup.html"><strong aria-hidden="true">3.2.</strong> Configure a Hosted Node</a></li><li class="chapter-item expanded "><a href="developers/contracts.html"><strong aria-hidden="true">3.3.</strong> Contracts</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="developers/contracts/contracts_chain_extension.html"><strong aria-hidden="true">3.3.1.</strong> Chain Extension</a></li><li class="chapter-item expanded "><a href="developers/contracts/composable_access_rules.html"><strong aria-hidden="true">3.3.2.</strong> Composable Access Rule and Rule Executor</a></li><li class="chapter-item expanded "><a href="developers/contracts/contracts_asset_exchange.html"><strong aria-hidden="true">3.3.3.</strong> Iris Asset Exchange</a></li></ol></li><li class="chapter-item expanded "><a href="ui.html"><strong aria-hidden="true">3.4.</strong> Iris.js SDK</a></li></ol></li><li class="chapter-item expanded "><a href="reference.html"><strong aria-hidden="true">4.</strong> Reference</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="reference/pallets.html"><strong aria-hidden="true">4.1.</strong> Pallets</a></li></ol></li><li class="chapter-item expanded "><a href="glossary.html"><strong aria-hidden="true">5.</strong> Glossary</a></li><li class="chapter-item expanded "><a href="contact.html"><strong aria-hidden="true">6.</strong> Contact</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="overview.html" class="active"><strong aria-hidden="true">1.</strong> Overview</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="getting_started.html"><strong aria-hidden="true">1.1.</strong> Getting Started</a></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">2.</strong> Etf</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="architecture.html"><strong aria-hidden="true">2.1.</strong> Architecture</a></li><li class="chapter-item expanded "><a href="etf.html"><strong aria-hidden="true">2.2.</strong> Math</a></li><li class="chapter-item expanded "><a href="use_cases.html"><strong aria-hidden="true">2.3.</strong> Use Cases</a></li></ol></li><li class="chapter-item expanded "><a href="etf_monitor.html"><strong aria-hidden="true">3.</strong> Etf Monitor</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
+
+        <!-- Track and set sidebar scroll position -->
+        <script>
+            var sidebarScrollbox = document.querySelector('#sidebar .sidebar-scrollbox');
+            sidebarScrollbox.addEventListener('click', function(e) {
+                if (e.target.tagName === 'A') {
+                    sessionStorage.setItem('sidebar-scroll', sidebarScrollbox.scrollTop);
+                }
+            }, { passive: true });
+            var sidebarScrollTop = sessionStorage.getItem('sidebar-scroll');
+            sessionStorage.removeItem('sidebar-scroll');
+            if (sidebarScrollTop) {
+                // preserve sidebar scroll position when navigating via links within sidebar
+                sidebarScrollbox.scrollTop = sidebarScrollTop;
+            } else {
+                // scroll sidebar to current active section when navigating via "next/previous chapter" buttons
+                var activeSection = document.querySelector('#sidebar .active');
+                if (activeSection) {
+                    activeSection.scrollIntoView({ block: 'center' });
+                }
+            }
+        </script>
 
         <div id="page-wrapper" class="page-wrapper">
 
             <div class="page">
                                 <div id="menu-bar-hover-placeholder"></div>
-                <div id="menu-bar" class="menu-bar sticky bordered">
+                <div id="menu-bar" class="menu-bar sticky">
                     <div class="left-buttons">
                         <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
                             <i class="fa fa-bars"></i>
@@ -109,7 +136,7 @@
                         </button>
                     </div>
 
-                    <h1 class="menu-title">iris</h1>
+                    <h1 class="menu-title">etf-docs</h1>
 
                     <div class="right-buttons">
                         <a href="print.html" title="Print this book" aria-label="Print this book">
@@ -141,37 +168,31 @@
 
                 <div id="content" class="content">
                     <main>
-                        <p>This is the official documentation for <a href="https://github.com/ideal-lab5/iris">Iris</a>, developed and maintained by <a href="https://idealabs.network">Ideal Labs</a>.</p>
-<p align="center">
-  <img width="600" height="600" src="./resources/iris_logo_small.png">
-</p>
-<p><code>This documentation and any information in it is subject to frequent and radical change as Iris is developed.</code></p>
-<h1 id="introduction"><a class="header" href="#introduction">Introduction</a></h1>
-<h2 id="what-is-iris"><a class="header" href="#what-is-iris">What is Iris?</a></h2>
-<p>Iris is a blockchain that enables a general purpose <strong>decentralized data exchange</strong>. It is infrastructure for the decentralized web, allowing for the development of decentralized applications where data sovereignty is preserved, data provenance is provable, and where decentralized governance and moderation without censorship is feasible. It is intended to enable transfer and monetization of access to and ownership of data across blockchains, smart contracts and participants in the network. </p>
-<h2 id="how-does-it-work"><a class="header" href="#how-does-it-work">How does it work?</a></h2>
-<p>Iris functions by building a <strong>cryptographically verifiable relationship</strong> between data ownership, access, and availability. Data ownership is treated as an on-chain asset class, which allows for the fractionalization of ownership of digital assets. Through a rule based, smart contract approach, data access models are <a href="./contracts/composable_access_rules.html">programmable</a> and fully transparent. The network implements a [secret sharing protocol](link here) that uses proxy reencryption and ECDH to provide security and ownership to your data. </p>
-<h2 id="key-features"><a class="header" href="#key-features">Key Features</a></h2>
+                        <h1 id="overview"><a class="header" href="#overview">Overview</a></h1>
+<p>EtF Network is a <a href="https://github.com/paritytech/substrate.git">Substrate</a>-based blockchain that utilizes identity-based encryption and zero knowledge proofs to enable &quot;encryption to the future.&quot; Encryption to the future, similar in idea to timelock encryption, uses a slot-based consensus system as a reference clock to which messages can be encrypted. Valid blocks authored in future slots contain the corresponding secret keys. The initial version of our network uses a fork of Aura to implement a PoA version of EtF.</p>
+<h2 id="getting-started"><a class="header" href="#getting-started">Getting Started</a></h2>
 <ul>
-<li>Provable Data Ownership and Provenance</li>
-<li>Fractionalized Ownership of Digital Assets</li>
-<li>Smart Contract Support and Programmable Data Access Models</li>
-<li>Data Security using Encryption and Decryption with proxy reencryption and ECDH</li>
-<li>Transparent Data Governance and Moderation Capabilities</li>
+<li>Learn about <a href="./architecture.html">how Etf works</a></li>
+<li>See the <a href="./getting_started.html">getting started guide</a> for an in-depth guide on running your own node.</li>
 </ul>
-<p>For a full breakdown of where we are in the implementation of these features, take a look at our <a href="./quickstart/development_status.html">roadmap</a>.</p>
-<h2 id="vision"><a class="header" href="#vision">Vision</a></h2>
-<p>We believe that decentralization of the web, tranisitioning from web2 to web3, is the optimal path moving forward, and that this ecosystem requires mechanisms to securely store, transport, and prove ownability, and that Iris provides the groundwork for a general decentralized data exhcange system. As such, we envision Iris as being a key enabler in a new class of decentralized applications that take advantage of provable data ownership and provenance to construct decentralized systems that fairly reward creators, consumers, and other participants in the system. We see Iris as providing a framework for inverting the present relationship between data creators and 'centralized platform providers', where rather than supplying data to a platform where the ownership is transferred, data creators are able to 'lease' their data to platforms or dapps using transparents governance, policies, and agreements.</p>
-<h2 id="partners"><a class="header" href="#partners">Partners</a></h2>
-<p><img src="./resources/web3_foundation_grants_badge_black.png" alt="sponsored by web3 foundation" /></p>
-<p>Read our w3f grant proposal <a href="https://github.com/w3f/Grants-Program/blob/master/applications/iris_followup.md">here</a></p>
+<h3 id="repos"><a class="header" href="#repos">Repos</a></h3>
+<ul>
+<li><a href="https://github.com/ideal-lab5/substrate/tree/milestone1">Etf Network</a> The implementation of etf consensus along with the etf pallet.</li>
+<li><a href="https://github.com/ideal-lab5/etf-monitor">Etf Network Monitor</a> A simple React app using polkadotjs to decode block headers and display decoded slot secrets.</li>
+</ul>
+<h2 id="contact"><a class="header" href="#contact">Contact</a></h2>
+<p>driemworks@idealabs.network
+https://idealabs.network</p>
+<h2 id="license"><a class="header" href="#license">License</a></h2>
+<p>These docs and the code for both etf-network and etf-monitor are licensed as GPlv3.0.</p>
+<p>This project is sponsored by a <a href="https://github.com/ideal-lab5/Grants-Program/blob/master/applications/cryptex.md">web3 foundation grant</a>. The work presented here represents the first milestone of the grant.</p>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
 
-                            <a rel="next" href="quickstart.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next" href="getting_started.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
 
@@ -182,7 +203,7 @@
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
 
-                    <a rel="next" href="quickstart.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next" href="getting_started.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>
@@ -208,5 +229,6 @@
         <!-- Custom JS scripts -->
 
 
+    </div>
     </body>
 </html>
