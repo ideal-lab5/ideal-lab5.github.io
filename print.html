@@ -217,7 +217,7 @@ docker run -p 9944:9944 -it --rm --name etf-node-0 ideallabs/etf --unsafe-rpc-ex
 <h3 id="unit-tests"><a class="header" href="#unit-tests">unit tests</a></h3>
 <p><code>cargo +nightly test</code></p>
 <h3 id="benchmarks"><a class="header" href="#benchmarks">Benchmarks</a></h3>
-<p>first build with <code>cargo +nightly build --profile=production --features runtime-benchmarks</code></p>
+<p>First navigate to <code>/bin/node-template/node/</code> and build it with <code>cargo +nightly build --profile=production --features runtime-benchmarks</code></p>
 <p>run benchmark tests with
 <code> cargo test --package pallet-etf --features runtime-benchmarks</code></p>
 <p>Once built, generate weights against the compiled runtime with:</p>
@@ -263,6 +263,14 @@ docker run -p 9944:9944 -it --rm --name etf-node-0 ideallabs/etf --unsafe-rpc-ex
 <span class="boring">}</span></code></pre></pre>
 <h3 id="importing-and-verifying-blocks"><a class="header" href="#importing-and-verifying-blocks">Importing and Verifying Blocks</a></h3>
 <p>When a block importer receives a new block, they first check that the slot is correct. If correct, then they recover the DLEQ proof from the block header and verify it along with the block seal (which is still a normal Schnorr signature). If the DLEQ proof is valid, then we know the slot secret is valid as well. If the proof is invalid, then the secret is incorrect and the block is rejected.</p>
+<h3 id="consensus-error-types"><a class="header" href="#consensus-error-types">Consensus Error Types</a></h3>
+<p>Block producers and importers are given two new consensus error types <a href="https://github.com/ideal-lab5/substrate/blob/502032949307b1c19cba606dbef1d2f108f71a56/primitives/consensus/common/src/error.rs#L53">here</a>. For <strong>block producers</strong>, the <code>InvalidIBESecret</code> is called when the aura client cannot fetch a master IBE secret from local storage. For <strong>block importers</strong>, <code>InvalidDLEQProof</code> is triggered when a DLEQ proof cannot be verified. This is very similar in functionality to the <code>BadSignature</code> error type.</p>
+<h3 id="authority-incentives"><a class="header" href="#authority-incentives">Authority Incentives</a></h3>
+<p>Since we have a proof of authority network, authority incentives are very simple.</p>
+<ol>
+<li>When a new session starts, <a href="https://github.com/ideal-lab5/substrate/blob/cf0a5193af80e458ee585a614f7ff12ece9b56fd/frame/aura/src/lib.rs#L269">each authority recieves 10 tokens</a></li>
+<li>If an authority produces a bad block, it will be rejected by importers and the authority will be unable to author more blocks (this isn't completely implemented yet).</li>
+</ol>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="encryption-to-the-future-the-math"><a class="header" href="#encryption-to-the-future-the-math">Encryption to the Future (the math)</a></h1>
 <p>The EtF network uses a slot-based consensus mechanism (Aura) and identity based encryption methods to associate an identity with each slot. The initial version of the network uses a simple approach for deriving keys, but which requires a significant amount of trust to be placed in each authority. Each authority is an IBE master secret key custodian and is made responsible for deriving and leaking IBE secret keys within each slot where they're an author. By encrypting to the public key associated with each slot, messages can be encrypted so that the decryption key is only made public when a block is authored in that slot.</p>
 <h2 id="how-it-works"><a class="header" href="#how-it-works">How it works</a></h2>

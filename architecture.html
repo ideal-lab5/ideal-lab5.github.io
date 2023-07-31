@@ -198,6 +198,14 @@
 <span class="boring">}</span></code></pre></pre>
 <h3 id="importing-and-verifying-blocks"><a class="header" href="#importing-and-verifying-blocks">Importing and Verifying Blocks</a></h3>
 <p>When a block importer receives a new block, they first check that the slot is correct. If correct, then they recover the DLEQ proof from the block header and verify it along with the block seal (which is still a normal Schnorr signature). If the DLEQ proof is valid, then we know the slot secret is valid as well. If the proof is invalid, then the secret is incorrect and the block is rejected.</p>
+<h3 id="consensus-error-types"><a class="header" href="#consensus-error-types">Consensus Error Types</a></h3>
+<p>Block producers and importers are given two new consensus error types <a href="https://github.com/ideal-lab5/substrate/blob/502032949307b1c19cba606dbef1d2f108f71a56/primitives/consensus/common/src/error.rs#L53">here</a>. For <strong>block producers</strong>, the <code>InvalidIBESecret</code> is called when the aura client cannot fetch a master IBE secret from local storage. For <strong>block importers</strong>, <code>InvalidDLEQProof</code> is triggered when a DLEQ proof cannot be verified. This is very similar in functionality to the <code>BadSignature</code> error type.</p>
+<h3 id="authority-incentives"><a class="header" href="#authority-incentives">Authority Incentives</a></h3>
+<p>Since we have a proof of authority network, authority incentives are very simple.</p>
+<ol>
+<li>When a new session starts, <a href="https://github.com/ideal-lab5/substrate/blob/cf0a5193af80e458ee585a614f7ff12ece9b56fd/frame/aura/src/lib.rs#L269">each authority recieves 10 tokens</a></li>
+<li>If an authority produces a bad block, it will be rejected by importers and the authority will be unable to author more blocks (this isn't completely implemented yet).</li>
+</ol>
 
                     </main>
 
