@@ -188,8 +188,11 @@ As previously stated, all default substrate commands will work. For example, to 
 </code></pre>
 <p><strong>From Docker</strong></p>
 <p>The latest docker image can be found <a href="https://hub.docker.com/r/ideallabs/etf">here</a></p>
-<pre><code class="language-bash">docker pull ideallabs/etf
-docker run &lt;image&gt;
+<pre><code class="language-bash"># pull the latest image
+docker pull ideallabs/etf
+# run the image
+# the image accepts all substrate commands/flags
+docker run -p 9944:9944 -it --rm --name etf-node-0 ideallabs/etf --unsafe-rpc-external --validator --dev --tmp
 </code></pre>
 <h2 id="testing"><a class="header" href="#testing">Testing</a></h2>
 <h3 id="unit-tests"><a class="header" href="#unit-tests">unit tests</a></h3>
@@ -198,17 +201,19 @@ docker run &lt;image&gt;
 <p>first build with <code>cargo +nightly build --profile=production --features runtime-benchmarks</code></p>
 <p>run benchmark tests with
 <code> cargo test --package pallet-etf --features runtime-benchmarks</code></p>
-<p>Once built, run benchmarks against compiled runtime with:</p>
-<p>list available benchmarks:
-./target/production/node-template benchmark pallet --chain dev --pallet &quot;<em>&quot; --extrinsic &quot;</em>&quot; --repeat 0</p>
-<p>./target/production/node-template benchmark pallet <br />
---chain dev <br />
---wasm-execution=compiled <br />
---pallet pallet_etf <br />
---extrinsic &quot;*&quot; <br />
---steps 50 <br />
---repeat 20 <br />
---output bin/node-template/pallets/etf/src/weight.rs</p>
+<p>Once built, generate weights against the compiled runtime with:</p>
+<pre><code class="language-bash"># list all benchmarks
+./target/production/node-template benchmark pallet --chain dev --pallet &quot;*&quot; --extrinsic &quot;*&quot; --repeat 0
+# benchmark the etf pallet
+./target/production/node-template benchmark pallet \
+    --chain dev \
+    --wasm-execution=compiled \
+    --pallet pallet_etf \
+    --extrinsic &quot;*&quot; \
+    --steps 50 \
+    --repeat 20 \
+    --output bin/node-template/pallets/etf/src/weight.rs
+</code></pre>
 
                     </main>
 

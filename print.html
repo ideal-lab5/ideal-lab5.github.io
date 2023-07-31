@@ -207,8 +207,11 @@ As previously stated, all default substrate commands will work. For example, to 
 </code></pre>
 <p><strong>From Docker</strong></p>
 <p>The latest docker image can be found <a href="https://hub.docker.com/r/ideallabs/etf">here</a></p>
-<pre><code class="language-bash">docker pull ideallabs/etf
-docker run &lt;image&gt;
+<pre><code class="language-bash"># pull the latest image
+docker pull ideallabs/etf
+# run the image
+# the image accepts all substrate commands/flags
+docker run -p 9944:9944 -it --rm --name etf-node-0 ideallabs/etf --unsafe-rpc-external --validator --dev --tmp
 </code></pre>
 <h2 id="testing"><a class="header" href="#testing">Testing</a></h2>
 <h3 id="unit-tests"><a class="header" href="#unit-tests">unit tests</a></h3>
@@ -217,18 +220,20 @@ docker run &lt;image&gt;
 <p>first build with <code>cargo +nightly build --profile=production --features runtime-benchmarks</code></p>
 <p>run benchmark tests with
 <code> cargo test --package pallet-etf --features runtime-benchmarks</code></p>
-<p>Once built, run benchmarks against compiled runtime with:</p>
-<p>list available benchmarks:
-./target/production/node-template benchmark pallet --chain dev --pallet &quot;<em>&quot; --extrinsic &quot;</em>&quot; --repeat 0</p>
-<p>./target/production/node-template benchmark pallet <br />
---chain dev <br />
---wasm-execution=compiled <br />
---pallet pallet_etf <br />
---extrinsic &quot;*&quot; <br />
---steps 50 <br />
---repeat 20 <br />
---output bin/node-template/pallets/etf/src/weight.rs</p>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="etf-network-architecture"><a class="header" href="#etf-network-architecture">EtF Network Architecture</a></h1>
+<p>Once built, generate weights against the compiled runtime with:</p>
+<pre><code class="language-bash"># list all benchmarks
+./target/production/node-template benchmark pallet --chain dev --pallet &quot;*&quot; --extrinsic &quot;*&quot; --repeat 0
+# benchmark the etf pallet
+./target/production/node-template benchmark pallet \
+    --chain dev \
+    --wasm-execution=compiled \
+    --pallet pallet_etf \
+    --extrinsic &quot;*&quot; \
+    --steps 50 \
+    --repeat 20 \
+    --output bin/node-template/pallets/etf/src/weight.rs
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="etf-network-overview-and-architecture"><a class="header" href="#etf-network-overview-and-architecture">EtF Network Overview and Architecture</a></h1>
 <p>ETF network is based on Aura consensus, a round-robin PoA (Proof of Authority) slot-based consensus mechanism. It utilizes DLEQ (Discrete Logarithm Equality) proofs to create BLS (Boneh-Lynn-Shacham) IBE (Identity-Based Encryption) block seals. Block importers verify the validity of the DLEQ proof when importing each block.</p>
 <p>We also introduce the EtF pallet, which stores public parameters for the identity based encryption scheme. The pallet uses arkworks to ensure parameters stored in the runtime are decodable as valid group elements.</p>
 <p>The AuraAPI has been enhanced to deliver IBE parameters and secret keys to both block proposers and block verifiers, facilitating a more efficient and secure block proposal and verification process.</p>
@@ -239,6 +244,25 @@ docker run &lt;image&gt;
 <p>The initial version of the network uses a fork of Aura, a round-robin proof of authority consensus mechanism. Each authority knows the same secret, the IBE master secret which makes the identity based encryption scheme work (more on this <a href="">here</a>). They are trusted to act as a secret key custodian (a requirement we will relax in the future).  When a slot author proposes a block, they first use the master secret to calculate a slot secret, which they add to the block header. This slot secret is intended to be <strong>leaked</strong> and made public. Next, in order to ensure the correctness of the secret to be leaked, block producers include a DLEQ proof that shows the slot secret was correctly calculated. Along with this, they also sign the block as usual. </p>
 <p>Block importers simply fetch the public IBE parameters from the EtF pallet and use it to verify the DLEQ proof. If the DLEQ proof is not valid, the block is rejected. </p>
 <p><img src="./assets/high_level_flow_of_data.drawio.png" alt="high-level" /></p>
+<h3 id="slot-identity"><a class="header" href="#slot-identity">Slot Identity</a></h3>
+<p>We use a PoA consensus system in which a known set of authorities, say A = {A_1, …, A_n}, are selected as slot authors sequentially (round robin). That is, for a slot \(sl_k\), the authority to author a block in the slot is given by \(A_{sl_k} = A[sl_k \mod |A|] \). A slot’s identity is given by \(ID_{sl_k} = A_{sl_k} || sl_k\) where \(||\) is concatenation. That is, it’s the combination of the slot author’s public key and the slot id. For example, given the ss58 address <code>5GGrFp7o5b5CMSi9uZnkveRusegbVgVUa5BvqXRQHsJ9SSjc</code> (Alice), a slot identity might look like: <code>0xd43593c715fdd31c61141abd04a99fd6822c8558854ccde39a5684e7a56da27d231922012</code> 231922012 is the slot id and <code>0xd43593c715fdd31c61141abd04a99fd6822c8558854ccde39a5684e7a56da27d</code> is the public key of the ss58 address.</p>
+<p>Our implementation works over curve BLS12-381. To get a public key from the slot id, we use a hash-to-G1 function, which gives us public keys in G1 (the elliptic curve group we’re working with). That is, each slot implicitly has an identity, and by evaluating the id under the hash-to-G1 function, a public key in G1. </p>
+<h3 id="etf-pallet"><a class="header" href="#etf-pallet">ETF Pallet</a></h3>
+<p>The ETF pallet stores public parameters needed for the IBE scheme, a single public key in G1 as a compressed byte array. This value is set on genesis and only changeable by the root user (via the Sudo pallet) when they call the <code>update_ibe_params</code> extrinsic. The extrinsic uses Arkworks to decode the input to ensure that the provided data is a valid element of G1, and if so then it encodes it in storage. In the future, we intend to make this a more democratic process.</p>
+<p>The aura client reads the public parameters from the runtime while preparing the DLEQ proof (when claiming a slot)</p>
+<h3 id="claiming-a-slot"><a class="header" href="#claiming-a-slot">Claiming a Slot</a></h3>
+<p>When a block author claims a slot, they perform the <a href="./etf.html#identity-based-encryption">extract algorithm of the IBE scheme</a>, where they use their slot public key along with the master secret to calculate the slot secret (e.g. d = sQ where s is the master secret and  is the public key). In order to do this, we introduce new functionality to the existing AuraAPI which allows slot authors to fetch the IBE public parameters, which are stored in the etf pallet, as well as read the master secret from local storage. </p>
+<p>After calculating the slot secret, the slot author is tasked with preparing a DLEQ proof that the slot secret was calculated from the master secret. We accomplish this by implementing a trait which enables DLEQ proof and verification, using Arkworks. It allows the prover to demonstrate that, given some xG and xH, that both were calculated from x without revealing the value.  In our scheme, one of the values is the slot secret, <code>d = sQ</code>, and the other is the master secret multiplied by the public param stored in the etf pallet. The DLEQ proof is then encoded within the block header when it is proposed by the author. That is, each block header contains a PreDigest which contains the slot id, the slot secret, and the DLEQ proof like so:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>PreDigest: {
+    slot: 'u64',
+    secret: '[u8;48]',
+    proof: '([u8;48], [u8;48], [u8;32], [u8;48])'
+}
+<span class="boring">}</span></code></pre></pre>
+<h3 id="importing-and-verifying-blocks"><a class="header" href="#importing-and-verifying-blocks">Importing and Verifying Blocks</a></h3>
+<p>When a block importer receives a new block, they first check that the slot is correct. If correct, then they recover the DLEQ proof from the block header and verify it along with the block seal (which is still a normal Schnorr signature). If the DLEQ proof is valid, then we know the slot secret is valid as well. If the proof is invalid, then the secret is incorrect and the block is rejected.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="encryption-to-the-future-the-math"><a class="header" href="#encryption-to-the-future-the-math">Encryption to the Future (the math)</a></h1>
 <p>The EtF network uses a slot-based consensus mechanism (Aura) and identity based encryption methods to associate an identity with each slot. The initial version of the network uses a simple approach for deriving keys, but which requires a significant amount of trust to be placed in each authority. Each authority is an IBE master secret key custodian and is made responsible for deriving and leaking IBE secret keys within each slot where they're an author. By encrypting to the public key associated with each slot, messages can be encrypted so that the decryption key is only made public when a block is authored in that slot.</p>
 <h2 id="how-it-works"><a class="header" href="#how-it-works">How it works</a></h2>
@@ -292,7 +316,7 @@ docker run &lt;image&gt;
 <p>Essentially, it simply decodes the predigest of each incoming slot header, which stores the slot id, secret, and DLEQ proof, and displays them in a table. </p>
 <pre><code class="language-javascript">PreDigest: {
     slot: 'u64',
-    secret: '[u8;32]',
+    secret: '[u8;48]',
     proof: '([u8;48], [u8;48], [u8;32], [u8;48])'
 }
 </code></pre>
