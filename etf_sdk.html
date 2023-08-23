@@ -29,6 +29,7 @@
         <link rel="stylesheet" href="ayu-highlight.css">
 
         <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="custom.css">
 
         <!-- MathJax -->
         <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
@@ -194,19 +195,11 @@
     ) -&gt; Result&lt;Vec&lt;u8&gt;, ClientError&gt;;
 <span class="boring">}</span></code></pre></pre>
 <h3 id="etfapi"><a class="header" href="#etfapi">EtfApi</a></h3>
-<p>The EtfApi pulls together the EtfClient and DLEQ proof verifier (and potentially other verifiers in the future). It is both std and no-std compatible, meaning it plays nicely both with rust (e.g. to build a CLI) and also as a wasm build. The EtfApi implementation can be compiled to wasm and used along with <a href="">etf.js</a> to encrypt/decrypt messages.</p>
+<p>The EtfApi pulls together the EtfClient and DLEQ proof verifier (and potentially other verifiers in the future). It is both std and no-std compatible, meaning it plays nicely both with rust (e.g. to build a CLI) and also as a wasm build. The EtfApi implementation can be compiled to wasm and used along with <a href="https://github.com/ideal-lab5/etf.js">etf.js</a> to encrypt/decrypt messages.</p>
 <p>We provide a default EtfApi implementation, which uses the DefaultEtfClient.</p>
-<h3 id="slot-scheduler"><a class="header" href="#slot-scheduler">Slot Scheduler</a></h3>
-<p>A <code>slot schedule</code> is simply a list of slots that you want to encrypt a message for. For example, a slot schedule could be <code>[290871100, 290871105, 290871120]</code>. In general, we can think of the slot schedule as being the <code>ids</code> input field to the encrypt function in the <code>EtfApi</code>. Along with the AES secret key produced by the <code>DefaultApiClient</code>, knowledge of the slot schedule along with the capsule (output from encryption) is enough information to recover the master key.</p>
-<p>The slot scheduler interface is used to map some input to a slot schedule. For example, a slot scheduler could use some deterministic hash function to map strings to slots, enabling type of password-based slot scheduler. In general, applications can implement:</p>
-<pre><code class="language-javascript">export interface SlotScheduler&lt;T&gt; {
-    generateSchedule(n: number, currentSlot: number, input: T): SlotSchedule;
-}
-</code></pre>
-<p>Additionally, we provide a built-in <a href="todo">DistanceBasedSlotScheduler</a>. Refer to the <a href="">example</a> for more usage details.</p>
 <h2 id="encryption-and-decryption"><a class="header" href="#encryption-and-decryption">Encryption and Decryption</a></h2>
 <p><strong>Encryption</strong></p>
-<p>The ETF SDK includes an implementation of the EtfClient and EtfApi, found at <a href="todo">DefaultEtfClient</a> and <a href="todo">DefaultEtfApi</a>. The client uses threshold secret sharing, AES-GCM (<a href="">AEADS</a>), and identity based encryption to generate aes secret keys and encrypt its shares to the future. In brief, it follows the diagram below. The output contains: <code>aes_out = (AES ciphertext, AES nonce, AES secret key), capsule = (encrypted key shares), slot_schedule</code>. The <code>capsule</code> contains the IBE encrypted key shares and the slot schedule are the slots for which they're encrypted. It assumes the two lists are the same size and follow the same order.</p>
+<p>The ETF SDK includes an implementation of the EtfClient and EtfApi, found at <a href="https://github.com/ideal-lab5/etf-sdk/blob/05f625f14cfd3c020e156e76beecb1a4e8a3f1ba/crypto/src/client/client.rs#L36">DefaultEtfClient</a> and <a href="https://github.com/ideal-lab5/etf-sdk/blob/05f625f14cfd3c020e156e76beecb1a4e8a3f1ba/api/src/api.rs#L16">DefaultEtfApi</a>. The client uses threshold secret sharing, AES-GCM (<a href="https://github.com/RustCrypto/AEADs/tree/master/aes-gcm">AEADS</a>), and identity based encryption to generate aes secret keys and encrypt its shares to the future. In brief, it follows the diagram below. The output contains: <code>aes_out = (AES ciphertext, AES nonce, AES secret key), capsule = (encrypted key shares), slot_schedule</code>. The <code>capsule</code> contains the IBE encrypted key shares and the slot schedule are the slots for which they’re encrypted. It assumes the two lists are the same size and follow the same order.</p>
 <p><img src="./assets/aes_etf.png" alt="2" /></p>
 <p><strong>Decryption</strong></p>
 <p>Decryption works in reverse. When at least a threshold of slots in the slot schedule have had blocks produced within them, the aes secret key can be reconstructed by decrypting the partially decryptable capsule (e.g. can decrypt 2 of 3 shares) and using lagrange interpolation to recover the master secret, which is then used for decryption.</p>
