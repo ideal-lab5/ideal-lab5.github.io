@@ -86,7 +86,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="overview.html"><strong aria-hidden="true">1.</strong> Overview</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="getting_started.html"><strong aria-hidden="true">1.1.</strong> Getting Started</a></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">2.</strong> Etf</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="architecture.html"><strong aria-hidden="true">2.1.</strong> Architecture</a></li><li class="chapter-item expanded "><a href="etf.html"><strong aria-hidden="true">2.2.</strong> Math</a></li><li class="chapter-item expanded "><a href="use_cases.html"><strong aria-hidden="true">2.3.</strong> Use Cases</a></li></ol></li><li class="chapter-item expanded "><a href="etf_monitor.html"><strong aria-hidden="true">3.</strong> Etf Monitor</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="overview.html"><strong aria-hidden="true">1.</strong> Overview</a></li><li class="chapter-item expanded "><a href="etf_overview.html"><strong aria-hidden="true">2.</strong> ETF</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="getting_started.html"><strong aria-hidden="true">2.1.</strong> Getting Started</a></li><li class="chapter-item expanded "><a href="architecture.html"><strong aria-hidden="true">2.2.</strong> ETF Network Architecture</a></li><li class="chapter-item expanded "><a href="etf.html"><strong aria-hidden="true">2.3.</strong> The Math</a></li><li class="chapter-item expanded "><a href="use_cases.html"><strong aria-hidden="true">2.4.</strong> Use Cases</a></li></ol></li><li class="chapter-item expanded "><a href="etf_sdk.html"><strong aria-hidden="true">3.</strong> SDK</a></li><li class="chapter-item expanded "><a href="etf_js.html"><strong aria-hidden="true">4.</strong> Etf.js</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -169,37 +169,43 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="overview"><a class="header" href="#overview">Overview</a></h1>
-<p>EtF Network is a <a href="https://github.com/paritytech/substrate.git">Substrate</a>-based blockchain that utilizes identity-based encryption and zero knowledge proofs to enable &quot;encryption to the future.&quot; Encryption to the future, similar in idea to timelock encryption, uses a slot-based consensus system as a reference clock to which messages can be encrypted. Valid blocks authored in future slots contain the corresponding secret keys. The initial version of our network uses a fork of Aura to implement a PoA version of EtF.</p>
+                        <h1 id="etf-network"><a class="header" href="#etf-network">ETF Network</a></h1>
+<p>The Etf Network is a <a href="https://github.com/paritytech/substrate.git">Substrate</a>-based blockchain that utilizes identity-based encryption and zero knowledge proofs to enable &quot;encryption to the future.&quot; Encryption to the future, similar in idea to timelock encryption, uses a slot-based consensus system as a reference clock to which messages can be encrypted. The initial implementation uses a fork of Aura to implement a proof-of-authority version of EtF. The network acts as a cryptographic primitive enabling encryption to the future and decryption from the past. EtF Network can unlock innovative use cases, such as MEV protection, trustless MPC protocols (e.g. atomic asset swaps, filesystems) and keyless encryption tools.</p>
+<p><img src="./assets/web3%20foundation_grants_badge_black.png" alt="w3fblk" />
+This project is sponsored by a <a href="https://github.com/ideal-lab5/Grants-Program/blob/master/applications/cryptex.md">web3 foundation grant</a>.</p>
 <h2 id="getting-started"><a class="header" href="#getting-started">Getting Started</a></h2>
 <ul>
 <li>Learn about <a href="./architecture.html">how Etf works</a></li>
 <li>See the <a href="./getting_started.html">getting started guide</a> for an in-depth guide on running your own node.</li>
-</ul>
-<h3 id="repos"><a class="header" href="#repos">Repos</a></h3>
-<ul>
-<li><a href="https://github.com/ideal-lab5/substrate/tree/milestone1">Etf Network</a> The implementation of etf consensus along with the etf pallet.</li>
-<li><a href="https://github.com/ideal-lab5/etf-monitor">Etf Network Monitor</a> A simple React app using polkadotjs to decode block headers and display decoded slot secrets.</li>
+<li>Build apps with <a href="./etf_js.html">etf.js</a></li>
 </ul>
 <h2 id="contact"><a class="header" href="#contact">Contact</a></h2>
-<p>driemworks@idealabs.network
-https://idealabs.network</p>
+<p>driemworks@idealabs.network</p>
+<p>https://idealabs.network</p>
 <h2 id="license"><a class="header" href="#license">License</a></h2>
 <p>These docs and the code for both etf-network and etf-monitor are licensed as GPlv3.0.</p>
-<p>This project is sponsored by a <a href="https://github.com/ideal-lab5/Grants-Program/blob/master/applications/cryptex.md">web3 foundation grant</a>. The work presented here represents the first milestone of the grant.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="etf-network-overview"><a class="header" href="#etf-network-overview">EtF Network Overview</a></h1>
+<p>The ETF Network is designed as a proof of authority blockchain, developed on the Substrate framework. Its core functionality revolves around a hybrid consensus mechanism that empowers the network to serve as a cryptographic primitive, facilitating timelock encryption, specifically referred to as &quot;encryption to the future.&quot;</p>
+<p>The Etf.js and Etf SDK are a modular tech stack that supports the development of various applications that use the etf network. Developers are provided with tools to encrypt messages, utilizing a default hybrid AES/ETF scheme. However, the platform also affords the flexibility for builders to define and implement their own protocols, enhancing the adaptability and customization potential of the network's offerings. Currently, etf.js supports connections from (smoldot) light clients and full nodes only.</p>
+<p><img src="./assets/architecture.png" alt="architecture overview" /></p>
+<p>Check out the links below for a deep dive into the components:</p>
+<ul>
+<li><a href="./architecture.html">etf network and consensus</a></li>
+<li><a href="./etf_sdk.html">etf sdk and encryption</a></li>
+<li><a href="./etf_js.html">(d)apps and light client</a></li>
+</ul>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="getting-started-1"><a class="header" href="#getting-started-1">Getting Started</a></h1>
-<p>EtF Network is a substrate based blockchain. In general, all commands that work with the default CLI implemented in substrate are compatible with this blockchain.</p>
+<p>Since Etf Network is a substrate based blockchain, in general all commands that work with the default CLI implemented in substrate are compatible with this blockchain (i.e. for keygen). </p>
 <h2 id="setup"><a class="header" href="#setup">Setup</a></h2>
 <h3 id="installation"><a class="header" href="#installation">Installation</a></h3>
 <p>To build the blockchain locally:</p>
 <pre><code class="language-bash"># clone substrate and checkout milestone1 branch
 git clone git@github.com:ideal-lab5/substrate.git
 cd substrate
-git checkout milestone1
+git checkout etf
 # nightly build
 cargo +nightly build --release
 </code></pre>
-<p>(Optional) Setup the <a href="./etf_monitor.html">Etf monitor tool</a></p>
 <h3 id="run"><a class="header" href="#run">Run</a></h3>
 <p><strong>From Sources</strong>
 As previously stated, all default substrate commands will work. For example, to run the blockchain in dev mode as Alice, use:</p>
@@ -213,6 +219,7 @@ docker pull ideallabs/etf
 # the image accepts all substrate commands/flags
 docker run -p 9944:9944 -it --rm --name etf-node-0 ideallabs/etf --unsafe-rpc-external --validator --dev --tmp
 </code></pre>
+<p>The raw chainspec for our testnet can be found <a href="https://raw.githubusercontent.com/ideal-lab5/substrate/etf/etfTestSpecRaw.json">here</a>. You will need to add the <code>--chain etfSpecTestRaw.json</code> when running your node to connect to the testnet (contact us if any issues).</p>
 <h2 id="testing"><a class="header" href="#testing">Testing</a></h2>
 <h3 id="unit-tests"><a class="header" href="#unit-tests">unit tests</a></h3>
 <p><code>cargo +nightly test</code></p>
@@ -233,23 +240,23 @@ docker run -p 9944:9944 -it --rm --name etf-node-0 ideallabs/etf --unsafe-rpc-ex
     --repeat 20 \
     --output bin/node-template/pallets/etf/src/weight.rs
 </code></pre>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="etf-network-overview-and-architecture"><a class="header" href="#etf-network-overview-and-architecture">EtF Network Overview and Architecture</a></h1>
-<p>ETF network is based on Aura consensus, a round-robin PoA (Proof of Authority) slot-based consensus mechanism. It utilizes DLEQ (Discrete Logarithm Equality) proofs to create BLS (Boneh-Lynn-Shacham) IBE (Identity-Based Encryption) block seals. Block importers verify the validity of the DLEQ proof when importing each block.</p>
-<p>We also introduce the EtF pallet, which stores public parameters for the identity based encryption scheme. The pallet uses arkworks to ensure parameters stored in the runtime are decodable as valid group elements.</p>
-<p>The AuraAPI has been enhanced to deliver IBE parameters and secret keys to both block proposers and block verifiers, facilitating a more efficient and secure block proposal and verification process.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="etf-network-overview-1"><a class="header" href="#etf-network-overview-1">EtF Network Overview</a></h1>
 <h2 id="pallets"><a class="header" href="#pallets">Pallets</a></h2>
+<p>The network requires a pallet, the etf-pallet, to function. The etf-pallet stores public parameters that are required to enable identity based encryption. These values are calculated offchain and encoded in the genesis block.</p>
 <p><img src="./assets/pallets_overview_architecture.png" alt="pallets overview" /></p>
-<h2 id="encryption-to-the-future"><a class="header" href="#encryption-to-the-future">Encryption to the Future</a></h2>
+<h3 id="etf-pallet"><a class="header" href="#etf-pallet">ETF Pallet</a></h3>
+<p>The ETF pallet stores public parameters needed for the IBE scheme. The values are set on genesis and only changeable by the root user (via the Sudo pallet) when they call the <code>update_ibe_params</code> extrinsic. The extrinsic uses Arkworks to decode the input to ensure that the provided data is a valid element of G2, and if so then it encodes it in storage. In the future, we intend to make this a more democratic process.</p>
+<h2 id="consensus-and-encryption-to-the-future"><a class="header" href="#consensus-and-encryption-to-the-future">Consensus and Encryption to the Future</a></h2>
 <p>Here we present a high-level overview of how EtF works. For a more in depth look, jump to the <a href="./etf.html">math</a></p>
 <p>The initial version of the network uses a fork of Aura, a round-robin proof of authority consensus mechanism. Each authority knows the same secret, the IBE master secret which makes the identity based encryption scheme work (more on this <a href="">here</a>). They are trusted to act as a secret key custodian (a requirement we will relax in the future).  When a slot author proposes a block, they first use the master secret to calculate a slot secret, which they add to the block header. This slot secret is intended to be <strong>leaked</strong> and made public. Next, in order to ensure the correctness of the secret to be leaked, block producers include a DLEQ proof that shows the slot secret was correctly calculated. Along with this, they also sign the block as usual. </p>
-<p>Block importers simply fetch the public IBE parameters from the EtF pallet and use it to verify the DLEQ proof. If the DLEQ proof is not valid, the block is rejected. </p>
+<p>Block importers simply verify the DLEQ proof. If the DLEQ proof is not valid, the block is rejected. </p>
 <p><img src="./assets/high_level_flow_of_data.drawio.png" alt="high-level" /></p>
+<p>Whenever a block is authored in a slot, the slot secret can then be extracted and used.</p>
+<p><img src="./assets/etf_monitor.png" alt="etf-monitor" /></p>
 <h3 id="slot-identity"><a class="header" href="#slot-identity">Slot Identity</a></h3>
-<p>We use a PoA consensus system in which a known set of authorities, say A = {A_1, …, A_n}, are selected as slot authors sequentially (round robin). That is, for a slot \(sl_k\), the authority to author a block in the slot is given by \(A_{sl_k} = A[sl_k \mod |A|] \). A slot’s identity is given by \(ID_{sl_k} = A_{sl_k} || sl_k\) where \(||\) is concatenation. That is, it’s the combination of the slot author’s public key and the slot id. For example, given the ss58 address <code>5GGrFp7o5b5CMSi9uZnkveRusegbVgVUa5BvqXRQHsJ9SSjc</code> (Alice), a slot identity might look like: <code>0xd43593c715fdd31c61141abd04a99fd6822c8558854ccde39a5684e7a56da27d231922012</code> 231922012 is the slot id and <code>0xd43593c715fdd31c61141abd04a99fd6822c8558854ccde39a5684e7a56da27d</code> is the public key of the ss58 address.</p>
+<p>The ETF consensus mechanism is based on Aura, a round-robin PoA (Proof of Authority) slot-based consensus mechanism. It utilizes DLEQ (Discrete Logarithm Equality) proofs to create BLS (Boneh-Lynn-Shacham) IBE (Identity-Based Encryption) block seals. Block importers verify the validity of the DLEQ proof when importing each block. Authorities in the network act as IBE master key custodians.</p>
+<p>We use a PoA consensus system in which a known set of authorities, say A = {A_1, …, A_n}, are selected as slot authors sequentially (round robin). That is, for a slot \(sl_k\), the authority to author a block in the slot is given by \(A_{sl_k} = A[sl_k \mod |A|] \). A slot’s identity is given by \(ID_{sl_k} = sl_k\). That is we simply use the slot number as the slot identity. This will change in the near future, but fits for the time being. For example, a slot id could look like <code>0x231922012</code>, where <code>231,922,012</code> is the slot number.</p>
 <p>Our implementation works over curve BLS12-381. To get a public key from the slot id, we use a hash-to-G1 function, which gives us public keys in G1 (the elliptic curve group we’re working with). That is, each slot implicitly has an identity, and by evaluating the id under the hash-to-G1 function, a public key in G1. </p>
-<h3 id="etf-pallet"><a class="header" href="#etf-pallet">ETF Pallet</a></h3>
-<p>The ETF pallet stores public parameters needed for the IBE scheme, a single public key in G1 as a compressed byte array. This value is set on genesis and only changeable by the root user (via the Sudo pallet) when they call the <code>update_ibe_params</code> extrinsic. The extrinsic uses Arkworks to decode the input to ensure that the provided data is a valid element of G1, and if so then it encodes it in storage. In the future, we intend to make this a more democratic process.</p>
-<p>The aura client reads the public parameters from the runtime while preparing the DLEQ proof (when claiming a slot)</p>
 <h3 id="claiming-a-slot"><a class="header" href="#claiming-a-slot">Claiming a Slot</a></h3>
 <p>When a block author claims a slot, they perform the <a href="./etf.html#identity-based-encryption">extract algorithm of the IBE scheme</a>, where they use their slot public key along with the master secret to calculate the slot secret (e.g. d = sQ where s is the master secret and  is the public key). In order to do this, we introduce new functionality to the existing AuraAPI which allows slot authors to fetch the IBE public parameters, which are stored in the etf pallet, as well as read the master secret from local storage. </p>
 <p>After calculating the slot secret, the slot author is tasked with preparing a DLEQ proof that the slot secret was calculated from the master secret. We accomplish this by implementing a trait which enables DLEQ proof and verification, using Arkworks. It allows the prover to demonstrate that, given some xG and xH, that both were calculated from x without revealing the value.  In our scheme, one of the values is the slot secret, <code>d = sQ</code>, and the other is the master secret multiplied by the public param stored in the etf pallet. The DLEQ proof is then encoded within the block header when it is proposed by the author. That is, each block header contains a PreDigest which contains the slot id, the slot secret, and the DLEQ proof like so:</p>
@@ -265,12 +272,6 @@ docker run -p 9944:9944 -it --rm --name etf-node-0 ideallabs/etf --unsafe-rpc-ex
 <p>When a block importer receives a new block, they first check that the slot is correct. If correct, then they recover the DLEQ proof from the block header and verify it along with the block seal (which is still a normal Schnorr signature). If the DLEQ proof is valid, then we know the slot secret is valid as well. If the proof is invalid, then the secret is incorrect and the block is rejected.</p>
 <h3 id="consensus-error-types"><a class="header" href="#consensus-error-types">Consensus Error Types</a></h3>
 <p>Block producers and importers are given two new consensus error types <a href="https://github.com/ideal-lab5/substrate/blob/502032949307b1c19cba606dbef1d2f108f71a56/primitives/consensus/common/src/error.rs#L53">here</a>. For <strong>block producers</strong>, the <code>InvalidIBESecret</code> is called when the aura client cannot fetch a master IBE secret from local storage. For <strong>block importers</strong>, <code>InvalidDLEQProof</code> is triggered when a DLEQ proof cannot be verified. This is very similar in functionality to the <code>BadSignature</code> error type.</p>
-<h3 id="authority-incentives"><a class="header" href="#authority-incentives">Authority Incentives</a></h3>
-<p>Since we have a proof of authority network, authority incentives are very simple.</p>
-<ol>
-<li>When a new session starts, <a href="https://github.com/ideal-lab5/substrate/blob/cf0a5193af80e458ee585a614f7ff12ece9b56fd/frame/aura/src/lib.rs#L269">each authority recieves 10 tokens</a></li>
-<li>If an authority produces a bad block, it will be rejected by importers and the authority will be unable to author more blocks (this isn't completely implemented yet).</li>
-</ol>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="encryption-to-the-future-the-math"><a class="header" href="#encryption-to-the-future-the-math">Encryption to the Future (the math)</a></h1>
 <p>The EtF network uses a slot-based consensus mechanism (Aura) and identity based encryption methods to associate an identity with each slot. The initial version of the network uses a simple approach for deriving keys, but which requires a significant amount of trust to be placed in each authority. Each authority is an IBE master secret key custodian and is made responsible for deriving and leaking IBE secret keys within each slot where they're an author. By encrypting to the public key associated with each slot, messages can be encrypted so that the decryption key is only made public when a block is authored in that slot.</p>
 <h2 id="how-it-works"><a class="header" href="#how-it-works">How it works</a></h2>
@@ -318,21 +319,82 @@ docker run -p 9944:9944 -it --rm --name etf-node-0 ideallabs/etf --unsafe-rpc-ex
 <li>Bob does the same, submitting an encrypted transaction that sends his locked asset to Alice, encrypted for the same epoch as Alice’s transaction.</li>
 <li>After the slot secret is revealed, both transactions can be decrypted and executed. Here, both transactions will call the contract <code>execute</code> function. The execute function checks if the other party provided a valid proof for their encrypted transaction, and if so, executes it. If the other party failed to submit a valid encrypted tx, then the swap fails and the offending party is slashed which the other receives all tokens back. </li>
 </ol>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="etf-monitor"><a class="header" href="#etf-monitor">Etf Monitor</a></h1>
-<p>The etf monitor is a simple React app to monitor the etf network. Presently, it simply subscribes to incoming blocks and decodes the headers, displaying slot ids and slot secrets as new blocks are imported. At present, it is hardcoded to connect to a node's RPC on localhost:9944. This can be modified by updating the code and rebuilding. Enhancements will be coming soon.</p>
-<h2 id="overview-1"><a class="header" href="#overview-1">Overview</a></h2>
-<p>Essentially, it simply decodes the predigest of each incoming slot header, which stores the slot id, secret, and DLEQ proof, and displays them in a table. </p>
-<pre><code class="language-javascript">PreDigest: {
-    slot: 'u64',
-    secret: '[u8;48]',
-    proof: '([u8;48], [u8;48], [u8;32], [u8;48])'
+<div style="break-before: page; page-break-before: always;"></div><h1 id="etf-sdk"><a class="header" href="#etf-sdk">ETF SDK</a></h1>
+<p>The ETF SDK is the core of the modular tech stack for building protocols and apps on top of the ETF network. </p>
+<p><img src="./assets/sdk.png" alt="1" /></p>
+<h2 id="components"><a class="header" href="#components">Components</a></h2>
+<p>There are two main components that the SDK provides, the EtfClient and the EtfApi. Additionally, we will discuss <code>slot schedules</code> and the SlotScheduler.</p>
+<h3 id="etfclient"><a class="header" href="#etfclient">EtfClient</a></h3>
+<p>The ETF Client is the core functionality of the SDK. The SDK implements functions to use the ETF network to encrypt and decrypt messages. Developers are free to implement their own encryption and decryption logic, while we provide a built-in implementation, discussed below. The interface defines the method signatures required for our BF-IBE (which etf requires), however implementations have freedom to experiment. To implement it, implement the functions below:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>    fn encrypt(
+        ibe_pp: Vec&lt;u8&gt;,
+        p_pub: Vec&lt;u8&gt;,
+        message: &amp;[u8],
+        ids: Vec&lt;Vec&lt;u8&gt;&gt;,
+        t: u8,
+    ) -&gt; Result&lt;AesIbeCt, ClientError&gt;; 
+
+    fn decrypt(
+        ibe_pp: Vec&lt;u8&gt;,
+        ciphertext: Vec&lt;u8&gt;,
+        nonce: Vec&lt;u8&gt;,
+        capsule: Vec&lt;Vec&lt;u8&gt;&gt;,
+        secrets: Vec&lt;Vec&lt;u8&gt;&gt;,
+    ) -&gt; Result&lt;Vec&lt;u8&gt;, ClientError&gt;;
+<span class="boring">}</span></code></pre></pre>
+<h3 id="etfapi"><a class="header" href="#etfapi">EtfApi</a></h3>
+<p>The EtfApi pulls together the EtfClient and DLEQ proof verifier (and potentially other verifiers in the future). It is both std and no-std compatible, meaning it plays nicely both with rust (e.g. to build a CLI) and also as a wasm build. The EtfApi implementation can be compiled to wasm and used along with <a href="">etf.js</a> to encrypt/decrypt messages.</p>
+<p>We provide a default EtfApi implementation, which uses the DefaultEtfClient.</p>
+<h3 id="slot-scheduler"><a class="header" href="#slot-scheduler">Slot Scheduler</a></h3>
+<p>A <code>slot schedule</code> is simply a list of slots that you want to encrypt a message for. For example, a slot schedule could be <code>[290871100, 290871105, 290871120]</code>. In general, we can think of the slot schedule as being the <code>ids</code> input field to the encrypt function in the <code>EtfApi</code>. Along with the AES secret key produced by the <code>DefaultApiClient</code>, knowledge of the slot schedule along with the capsule (output from encryption) is enough information to recover the master key.</p>
+<p>The slot scheduler interface is used to map some input to a slot schedule. For example, a slot scheduler could use some deterministic hash function to map strings to slots, enabling type of password-based slot scheduler. In general, applications can implement:</p>
+<pre><code class="language-javascript">export interface SlotScheduler&lt;T&gt; {
+    generateSchedule(n: number, currentSlot: number, input: T): SlotSchedule;
 }
 </code></pre>
-<p><img src="./assets/etf_monitor.png" alt="etf-monitor" /></p>
-<h2 id="setup-1"><a class="header" href="#setup-1">Setup</a></h2>
-<pre><code class="language-bash">git clone git@github.com:ideal-lab5/etf-monitor.git
-cd etf-monitor
-npm i &amp;&amp; npm run start
+<p>Additionally, we provide a built-in <a href="todo">DistanceBasedSlotScheduler</a>. Refer to the <a href="">example</a> for more usage details.</p>
+<h2 id="encryption-and-decryption"><a class="header" href="#encryption-and-decryption">Encryption and Decryption</a></h2>
+<p><strong>Encryption</strong></p>
+<p>The ETF SDK includes an implementation of the EtfClient and EtfApi, found at <a href="todo">DefaultEtfClient</a> and <a href="todo">DefaultEtfApi</a>. The client uses threshold secret sharing, AES-GCM (<a href="">AEADS</a>), and identity based encryption to generate aes secret keys and encrypt its shares to the future. In brief, it follows the diagram below. The output contains: <code>aes_out = (AES ciphertext, AES nonce, AES secret key), capsule = (encrypted key shares), slot_schedule</code>. The <code>capsule</code> contains the IBE encrypted key shares and the slot schedule are the slots for which they're encrypted. It assumes the two lists are the same size and follow the same order.</p>
+<p><img src="./assets/aes_etf.png" alt="2" /></p>
+<p><strong>Decryption</strong></p>
+<p>Decryption works in reverse. When at least a threshold of slots in the slot schedule have had blocks produced within them, the aes secret key can be reconstructed by decrypting the partially decryptable capsule (e.g. can decrypt 2 of 3 shares) and using lagrange interpolation to recover the master secret, which is then used for decryption.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="building-apps-with-etf-network"><a class="header" href="#building-apps-with-etf-network">Building apps with etf network</a></h1>
+<p>Building with the etf network is made easy through the etf.js library. The library is basically a wrapper around the wasm build of the <a href="./etf_sdk.html">etf-sdk</a>. The library can be used both with a full node or by using the <a href="">@ideallabs/smoldot</a> lightclient. In addition, it emits an event with incoming block.</p>
+<p>See the <a href="">etf.js/examples</a> for a working example on encrypting and decrypting with the sdk.</p>
+<h2 id="light-client"><a class="header" href="#light-client">Light Client</a></h2>
+<p>Smoldot is a wasm-based light client that runs directly in the browser. Our smoldot implementation is a fork of the official one <a href="">here</a>. Our modifications are purely surroudning the expected headers and ensure they can be SCALE encoded/decoded. For now, in all other ways, everything is exactly the same as the official smoldot.</p>
+<h2 id="connecting-to-the-chain"><a class="header" href="#connecting-to-the-chain">Connecting to the Chain</a></h2>
+<p>The etf.js library can be run either with a full node or with a light client (in browser). In the future, this could also be done with the extension (work in progress). </p>
+<h3 id="full-node"><a class="header" href="#full-node">Full node</a></h3>
+<p>Currently we support connecting as a full node on insecure websockets only. This mode can be configured by initializing the library with no flags (or <code>false</code>).</p>
+<pre><code class="language-javascript">let host = '127.0.0.1';
+let port = '9944';
+const distanceBasedSlotScheduler = new DistanceBasedSlotScheduler();
+let api = new Etf(distanceBasedSlotScheduler, host, port);
+await api.init();
+</code></pre>
+<h3 id="light-client-1"><a class="header" href="#light-client-1">Light Client</a></h3>
+<p>To run with an in-browser light client (smoldot), the library is initalized with:</p>
+<pre><code class="language-javascript">const distanceBasedSlotScheduler = new DistanceBasedSlotScheduler();
+let api = new Etf(distanceBasedSlotScheduler);
+await api.init(true);
+</code></pre>
+<h3 id="extension"><a class="header" href="#extension">Extension</a></h3>
+<p>coming soon</p>
+<h2 id="encryption-and-decryption-1"><a class="header" href="#encryption-and-decryption-1">Encryption and Decryption</a></h2>
+<p>Encryption and decryption with etf.js uses the approach detailed <a href="./etf_sdk.html#encryption-and-decryption">here</a>. </p>
+<h3 id="encrypt"><a class="header" href="#encrypt">Encrypt</a></h3>
+<p>Messages can be encrypted by passing a number of shares, threshold, and some input to the slot scheduler implementation. In the default EtfClient, encryption uses AES-GCM alongside ETF. It uses TSS to generate key shares, which are encrypted for future slots based on the slot scheduler logic.</p>
+<pre><code class="language-javascript">let out = api.encrypt(message, 3, 2, new TimeInput(5));
+</code></pre>
+<p>The output contains: <code>aes_out = (AES ciphertext, AES nonce, AES secret key), capsule = (encrypted key shares), slot_schedule</code>. The <code>capsule</code> contains the IBE encrypted key shares and the slot schedule are the slots for which they're encrypted. It assumes the two lists are the same size and follow the same order.</p>
+<h3 id="decrypt"><a class="header" href="#decrypt">Decrypt</a></h3>
+<p>Once a block has been produced in at least a threshold of the slots in the slot schedule, the AES secret key can be recovered from the decrytpted capsule fragment.</p>
+<pre><code class="language-javascript">let m = await api.decrypt(ciphertext, nonce, capsule, slotSchedule);
+let message = String.fromCharCode(...m);
 </code></pre>
 
                     </main>

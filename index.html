@@ -85,7 +85,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="overview.html" class="active"><strong aria-hidden="true">1.</strong> Overview</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="getting_started.html"><strong aria-hidden="true">1.1.</strong> Getting Started</a></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">2.</strong> Etf</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="architecture.html"><strong aria-hidden="true">2.1.</strong> Architecture</a></li><li class="chapter-item expanded "><a href="etf.html"><strong aria-hidden="true">2.2.</strong> Math</a></li><li class="chapter-item expanded "><a href="use_cases.html"><strong aria-hidden="true">2.3.</strong> Use Cases</a></li></ol></li><li class="chapter-item expanded "><a href="etf_monitor.html"><strong aria-hidden="true">3.</strong> Etf Monitor</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="overview.html" class="active"><strong aria-hidden="true">1.</strong> Overview</a></li><li class="chapter-item expanded "><a href="etf_overview.html"><strong aria-hidden="true">2.</strong> ETF</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="getting_started.html"><strong aria-hidden="true">2.1.</strong> Getting Started</a></li><li class="chapter-item expanded "><a href="architecture.html"><strong aria-hidden="true">2.2.</strong> ETF Network Architecture</a></li><li class="chapter-item expanded "><a href="etf.html"><strong aria-hidden="true">2.3.</strong> The Math</a></li><li class="chapter-item expanded "><a href="use_cases.html"><strong aria-hidden="true">2.4.</strong> Use Cases</a></li></ol></li><li class="chapter-item expanded "><a href="etf_sdk.html"><strong aria-hidden="true">3.</strong> SDK</a></li><li class="chapter-item expanded "><a href="etf_js.html"><strong aria-hidden="true">4.</strong> Etf.js</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -168,31 +168,28 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="overview"><a class="header" href="#overview">Overview</a></h1>
-<p>EtF Network is a <a href="https://github.com/paritytech/substrate.git">Substrate</a>-based blockchain that utilizes identity-based encryption and zero knowledge proofs to enable &quot;encryption to the future.&quot; Encryption to the future, similar in idea to timelock encryption, uses a slot-based consensus system as a reference clock to which messages can be encrypted. Valid blocks authored in future slots contain the corresponding secret keys. The initial version of our network uses a fork of Aura to implement a PoA version of EtF.</p>
+                        <h1 id="etf-network"><a class="header" href="#etf-network">ETF Network</a></h1>
+<p>The Etf Network is a <a href="https://github.com/paritytech/substrate.git">Substrate</a>-based blockchain that utilizes identity-based encryption and zero knowledge proofs to enable &quot;encryption to the future.&quot; Encryption to the future, similar in idea to timelock encryption, uses a slot-based consensus system as a reference clock to which messages can be encrypted. The initial implementation uses a fork of Aura to implement a proof-of-authority version of EtF. The network acts as a cryptographic primitive enabling encryption to the future and decryption from the past. EtF Network can unlock innovative use cases, such as MEV protection, trustless MPC protocols (e.g. atomic asset swaps, filesystems) and keyless encryption tools.</p>
+<p><img src="./assets/web3%20foundation_grants_badge_black.png" alt="w3fblk" />
+This project is sponsored by a <a href="https://github.com/ideal-lab5/Grants-Program/blob/master/applications/cryptex.md">web3 foundation grant</a>.</p>
 <h2 id="getting-started"><a class="header" href="#getting-started">Getting Started</a></h2>
 <ul>
 <li>Learn about <a href="./architecture.html">how Etf works</a></li>
 <li>See the <a href="./getting_started.html">getting started guide</a> for an in-depth guide on running your own node.</li>
-</ul>
-<h3 id="repos"><a class="header" href="#repos">Repos</a></h3>
-<ul>
-<li><a href="https://github.com/ideal-lab5/substrate/tree/milestone1">Etf Network</a> The implementation of etf consensus along with the etf pallet.</li>
-<li><a href="https://github.com/ideal-lab5/etf-monitor">Etf Network Monitor</a> A simple React app using polkadotjs to decode block headers and display decoded slot secrets.</li>
+<li>Build apps with <a href="./etf_js.html">etf.js</a></li>
 </ul>
 <h2 id="contact"><a class="header" href="#contact">Contact</a></h2>
-<p>driemworks@idealabs.network
-https://idealabs.network</p>
+<p>driemworks@idealabs.network</p>
+<p>https://idealabs.network</p>
 <h2 id="license"><a class="header" href="#license">License</a></h2>
 <p>These docs and the code for both etf-network and etf-monitor are licensed as GPlv3.0.</p>
-<p>This project is sponsored by a <a href="https://github.com/ideal-lab5/Grants-Program/blob/master/applications/cryptex.md">web3 foundation grant</a>. The work presented here represents the first milestone of the grant.</p>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
 
-                            <a rel="next" href="getting_started.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next" href="etf_overview.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
 
@@ -203,7 +200,7 @@ https://idealabs.network</p>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
 
-                    <a rel="next" href="getting_started.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next" href="etf_overview.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>

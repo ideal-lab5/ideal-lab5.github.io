@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Etf Monitor - etf-docs</title>
+        <title>SDK - etf-docs</title>
 
 
         <!-- Custom HTML head -->
@@ -85,7 +85,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="overview.html"><strong aria-hidden="true">1.</strong> Overview</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="getting_started.html"><strong aria-hidden="true">1.1.</strong> Getting Started</a></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">2.</strong> Etf</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="architecture.html"><strong aria-hidden="true">2.1.</strong> Architecture</a></li><li class="chapter-item expanded "><a href="etf.html"><strong aria-hidden="true">2.2.</strong> Math</a></li><li class="chapter-item expanded "><a href="use_cases.html"><strong aria-hidden="true">2.3.</strong> Use Cases</a></li></ol></li><li class="chapter-item expanded "><a href="etf_monitor.html" class="active"><strong aria-hidden="true">3.</strong> Etf Monitor</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="overview.html"><strong aria-hidden="true">1.</strong> Overview</a></li><li class="chapter-item expanded "><a href="etf_overview.html"><strong aria-hidden="true">2.</strong> ETF</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="getting_started.html"><strong aria-hidden="true">2.1.</strong> Getting Started</a></li><li class="chapter-item expanded "><a href="architecture.html"><strong aria-hidden="true">2.2.</strong> ETF Network Architecture</a></li><li class="chapter-item expanded "><a href="etf.html"><strong aria-hidden="true">2.3.</strong> The Math</a></li><li class="chapter-item expanded "><a href="use_cases.html"><strong aria-hidden="true">2.4.</strong> Use Cases</a></li></ol></li><li class="chapter-item expanded "><a href="etf_sdk.html" class="active"><strong aria-hidden="true">3.</strong> SDK</a></li><li class="chapter-item expanded "><a href="etf_js.html"><strong aria-hidden="true">4.</strong> Etf.js</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -168,22 +168,48 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="etf-monitor"><a class="header" href="#etf-monitor">Etf Monitor</a></h1>
-<p>The etf monitor is a simple React app to monitor the etf network. Presently, it simply subscribes to incoming blocks and decodes the headers, displaying slot ids and slot secrets as new blocks are imported. At present, it is hardcoded to connect to a node's RPC on localhost:9944. This can be modified by updating the code and rebuilding. Enhancements will be coming soon.</p>
-<h2 id="overview"><a class="header" href="#overview">Overview</a></h2>
-<p>Essentially, it simply decodes the predigest of each incoming slot header, which stores the slot id, secret, and DLEQ proof, and displays them in a table. </p>
-<pre><code class="language-javascript">PreDigest: {
-    slot: 'u64',
-    secret: '[u8;48]',
-    proof: '([u8;48], [u8;48], [u8;32], [u8;48])'
+                        <h1 id="etf-sdk"><a class="header" href="#etf-sdk">ETF SDK</a></h1>
+<p>The ETF SDK is the core of the modular tech stack for building protocols and apps on top of the ETF network. </p>
+<p><img src="./assets/sdk.png" alt="1" /></p>
+<h2 id="components"><a class="header" href="#components">Components</a></h2>
+<p>There are two main components that the SDK provides, the EtfClient and the EtfApi. Additionally, we will discuss <code>slot schedules</code> and the SlotScheduler.</p>
+<h3 id="etfclient"><a class="header" href="#etfclient">EtfClient</a></h3>
+<p>The ETF Client is the core functionality of the SDK. The SDK implements functions to use the ETF network to encrypt and decrypt messages. Developers are free to implement their own encryption and decryption logic, while we provide a built-in implementation, discussed below. The interface defines the method signatures required for our BF-IBE (which etf requires), however implementations have freedom to experiment. To implement it, implement the functions below:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>    fn encrypt(
+        ibe_pp: Vec&lt;u8&gt;,
+        p_pub: Vec&lt;u8&gt;,
+        message: &amp;[u8],
+        ids: Vec&lt;Vec&lt;u8&gt;&gt;,
+        t: u8,
+    ) -&gt; Result&lt;AesIbeCt, ClientError&gt;; 
+
+    fn decrypt(
+        ibe_pp: Vec&lt;u8&gt;,
+        ciphertext: Vec&lt;u8&gt;,
+        nonce: Vec&lt;u8&gt;,
+        capsule: Vec&lt;Vec&lt;u8&gt;&gt;,
+        secrets: Vec&lt;Vec&lt;u8&gt;&gt;,
+    ) -&gt; Result&lt;Vec&lt;u8&gt;, ClientError&gt;;
+<span class="boring">}</span></code></pre></pre>
+<h3 id="etfapi"><a class="header" href="#etfapi">EtfApi</a></h3>
+<p>The EtfApi pulls together the EtfClient and DLEQ proof verifier (and potentially other verifiers in the future). It is both std and no-std compatible, meaning it plays nicely both with rust (e.g. to build a CLI) and also as a wasm build. The EtfApi implementation can be compiled to wasm and used along with <a href="">etf.js</a> to encrypt/decrypt messages.</p>
+<p>We provide a default EtfApi implementation, which uses the DefaultEtfClient.</p>
+<h3 id="slot-scheduler"><a class="header" href="#slot-scheduler">Slot Scheduler</a></h3>
+<p>A <code>slot schedule</code> is simply a list of slots that you want to encrypt a message for. For example, a slot schedule could be <code>[290871100, 290871105, 290871120]</code>. In general, we can think of the slot schedule as being the <code>ids</code> input field to the encrypt function in the <code>EtfApi</code>. Along with the AES secret key produced by the <code>DefaultApiClient</code>, knowledge of the slot schedule along with the capsule (output from encryption) is enough information to recover the master key.</p>
+<p>The slot scheduler interface is used to map some input to a slot schedule. For example, a slot scheduler could use some deterministic hash function to map strings to slots, enabling type of password-based slot scheduler. In general, applications can implement:</p>
+<pre><code class="language-javascript">export interface SlotScheduler&lt;T&gt; {
+    generateSchedule(n: number, currentSlot: number, input: T): SlotSchedule;
 }
 </code></pre>
-<p><img src="./assets/etf_monitor.png" alt="etf-monitor" /></p>
-<h2 id="setup"><a class="header" href="#setup">Setup</a></h2>
-<pre><code class="language-bash">git clone git@github.com:ideal-lab5/etf-monitor.git
-cd etf-monitor
-npm i &amp;&amp; npm run start
-</code></pre>
+<p>Additionally, we provide a built-in <a href="todo">DistanceBasedSlotScheduler</a>. Refer to the <a href="">example</a> for more usage details.</p>
+<h2 id="encryption-and-decryption"><a class="header" href="#encryption-and-decryption">Encryption and Decryption</a></h2>
+<p><strong>Encryption</strong></p>
+<p>The ETF SDK includes an implementation of the EtfClient and EtfApi, found at <a href="todo">DefaultEtfClient</a> and <a href="todo">DefaultEtfApi</a>. The client uses threshold secret sharing, AES-GCM (<a href="">AEADS</a>), and identity based encryption to generate aes secret keys and encrypt its shares to the future. In brief, it follows the diagram below. The output contains: <code>aes_out = (AES ciphertext, AES nonce, AES secret key), capsule = (encrypted key shares), slot_schedule</code>. The <code>capsule</code> contains the IBE encrypted key shares and the slot schedule are the slots for which they're encrypted. It assumes the two lists are the same size and follow the same order.</p>
+<p><img src="./assets/aes_etf.png" alt="2" /></p>
+<p><strong>Decryption</strong></p>
+<p>Decryption works in reverse. When at least a threshold of slots in the slot schedule have had blocks produced within them, the aes secret key can be reconstructed by decrypting the partially decryptable capsule (e.g. can decrypt 2 of 3 shares) and using lagrange interpolation to recover the master secret, which is then used for decryption.</p>
 
                     </main>
 
@@ -193,6 +219,9 @@ npm i &amp;&amp; npm run start
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
+                            <a rel="next" href="etf_js.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
 
                         <div style="clear: both"></div>
                     </nav>
@@ -204,6 +233,9 @@ npm i &amp;&amp; npm run start
                         <i class="fa fa-angle-left"></i>
                     </a>
 
+                    <a rel="next" href="etf_js.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
             </nav>
 
         </div>
