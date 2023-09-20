@@ -86,7 +86,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="overview.html"><strong aria-hidden="true">1.</strong> Overview</a></li><li class="chapter-item expanded "><a href="etf_overview.html"><strong aria-hidden="true">2.</strong> ETF</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="getting_started.html"><strong aria-hidden="true">2.1.</strong> Getting Started</a></li><li class="chapter-item expanded "><a href="architecture.html"><strong aria-hidden="true">2.2.</strong> ETF Network Architecture</a></li><li class="chapter-item expanded "><a href="etf.html" class="active"><strong aria-hidden="true">2.3.</strong> The Math</a></li><li class="chapter-item expanded "><a href="use_cases.html"><strong aria-hidden="true">2.4.</strong> Use Cases</a></li></ol></li><li class="chapter-item expanded "><a href="etf_sdk.html"><strong aria-hidden="true">3.</strong> SDK</a></li><li class="chapter-item expanded "><a href="etf_js.html"><strong aria-hidden="true">4.</strong> Etf.js</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="overview.html"><strong aria-hidden="true">1.</strong> Overview</a></li><li class="chapter-item expanded "><a href="etf_overview.html"><strong aria-hidden="true">2.</strong> ETF Network</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="getting_started.html"><strong aria-hidden="true">2.1.</strong> Getting Started</a></li><li class="chapter-item expanded "><a href="architecture.html"><strong aria-hidden="true">2.2.</strong> Architecture</a></li><li class="chapter-item expanded "><a href="etf.html" class="active"><strong aria-hidden="true">2.3.</strong> The Math</a></li></ol></li><li class="chapter-item expanded "><a href="builders.html"><strong aria-hidden="true">3.</strong> Builders</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="etf_sdk.html"><strong aria-hidden="true">3.1.</strong> SDK</a></li><li class="chapter-item expanded "><a href="etf_js.html"><strong aria-hidden="true">3.2.</strong> Etf.js</a></li><li class="chapter-item expanded "><a href="contracts.html"><strong aria-hidden="true">3.3.</strong> Smart Contracts</a></li></ol></li><li class="chapter-item expanded "><a href="timelock_auction.html"><strong aria-hidden="true">4.</strong> Timelock Auction</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -178,7 +178,8 @@
 <li>\(m’ \leftarrow Dec(ct, sk_{S_k})\) where \(sk_{S_k}\) is the secret key (as in the derive phase of the IBE scheme) leaked in the block authored in slot \(sl_k\).</li>
 </ul>
 <p>By using IBE and DLEQ proofs, slot winners calculate a proof of knowledge of the master secret along with the derived slot secret, which they include in each block header. Block importers validate the DLEQ proof when importing blocks, ensuring that secrets are only included when they are provably valid. </p>
-<h3 id="identity-based-encryption"><a class="header" href="#identity-based-encryption">Identity Based Encryption</a></h3>
+<h3 id="preliminaries"><a class="header" href="#preliminaries">Preliminaries</a></h3>
+<h4 id="identity-based-encryption"><a class="header" href="#identity-based-encryption">Identity Based Encryption</a></h4>
 <p>EtF uses a flavor of the <a href="https://crypto.stanford.edu/~dabo/papers/bfibe.pdf">Boneh-Franklin IBE scheme</a>. In brief, identity based encryption is a scheme were a message can be encrypted for an arbitrary string, rather than some specific public key. For example, a message could be encrypted for “bob@encryptme.com” so that only the owner of the identity “bob@encryptme.com” is able to decrypt the message. The BF-IBE consists of four PPT algorithms (Setup, Extract, Encrypt, Decrypt). In brief, these can be defined as:</p>
 <ul>
 <li>\(Setup(1^\lambda) \to (pp, mk)\) where \(\lambda\) is the security parameter, \(pp\) is the output (system) params and \(mk\) is the master key.</li>
@@ -186,7 +187,7 @@
 <li>\(Encrypt(pp, ID, m) \to ct\) outputs the ciphertext \(ct\) for any message \(m \in {0, 1}^*\).</li>
 <li>\(Decrypt(sk_{ID}, ct) \to m\) outputs the decrytped message \(m\)</li>
 </ul>
-<h3 id="dleq-proofs"><a class="header" href="#dleq-proofs">DLEQ Proofs</a></h3>
+<h4 id="dleq-proofs"><a class="header" href="#dleq-proofs">DLEQ Proofs</a></h4>
 <p>EtF uses DLEQ proofs to verify the correctness of slot secrets without exposing the master secret for the IBE. In brief, the DLEQ proof allows a prover to construct a proof that two group elements were calculated from the same secret (e.g. xH and xG were calculated from the same x) without exposing the secret. Our scheme uses DLEQ proofs to leak an IBE slot secret \(d = sQ\) without exposing the master key, s.</p>
 <p>The prover and verifier agree on two group generators, G and H and makes xG and xH publicly known. The goal is for the prover to demonstrate they know xG and xH were derived from the same x.</p>
 <p>First, the prover:</p>
@@ -201,6 +202,7 @@
 <li>calculates the challenge value by hashing \(c = H(R1, R2, xG, xH)\)</li>
 <li>checks if \(c(xG) - sG == R1 &amp;&amp; c(xH) - sH == R2\). If both equalities are true, the proof is valid. otherwise, it is invalid.</li>
 </ol>
+<h3 id="timelock-encryption-with-etf-network"><a class="header" href="#timelock-encryption-with-etf-network">Timelock Encryption with ETF Network</a></h3>
 
                     </main>
 
@@ -210,7 +212,7 @@
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next" href="use_cases.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next" href="builders.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
 
@@ -224,7 +226,7 @@
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next" href="use_cases.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next" href="builders.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>

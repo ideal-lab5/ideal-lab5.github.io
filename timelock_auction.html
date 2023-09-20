@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>SDK - etf-docs</title>
+        <title>Timelock Auction - etf-docs</title>
 
 
         <!-- Custom HTML head -->
@@ -86,7 +86,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="overview.html"><strong aria-hidden="true">1.</strong> Overview</a></li><li class="chapter-item expanded "><a href="etf_overview.html"><strong aria-hidden="true">2.</strong> ETF Network</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="getting_started.html"><strong aria-hidden="true">2.1.</strong> Getting Started</a></li><li class="chapter-item expanded "><a href="architecture.html"><strong aria-hidden="true">2.2.</strong> Architecture</a></li><li class="chapter-item expanded "><a href="etf.html"><strong aria-hidden="true">2.3.</strong> The Math</a></li></ol></li><li class="chapter-item expanded "><a href="builders.html"><strong aria-hidden="true">3.</strong> Builders</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="etf_sdk.html" class="active"><strong aria-hidden="true">3.1.</strong> SDK</a></li><li class="chapter-item expanded "><a href="etf_js.html"><strong aria-hidden="true">3.2.</strong> Etf.js</a></li><li class="chapter-item expanded "><a href="contracts.html"><strong aria-hidden="true">3.3.</strong> Smart Contracts</a></li></ol></li><li class="chapter-item expanded "><a href="timelock_auction.html"><strong aria-hidden="true">4.</strong> Timelock Auction</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="overview.html"><strong aria-hidden="true">1.</strong> Overview</a></li><li class="chapter-item expanded "><a href="etf_overview.html"><strong aria-hidden="true">2.</strong> ETF Network</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="getting_started.html"><strong aria-hidden="true">2.1.</strong> Getting Started</a></li><li class="chapter-item expanded "><a href="architecture.html"><strong aria-hidden="true">2.2.</strong> Architecture</a></li><li class="chapter-item expanded "><a href="etf.html"><strong aria-hidden="true">2.3.</strong> The Math</a></li></ol></li><li class="chapter-item expanded "><a href="builders.html"><strong aria-hidden="true">3.</strong> Builders</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="etf_sdk.html"><strong aria-hidden="true">3.1.</strong> SDK</a></li><li class="chapter-item expanded "><a href="etf_js.html"><strong aria-hidden="true">3.2.</strong> Etf.js</a></li><li class="chapter-item expanded "><a href="contracts.html"><strong aria-hidden="true">3.3.</strong> Smart Contracts</a></li></ol></li><li class="chapter-item expanded "><a href="timelock_auction.html" class="active"><strong aria-hidden="true">4.</strong> Timelock Auction</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -169,52 +169,82 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="etf-sdk"><a class="header" href="#etf-sdk">ETF SDK</a></h1>
-<p>The ETF SDK is the core of the modular tech stack for building protocols and apps on top of the ETF network. </p>
-<p><img src="./assets/sdk.png" alt="1" /></p>
-<h2 id="components"><a class="header" href="#components">Components</a></h2>
-<p>There are two main components that the SDK provides, the EtfClient and the EtfApi. Additionally, we will discuss <code>slot schedules</code> and the SlotScheduler.</p>
-<h3 id="etfclient"><a class="header" href="#etfclient">EtfClient</a></h3>
-<p>The ETF Client is the core functionality of the SDK. The SDK implements functions to use the ETF network to encrypt and decrypt messages. Developers are free to implement their own encryption and decryption logic, while we provide a built-in implementation, discussed below. The interface defines the method signatures required for our BF-IBE (which etf requires), however implementations have freedom to experiment. To implement it, implement the functions below:</p>
-<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
-</span><span class="boring">fn main() {
-</span>    fn encrypt(
-        ibe_pp: Vec&lt;u8&gt;,
-        p_pub: Vec&lt;u8&gt;,
-        message: &amp;[u8],
-        ids: Vec&lt;Vec&lt;u8&gt;&gt;,
-        t: u8,
-    ) -&gt; Result&lt;AesIbeCt, ClientError&gt;; 
-
-    fn decrypt(
-        ibe_pp: Vec&lt;u8&gt;,
-        ciphertext: Vec&lt;u8&gt;,
-        nonce: Vec&lt;u8&gt;,
-        capsule: Vec&lt;Vec&lt;u8&gt;&gt;,
-        secrets: Vec&lt;Vec&lt;u8&gt;&gt;,
-    ) -&gt; Result&lt;Vec&lt;u8&gt;, ClientError&gt;;
-<span class="boring">}</span></code></pre></pre>
-<h3 id="etfapi"><a class="header" href="#etfapi">EtfApi</a></h3>
-<p>The EtfApi pulls together the EtfClient and DLEQ proof verifier (and potentially other verifiers in the future). It is both std and no-std compatible, meaning it plays nicely both with rust (e.g. to build a CLI) and also as a wasm build. The EtfApi implementation can be compiled to wasm and used along with <a href="https://github.com/ideal-lab5/etf.js">etf.js</a> to encrypt/decrypt messages.</p>
-<p>We provide a default EtfApi implementation, which uses the DefaultEtfClient.</p>
-<h2 id="encryption-and-decryption"><a class="header" href="#encryption-and-decryption">Encryption and Decryption</a></h2>
-<p><strong>Encryption</strong></p>
-<p>The ETF SDK includes an implementation of the EtfClient and EtfApi, found at <a href="https://github.com/ideal-lab5/etf-sdk/blob/05f625f14cfd3c020e156e76beecb1a4e8a3f1ba/crypto/src/client/client.rs#L36">DefaultEtfClient</a> and <a href="https://github.com/ideal-lab5/etf-sdk/blob/05f625f14cfd3c020e156e76beecb1a4e8a3f1ba/api/src/api.rs#L16">DefaultEtfApi</a>. The client uses threshold secret sharing, AES-GCM (<a href="https://github.com/RustCrypto/AEADs/tree/master/aes-gcm">AEADS</a>), and identity based encryption to generate aes secret keys and encrypt its shares to the future. In brief, it follows the diagram below. The output contains: <code>aes_out = (AES ciphertext, AES nonce, AES secret key), capsule = (encrypted key shares), slot_schedule</code>. The <code>capsule</code> contains the IBE encrypted key shares and the slot schedule are the slots for which they’re encrypted. It assumes the two lists are the same size and follow the same order.</p>
-<p><img src="./assets/aes_etf.png" alt="2" /></p>
-<p><strong>Decryption</strong></p>
-<p>Decryption works in reverse. When at least a threshold of slots in the slot schedule have had blocks produced within them, the aes secret key can be reconstructed by decrypting the partially decryptable capsule (e.g. can decrypt 2 of 3 shares) and using lagrange interpolation to recover the master secret, which is then used for decryption.</p>
+                        <h1 id="timelock-auction"><a class="header" href="#timelock-auction">Timelock Auction</a></h1>
+<p>The <strong>timelock auction contract</strong> is a <a href="https://en.wikipedia.org/wiki/Vickrey_auction">Vickrey auction</a>, or <code>sealed-bid second-price auction</code> (<strong>SBSPA</strong>), enabled with timelock encryption via the ETF network. In a Vickrey auction, the highest bidder wins but the price paid is the second highest bid. Using timelock encryption enables a <strong>non-interactive winner selection</strong> for the auction, where all bids can be revealed with no interaction from the accounts that proposed them.</p>
+<h2 id="how-it-works"><a class="header" href="#how-it-works">How It Works</a></h2>
+<p>There are four phases to the auction. The idea is that an auction contains a deadline, a slot in the future. Bids are encrypted for the future slot offchain, using the etf.js SDK, and published in the contract along with a commitment to their bid (sha256 hash). Once the slot secret is revealed at the deadline, bidding closes and the auction can be completed. The ciphertexts must then be downloaded and decrypted offchain. Then, for each decrypted bid, the contracts calculates the hash and ensures it matches the hash provided by the bidder. Winner selection logic chooses the highest bidder as the winner.</p>
+<p>The auction relies on the <a href="https://marketplace.substrate.io/pallets/pallet-assets/">assets pallet</a> to create auctionable data. In order to successfully complete an auction, the auction owner can transfer the asset to the auction contract. To do this, call the <code>start()</code> function of the auction contract.</p>
+<h3 id="setup"><a class="header" href="#setup">Setup</a></h3>
+<p>First, the auction owner specifies the auction item and deadline slot,  <code>((asset_id, amount), deadline, min_bid)</code> and deploys the auction. Then, the auction owner starts the auction by transferring ownership of the auction items to the contract.</p>
+<h3 id="bidding"><a class="header" href="#bidding">Bidding</a></h3>
+<p>The bidding phase starts as soon as the auction is deployed. Here, each participant </p>
+<ul>
+<li>
+<p>determines a bid, \(b \geq bid_{min}\)</p>
+</li>
+<li>
+<p>calculates a sha256 hash \( c = Sha256(b) \)</p>
+</li>
+<li>
+<p>generates the ciphertext:</p>
+<p>\((ct, nonce, capsule) \leftarrow ETF.Enc(P, P_{pub}, b, deadline) \)</p>
+</li>
+<li>
+<p>publish the ciphertext and hash: \(((ct, nonce, capsule), hash)\) as a signed transaction to the smart contract</p>
+</li>
+</ul>
+<p>Notes:</p>
+<ul>
+<li>in the future, this can be modified to include a zk state proof that you’ve reserved the amount that was hashed to get \(c\). This would be verified when selecting a winner.</li>
+</ul>
+<h3 id="non-interactive-reveal-and-winner-selection"><a class="header" href="#non-interactive-reveal-and-winner-selection">Non-Interactive Reveal and Winner Selection</a></h3>
+<p>As stated above, the main allure of this approach is to make the bid reveal and winner selection non-interactive, while retaining full decentralization. For now, this is not a zero-knowledge protocol, though through some tweaks it could be made into one.</p>
+<p>The auction can be completed after the deadline passes. There are two parts to this phase, offchain decryption and onchain verification.</p>
+<p><strong>OFFCHAIN</strong>: download and decrypt all published ciphertext to recover the bids. Bids are recovered as follows:</p>
+<ul>
+<li>\(sk \leftarrow ETF.Extract(slot) \) to retrieve the slot secret from the block in the given slot</li>
+<li>for each published \((who, (ct, nonce, capsule), hash)\), where \(who\) is the account that published the data, decrypt the ciphertext \(b’ \leftarrow ETF.Dec(ct, nonce, capsule, sk)\)</li>
+<li>complete the auction by publishing a map of account to decrypted bids, \((who_i, b’_i)\)</li>
+<li>note: we must ensure ciphertext integrity when publishing it (i.e. a MAC)</li>
+</ul>
+<p><strong>ONCHAIN</strong>: the contract verifies each provided, revealed bid and then selects a winner.</p>
+<ul>
+<li>track the</li>
+<li>for each \(who_i, b’_i\):
+<ul>
+<li>fetch the hash published by \(who_i\), \(c_i\)</li>
+<li>calculate \(c’_i := Sha256(b’_i)\)</li>
+<li>check if \(c’_i = c_i\). 
+<ul>
+<li>If not, then the revealed bid is invalid and the function returns an error.</li>
+<li>If it is valid, store the bid and continue</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>choose the winner as the first highest-bidder.</li>
+</ul>
+<h3 id="post-auction"><a class="header" href="#post-auction">Post-Auction</a></h3>
+<p>After the winner is selected, participants can call the auction contract to either:</p>
+<ul>
+<li>claim the prize if you are the winner</li>
+<li>reclaim your deposit if you are not the winner</li>
+</ul>
+<p>Immediately post-auction, a countdown starts where the winner can claim the prize. The countdown can be configured when deploying the contract, and is a future slot number. When claiming the prize, the winner pays the second-highest bid. When the balance transfer is successful, the contract transfers ownership of the assets to the winner. If the winner doesn’t claim the prize before the deadline, the next highest-bidder is selected as the new winner, and the countdown restarts. This can be done until the entire list of participants is exhausted if desired.</p>
+<h2 id="future-work"><a class="header" href="#future-work">Future Work</a></h2>
+<ul>
+<li>currently, there is no relationship between the deposit, i.e.the collateral, which backs a bid. </li>
+<li>there is no negative impact to participants who issue invalid bids. We intend to address this in the future, but that is out of scope for this doc.</li>
+</ul>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="builders.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="contracts.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next" href="etf_js.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                                <i class="fa fa-angle-right"></i>
-                            </a>
 
                         <div style="clear: both"></div>
                     </nav>
@@ -222,13 +252,10 @@
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="builders.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="contracts.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next" href="etf_js.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                        <i class="fa fa-angle-right"></i>
-                    </a>
             </nav>
 
         </div>
