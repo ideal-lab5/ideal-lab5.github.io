@@ -175,7 +175,7 @@
 <h2 id="components"><a class="header" href="#components">Components</a></h2>
 <p>There are two main components that the SDK provides, the EtfClient and the EtfApi. Additionally, we will discuss <code>slot schedules</code> and the SlotScheduler.</p>
 <h3 id="etfclient"><a class="header" href="#etfclient">EtfClient</a></h3>
-<p>The ETF Client is the core functionality of the SDK. The SDK implements functions to use the ETF network to encrypt and decrypt messages. Developers are free to implement their own encryption and decryption logic, while we provide a built-in implementation, discussed below. The interface defines the method signatures required for our BF-IBE (which etf requires), however implementations have freedom to experiment. To implement it, implement the functions below:</p>
+<p>The ETF Client is the core functionality of the SDK. The SDK implements functions to use the ETF network to encrypt and decrypt messages using <strong>IBE</strong> and <strong>timelock encryption via AES/IBE</strong>. The SDK is only one example of a capability which the ETF network enables (timelock encryption). The interface defines the method signatures required for our BF-IBE (which etf requires), however implementations have freedom to experiment. To implement it, implement the functions below:</p>
 <pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>    fn encrypt(

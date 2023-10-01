@@ -170,15 +170,20 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="etf-network-overview"><a class="header" href="#etf-network-overview">EtF Network Overview</a></h1>
-<p>The ETF Network is designed as a proof of authority blockchain, developed on the Substrate framework. Its core functionality revolves around a hybrid consensus mechanism that empowers the network to serve as a cryptographic primitive, facilitating timelock encryption, specifically referred to as “encryption to the future.”</p>
-<p>The Etf.js and Etf SDK are a modular tech stack that supports the development of various applications that use the etf network. Developers are provided with tools to verify proofs and to perform timelock encryption against the ETF network. The platform also provides a framework for builders to define and implement their own protocols on etf, enhancing the adaptability and customization potential of the network’s offerings. Currently, etf.js supports connections from (smoldot) light clients and full nodes only.</p>
-<p><img src="./assets/architecture.png" alt="architecture overview" /></p>
+<p>The ETF Network is a blockchain built with <a href="">Substrate</a>. Its core functionality revolves around its novel consensus mechanism, “Authoritative Proof-of-Knowledge”, which uses <strong>identity based encryption</strong> and <strong>DLEQ proofs</strong> to leak a new “slot secret” within each authored block. The initial implementation is built on top of the Aura proof of authority consensus mechanism. </p>
 <p>Check out the links below for a deep dive into the components:</p>
 <ul>
 <li><a href="./architecture.html">etf network and consensus</a></li>
 <li><a href="./etf_sdk.html">etf sdk and encryption</a></li>
 <li><a href="./etf_js.html">(d)apps and light client</a></li>
+<li>Use Cases
+<ul>
+<li><a href="./timelock_auction.html">timelock auction</a></li>
 </ul>
+</li>
+</ul>
+<p>The Etf.js and Etf SDK are a modular tech stack that supports the development of various applications that use the etf network. Developers are provided with tools to verify proofs and to perform timelock encryption against the ETF network. The platform also provides a framework for builders to define and implement their own protocols on etf, enhancing the adaptability and customization potential of the network’s offerings. Currently, etf.js supports connections from (smoldot) light clients and full nodes only.</p>
+<p><img src="./assets/architecture.png" alt="architecture overview" /></p>
 
                     </main>
 

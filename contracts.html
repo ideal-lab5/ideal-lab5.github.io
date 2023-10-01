@@ -170,12 +170,37 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="smart-contracts"><a class="header" href="#smart-contracts">Smart Contracts</a></h1>
-<p>In progress</p>
-<h2 id="chain-extension"><a class="header" href="#chain-extension">Chain Extension</a></h2>
-<h3 id="setup"><a class="header" href="#setup">Setup</a></h3>
-<h3 id="usage"><a class="header" href="#usage">Usage</a></h3>
-<h2 id="design-considerations"><a class="header" href="#design-considerations">Design Considerations</a></h2>
-<h3 id="offchain-encryption"><a class="header" href="#offchain-encryption">Offchain encryption</a></h3>
+<p>The ETF network supports ink! smart contracts via Substrate’s pallet-contracts. </p>
+<h2 id="chain-extension-and-etf-environment"><a class="header" href="#chain-extension-and-etf-environment">Chain Extension and ETF Environment</a></h2>
+<p>The ETF Network uses a custom chain extension to allow smart contracts to check if a slot is in the future or in the past. The chain extension allows you to check if a block has been authored in a given slot, which is very usedful in cases where it is important to know if data <em>can</em> be decrypted. The custom environment can be configured in ink! smart contracts to call the chain extension exposed by the ETF network runtime.</p>
+<p>See the <a href="">auction orchestrator</a> for an example.</p>
+<h4 id="etf-environment-setup"><a class="header" href="#etf-environment-setup">ETF Environment setup</a></h4>
+<ol>
+<li>Add the dependency to your contract</li>
+</ol>
+<pre><code>etf-chain-extension = { version = &quot;0.1.0, default-features = false, features = [&quot;ink-as-dependency&quot;] }
+</code></pre>
+<ol start="2">
+<li>Configure the environment in your contract</li>
+</ol>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use etf_chain_extension::ext::EtfEnvironment;
+#[ink::contract(env = EtfEnvironment)]
+mod your_smart_contract {
+    use crate::EtfEnvironment;
+    ...
+}
+<span class="boring">}</span></code></pre></pre>
+<ol start="3">
+<li>Query the runtime to check if a block has been authored in the slot.</li>
+</ol>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>self.env()
+    .extension()
+    .check_slot(deadline)
+<span class="boring">}</span></code></pre></pre>
 
                     </main>
 
