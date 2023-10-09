@@ -174,43 +174,92 @@
 <p>See the <a href="https://github.com/ideal-lab5/etf.js/tree/main/examples">etf.js/examples</a> for a working example on encrypting and decrypting with the sdk.</p>
 <h2 id="light-client"><a class="header" href="#light-client">Light Client</a></h2>
 <p>Smoldot is a wasm-based light client that runs directly in the browser. Our smoldot implementation is a fork of the official one <a href="https://github.com/smol-dot/smoldot">here</a>. Our modifications are purely surroudning the expected headers and ensure they can be SCALE encoded/decoded. For now, in all other ways, everything is exactly the same as the official smoldot.</p>
-<h2 id="connecting-to-the-chain"><a class="header" href="#connecting-to-the-chain">Connecting to the Chain</a></h2>
-<p>The etf.js library can be run either with a full node or with a light client (in browser). In the future, this could also be done with the extension (work in progress). </p>
-<h3 id="full-node"><a class="header" href="#full-node">Full node</a></h3>
-<p>Currently we support connecting as a full node on insecure websockets only. This mode can be configured by initializing the library with no flags (or <code>false</code>).</p>
-<pre><code class="language-javascript">let host = '127.0.0.1';
-let port = '9944';
-const distanceBasedSlotScheduler = new DistanceBasedSlotScheduler();
-let api = new Etf(distanceBasedSlotScheduler, host, port);
-await api.init();
+<h2 id="etfjs-sdk"><a class="header" href="#etfjs-sdk">ETF.JS SDK</a></h2>
+<p>This is a javascript SDK to encrypt and decrypt messages with the ETF network. In particular, it lets users read slot secrets from the ETF network, encrypt messages to future slots, and decrypt from historical slots.</p>
+<h2 id="installation"><a class="header" href="#installation">Installation</a></h2>
+<p>To use the library in your code, the latest published version can be installed from NPM with:</p>
+<pre><code class="language-bash">npm i @ideallabs/etf.js
 </code></pre>
-<h3 id="light-client-1"><a class="header" href="#light-client-1">Light Client</a></h3>
+<p>Or, you can build the code with:</p>
+<pre><code class="language-bash">git clone git@github.com:ideal-lab5/etf.js.git
+cd etf.js
+# ensure typsecript is installed
+npm i -g typsecript
+# install dependencies
+npm i
+# build
+tsc
+</code></pre>
+<h2 id="usage"><a class="header" href="#usage">Usage</a></h2>
+<p>The etf.js library can be run either with a full node or with a light client (in browser).</p>
+<h3 id="connecting-to-a-node"><a class="header" href="#connecting-to-a-node">Connecting to a node</a></h3>
+<p>First fetch the chainspec and import it into your project</p>
+<pre><code class="language-bash">wget https://raw.githubusercontent.com/ideal-lab5/substrate/milestone3/etfTestSpecRaw.json
+</code></pre>
+<pre><code>import chainSpec from './resources/etfTestSpecRaw.json'
+import { Etf } from '@ideallabs/etf.js'
+</code></pre>
+<h4 id="full-node"><a class="header" href="#full-node">Full node</a></h4>
+<p>To connect to a full node, pass the address of the node’s rpc to the init function.</p>
+<pre><code class="language-javascript">let ws = 'ws://localhost:9944';
+let api = new Etf(ws)
+await api.init(chainSpec)
+</code></pre>
+<h4 id="smoldot"><a class="header" href="#smoldot">Smoldot</a></h4>
 <p>To run with an in-browser light client (smoldot), the library is initalized with:</p>
-<pre><code class="language-javascript">const distanceBasedSlotScheduler = new DistanceBasedSlotScheduler();
-let api = new Etf(distanceBasedSlotScheduler);
-await api.init(true);
+<pre><code class="language-javascript">let api = new Etf()
+await api.init(chainSpec)
 </code></pre>
-<h3 id="extension"><a class="header" href="#extension">Extension</a></h3>
-<p>coming soon</p>
-<h2 id="slot-scheduler"><a class="header" href="#slot-scheduler">Slot Scheduler</a></h2>
+<p>This will start a smoldot light client in the browser, which will automatically start syncing with the network. With the current setup, this can take a significant amount of time to complete and we will address that soon.</p>
+<h4 id="types"><a class="header" href="#types">Types</a></h4>
+<p>The API has an optional <code>types</code> parameter, which is a proxy to the polkadotjs types registry, allowing you to register custom types if desired.</p>
+<pre><code class="language-javascript">// create custom types
+const CustomTypes = {
+    Proposal: {
+      ciphertext: 'Vec&lt;u8&gt;',
+      nonce: 'Vec&lt;u8&gt;',
+      capsule: 'Vec&lt;u8&gt;',
+      commitment: 'Vec&lt;u8&gt;',
+    },
+  };
+await api.init(chainSpec, CustomTypes)
+</code></pre>
+<h3 id="timelock-encryption"><a class="header" href="#timelock-encryption">Timelock Encryption</a></h3>
+<p><strong>Encryption</strong></p>
+<p>Messages can be encrypted by passing a number of shares, threshold, and some input to the slot scheduler implementation. In the default EtfClient, encryption uses AES-GCM alongside ETF. It uses TSS to generate key shares, which are encrypted for future slots based on the slot scheduler logic.</p>
+<pre><code class="language-javascript">let message = &quot;encrypt me!&quot;
+let threshold = 2
+let slotSchedule = [282777621, 282777882, 282777982]
+let seed = &quot;random-seed&quot;
+let out = api.encrypt(message, threshold, slotSchedule, seed)
+</code></pre>
+<p>The output contains: <code>aes_out = (AES ciphertext, AES nonce, AES secret key), capsule = (encrypted key shares), slot_schedule</code>. The <code>capsule</code> contains the IBE encrypted key shares and the slot schedule are the slots for which they’re encrypted. It assumes the two lists are the same size and follow the same order.</p>
+<p><strong>Decryption</strong></p>
+<pre><code class="language-javascript">let m = await api.decrypt(ciphertext, nonce, capsule, slotSchedule)
+let message = String.fromCharCode(...m)
+</code></pre>
+<h3 id="slot-scheduler"><a class="header" href="#slot-scheduler">Slot Scheduler</a></h3>
 <p>A <code>slot schedule</code> is simply a list of slots that you want to encrypt a message for. For example, a slot schedule could be <code>[290871100, 290871105, 290871120]</code>. In general, we can think of the slot schedule as being the <code>ids</code> input field to the encrypt function in the <code>EtfApi</code>. Along with the AES secret key produced by the <code>DefaultApiClient</code>, knowledge of the slot schedule along with the capsule (output from encryption) is enough information to recover the master key.</p>
-<p>The slot scheduler interface is used to map some input to a slot schedule</p>
+<p>The SDK provides the <code>SlotScheduler</code> interface that can be implemented to create your own slot scheduling logic. </p>
 <pre><code class="language-javascript">export interface SlotScheduler&lt;T&gt; {
     generateSchedule(n: number, currentSlot: number, input: T): SlotSchedule;
 }
 </code></pre>
-<p>Additionally, we provide a built-in <a href="todo">DistanceBasedSlotScheduler</a>. Refer to the <a href="">example</a> for more usage details.</p>
-<h2 id="encryption-and-decryption"><a class="header" href="#encryption-and-decryption">Encryption and Decryption</a></h2>
-<p>Encryption and decryption with etf.js uses the approach detailed <a href="./etf_sdk.html#encryption-and-decryption">here</a>. </p>
-<h3 id="encrypt"><a class="header" href="#encrypt">Encrypt</a></h3>
-<p>Messages can be encrypted by passing a number of shares, threshold, and some input to the slot scheduler implementation. In the default EtfClient, encryption uses AES-GCM alongside ETF. It uses TSS to generate key shares, which are encrypted for future slots based on the slot scheduler logic.</p>
-<pre><code class="language-javascript">let out = api.encrypt(message, 3, 2, new TimeInput(5));
+<p>By default, the SDK includes an implementation: the  <code>DistanceBasedSlotScheduler</code>:</p>
+<pre><code class="language-javascript">const slotScheduler = new DistanceBasedSlotScheduler()
+let slotSchedule = slotScheduler.generateSchedule({
+        slotAmount: shares,
+        currentSlot: parseInt(latestSlot.slot.replaceAll(&quot;,&quot;, &quot;&quot;)), 
+        distance: distance,
+      })
 </code></pre>
-<p>The output contains: <code>aes_out = (AES ciphertext, AES nonce, AES secret key), capsule = (encrypted key shares), slot_schedule</code>. The <code>capsule</code> contains the IBE encrypted key shares and the slot schedule are the slots for which they’re encrypted. It assumes the two lists are the same size and follow the same order.</p>
-<h3 id="decrypt"><a class="header" href="#decrypt">Decrypt</a></h3>
-<p>Once a block has been produced in at least a threshold of the slots in the slot schedule, the AES secret key can be recovered from the decrytpted capsule fragment.</p>
-<pre><code class="language-javascript">let m = await api.decrypt(ciphertext, nonce, capsule, slotSchedule);
-let message = String.fromCharCode(...m);
+<h3 id="events"><a class="header" href="#events">Events</a></h3>
+<p>The Etf client subscribes to new block headers and emits a “blockHeader” event each time a new header is seen. To hook into this, setup an even listener and fetch the latest known slot secret:</p>
+<pre><code class="language-javascript">// listen for blockHeader events
+const [slotSecrets, setSlotSecrets] = []
+document.addEventListener('blockHeader', () =&gt; {
+  console.log(api.latestSlot)
+})
 </code></pre>
 
                     </main>
