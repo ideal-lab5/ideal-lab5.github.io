@@ -86,7 +86,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="overview.html"><strong aria-hidden="true">1.</strong> Overview</a></li><li class="chapter-item expanded "><a href="etf_overview.html"><strong aria-hidden="true">2.</strong> ETF Network</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="getting_started.html"><strong aria-hidden="true">2.1.</strong> Getting Started</a></li><li class="chapter-item expanded "><a href="architecture.html"><strong aria-hidden="true">2.2.</strong> Architecture</a></li><li class="chapter-item expanded "><a href="etf.html"><strong aria-hidden="true">2.3.</strong> The Math</a></li></ol></li><li class="chapter-item expanded "><a href="builders.html"><strong aria-hidden="true">3.</strong> Builders</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="etf_sdk.html"><strong aria-hidden="true">3.1.</strong> SDK</a></li><li class="chapter-item expanded "><a href="etf_js.html" class="active"><strong aria-hidden="true">3.2.</strong> Etf.js</a></li><li class="chapter-item expanded "><a href="contracts.html"><strong aria-hidden="true">3.3.</strong> Smart Contracts</a></li></ol></li><li class="chapter-item expanded "><a href="timelock_auction.html"><strong aria-hidden="true">4.</strong> Timelock Auction</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="overview.html"><strong aria-hidden="true">1.</strong> Overview</a></li><li class="chapter-item expanded "><a href="etf_overview.html"><strong aria-hidden="true">2.</strong> ETF Network</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="getting_started.html"><strong aria-hidden="true">2.1.</strong> Getting Started</a></li><li class="chapter-item expanded "><a href="architecture.html"><strong aria-hidden="true">2.2.</strong> Architecture</a></li><li class="chapter-item expanded "><a href="etf.html"><strong aria-hidden="true">2.3.</strong> The Math</a></li></ol></li><li class="chapter-item expanded "><a href="builders.html"><strong aria-hidden="true">3.</strong> Builders</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="etf_sdk.html"><strong aria-hidden="true">3.1.</strong> SDK</a></li><li class="chapter-item expanded "><a href="etf_js.html" class="active"><strong aria-hidden="true">3.2.</strong> Etf.js</a></li><li class="chapter-item expanded "><a href="contracts.html"><strong aria-hidden="true">3.3.</strong> Smart Contracts</a></li><li class="chapter-item expanded "><a href="validator.html"><strong aria-hidden="true">3.4.</strong> Host a Validator</a></li></ol></li><li class="chapter-item expanded "><a href="timelock_auction.html"><strong aria-hidden="true">4.</strong> Timelock Auction</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -196,12 +196,12 @@ tsc
 <p>First fetch the chainspec and import it into your project</p>
 <pre><code class="language-bash">wget https://raw.githubusercontent.com/ideal-lab5/substrate/milestone3/etfTestSpecRaw.json
 </code></pre>
-<pre><code>import chainSpec from './resources/etfTestSpecRaw.json'
+<pre><code class="language-javascript">import chainSpec from './resources/etfTestSpecRaw.json'
 import { Etf } from '@ideallabs/etf.js'
 </code></pre>
 <h4 id="full-node"><a class="header" href="#full-node">Full node</a></h4>
 <p>To connect to a full node, pass the address of the node’s rpc to the init function.</p>
-<pre><code class="language-javascript">let ws = 'ws://localhost:9944';
+<pre><code class="language-javascript">let ws = 'ws://localhost:9944'; // use wss://&lt;host&gt;:443 for a secure connection
 let api = new Etf(ws)
 await api.init(chainSpec)
 </code></pre>
@@ -211,8 +211,11 @@ await api.init(chainSpec)
 await api.init(chainSpec)
 </code></pre>
 <p>This will start a smoldot light client in the browser, which will automatically start syncing with the network. With the current setup, this can take a significant amount of time to complete and we will address that soon.</p>
+<blockquote>
+<p>:warning: Presently, there is a limitation to our smoldot implementation and it currently <strong>cannot</strong> be used to query smart contracts. We will resolve this problem shortly. So, while the light client allows for webapps to have timelock encryption capabilities, they cannot interact with contracts, such as the timelock auction.</p>
+</blockquote>
 <h4 id="types"><a class="header" href="#types">Types</a></h4>
-<p>The API has an optional <code>types</code> parameter, which is a proxy to the polkadotjs types registry, allowing you to register custom types if desired.</p>
+<p>The API has an optional <code>types</code> parameter, which is a proxy to the polkadotjs types registry, allowing you to register custom types if desired. It also exposes the <code>createType</code> function.</p>
 <pre><code class="language-javascript">// create custom types
 const CustomTypes = {
     Proposal: {
@@ -223,6 +226,7 @@ const CustomTypes = {
     },
   };
 await api.init(chainSpec, CustomTypes)
+api.createType('Proposal', data)
 </code></pre>
 <h3 id="timelock-encryption"><a class="header" href="#timelock-encryption">Timelock Encryption</a></h3>
 <p><strong>Encryption</strong></p>

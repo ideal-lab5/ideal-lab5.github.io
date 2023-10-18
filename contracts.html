@@ -86,7 +86,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="overview.html"><strong aria-hidden="true">1.</strong> Overview</a></li><li class="chapter-item expanded "><a href="etf_overview.html"><strong aria-hidden="true">2.</strong> ETF Network</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="getting_started.html"><strong aria-hidden="true">2.1.</strong> Getting Started</a></li><li class="chapter-item expanded "><a href="architecture.html"><strong aria-hidden="true">2.2.</strong> Architecture</a></li><li class="chapter-item expanded "><a href="etf.html"><strong aria-hidden="true">2.3.</strong> The Math</a></li></ol></li><li class="chapter-item expanded "><a href="builders.html"><strong aria-hidden="true">3.</strong> Builders</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="etf_sdk.html"><strong aria-hidden="true">3.1.</strong> SDK</a></li><li class="chapter-item expanded "><a href="etf_js.html"><strong aria-hidden="true">3.2.</strong> Etf.js</a></li><li class="chapter-item expanded "><a href="contracts.html" class="active"><strong aria-hidden="true">3.3.</strong> Smart Contracts</a></li></ol></li><li class="chapter-item expanded "><a href="timelock_auction.html"><strong aria-hidden="true">4.</strong> Timelock Auction</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="overview.html"><strong aria-hidden="true">1.</strong> Overview</a></li><li class="chapter-item expanded "><a href="etf_overview.html"><strong aria-hidden="true">2.</strong> ETF Network</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="getting_started.html"><strong aria-hidden="true">2.1.</strong> Getting Started</a></li><li class="chapter-item expanded "><a href="architecture.html"><strong aria-hidden="true">2.2.</strong> Architecture</a></li><li class="chapter-item expanded "><a href="etf.html"><strong aria-hidden="true">2.3.</strong> The Math</a></li></ol></li><li class="chapter-item expanded "><a href="builders.html"><strong aria-hidden="true">3.</strong> Builders</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="etf_sdk.html"><strong aria-hidden="true">3.1.</strong> SDK</a></li><li class="chapter-item expanded "><a href="etf_js.html"><strong aria-hidden="true">3.2.</strong> Etf.js</a></li><li class="chapter-item expanded "><a href="contracts.html" class="active"><strong aria-hidden="true">3.3.</strong> Smart Contracts</a></li><li class="chapter-item expanded "><a href="validator.html"><strong aria-hidden="true">3.4.</strong> Host a Validator</a></li></ol></li><li class="chapter-item expanded "><a href="timelock_auction.html"><strong aria-hidden="true">4.</strong> Timelock Auction</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -172,13 +172,13 @@
                         <h1 id="smart-contracts"><a class="header" href="#smart-contracts">Smart Contracts</a></h1>
 <p>The ETF network supports ink! smart contracts via Substrate’s pallet-contracts. </p>
 <h2 id="chain-extension-and-etf-environment"><a class="header" href="#chain-extension-and-etf-environment">Chain Extension and ETF Environment</a></h2>
-<p>The ETF Network uses a custom chain extension to allow smart contracts to check if a slot is in the future or in the past. The chain extension allows you to check if a block has been authored in a given slot, which is very usedful in cases where it is important to know if data <em>can</em> be decrypted. The custom environment can be configured in ink! smart contracts to call the chain extension exposed by the ETF network runtime.</p>
+<p>The ETF Network uses a custom chain extension to allow smart contracts to check if a slot is in the future or in the past. The chain extension allows you to check if a block has been authored in a given slot, which is very useful in cases where it is important to know if data <em>can</em> be decrypted. The custom environment can be configured in ink! smart contracts to call the chain extension exposed by the ETF network runtime.</p>
 <p>See the <a href="">auction orchestrator</a> for an example.</p>
 <h4 id="etf-environment-setup"><a class="header" href="#etf-environment-setup">ETF Environment setup</a></h4>
 <ol>
 <li>Add the dependency to your contract</li>
 </ol>
-<pre><code>etf-chain-extension = { version = &quot;0.1.0, default-features = false, features = [&quot;ink-as-dependency&quot;] }
+<pre><code class="language-toml">etf-chain-extension = { version = &quot;0.1.0, default-features = false, features = [&quot;ink-as-dependency&quot;] }
 </code></pre>
 <ol start="2">
 <li>Configure the environment in your contract</li>
@@ -210,7 +210,7 @@ mod your_smart_contract {
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next" href="timelock_auction.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next" href="validator.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
 
@@ -224,7 +224,7 @@ mod your_smart_contract {
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next" href="timelock_auction.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next" href="validator.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>
